@@ -36,11 +36,11 @@ trait Extenders
     public function getArrayableAttributes()
     {
         $attributes = parent::getArrayableAttributes();
-        // foreach ($attributes as $key => $attribute) {
-        //     if ($this->isEncryptable($key)) {
-        //         $attributes[$key] = $this->decryptAttribute($attribute);
-        //     }
-        // }
+        foreach ($attributes as $key => $attribute) {
+            if ($this->isEncryptable($key)) {
+                $attributes[$key] = $this->decryptAttribute($attribute);
+            }
+        }
 
         return $attributes;
     }

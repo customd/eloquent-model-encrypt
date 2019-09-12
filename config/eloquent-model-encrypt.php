@@ -5,6 +5,5 @@ return [
         'default' => \CustomD\EloquentModelEncrypt\EncryptionEngine::class,
     ],
     'tables' => [
-
     ],
 ];

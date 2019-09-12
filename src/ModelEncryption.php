@@ -31,7 +31,10 @@ trait ModelEncryption
         $engines = $config['engines'];
         $tables = $config['tables'];
 
-        $engine = isset($tables[self::class]) && class_exists($engines[$tables[self::class]]) ? $engines[$tables[self::class]] : $engines['default'];
+        $engine = (
+            isset($tables[self::class])
+            && class_exists($engines[$tables[self::class]])
+        ) ? $engines[$tables[self::class]] : $engines['default'];
 
         self::$encryptionEngine = new $engine();
     }
