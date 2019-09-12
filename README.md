@@ -1,5 +1,7 @@
 # Eloquent Model Encrypt
 
+https://git.customd.com/composer/eloquent-model-encrypt/badges/master/pipeline.svg
+
 [![Build Status](https://travis-ci.org/custom-d/eloquent-model-encrypt.svg?branch=master)](https://travis-ci.org/custom-d/eloquent-model-encrypt)
 [![styleci](https://styleci.io/repos/CHANGEME/shield)](https://styleci.io/repos/CHANGEME)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/custom-d/eloquent-model-encrypt/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/custom-d/eloquent-model-encrypt/?branch=master)
@@ -51,7 +53,7 @@ CHANGE ME
 
 ## Security
 
-If you discover any security related issues, please email 
+If you discover any security related issues, please email
 instead of using the issue tracker.
 
 ## Credits
