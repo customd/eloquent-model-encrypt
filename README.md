@@ -47,9 +47,22 @@ CustomD\EloquentModelEncrypt\Facades\EloquentModelEncrypt::class,
 php artisan vendor:publish --provider="CustomD\EloquentModelEncrypt\ServiceProvider" --tag="config"
 ```
 
-## Usage
 
-CHANGE ME
+
+## Usage
+In your migrations you can now replace the Illuminate versions of these with the CustomD versions:
+ ```php
+use CustomD\EloquentModelEncrypt\Migration\Blueprint;
+use CustomD\EloquentModelEncrypt\Migration\Schema;
+ ```
+
+
+ you can then define
+ ```php
+ $table->encryptedString('colname', '154');
+ $table->encryptedDate('datecolname');
+ $table->encryptedTimestamp('timestampcolname');
+ ```
 
 ## Security
 

@@ -2,6 +2,8 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Illuminate\Contracts\Encryption\EncryptException;
+
 /**
  * these methods all extend over the Eloquent methods.
  */
@@ -45,21 +47,13 @@ trait Extenders
         return $attributes;
     }
 
-    /**
-     * Extend the Eloquent method so properties present in
-     * $encrypt are encrypted whenever they are set.
-     *
-     * @param string $key      The attribute key
-     * @param string $value    Attribute value to set
-     *
-     * @return mixed
-     */
-    public function setAttribute($key, $value)
+    public function insert()
     {
-        if ($this->isEncryptable($key)) {
-            $value = $this->encryptAttribute($value);
-        }
+        throw new EncryptException('Cannot Mass insert encrypted records, please use create');
+    }
 
-        return parent::setAttribute($key, $value);
+    public function update(array $attributes = [], array $options = [])
+    {
+        throw new EncryptException('Cannot Mass update encrypted records, please use model methods');
     }
 }
