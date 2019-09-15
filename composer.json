@@ -10,8 +10,8 @@
   "type": "library",
   "authors": [
     {
-      "name": "",
-      "email": ""
+      "name": "Craig Smith",
+      "email": "craig.smith@customd.com"
     }
   ],
   "require": {
