@@ -23,11 +23,9 @@ class GlobalKeyProvider extends KeyProvider
      *
      * @return string
      */
-    public static function getPrivateKeyForRecord($model): string
+    public static function getPrivateKeyForRecord(string $table, int $recordId): string
     {
-        $table = $model->getTable();
-
-        $rec = self::getKeyFromKeystore($table, $model->id);
+        $rec = self::getKeyFromKeystore($table, $recordId);
 
         if ($rec === null) {
             return false;

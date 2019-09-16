@@ -38,8 +38,11 @@ trait Keystore
      */
     protected function getPrivateKeyForRecord(): string
     {
+        $id = $this->{$this->primaryKey};
+        $table = $this->getTable();
+
         foreach (self::$keyProviders as $keyProvider) {
-            $key = $keyProvider::getPrivateKeyForRecord($this);
+            $key = $keyProvider::getPrivateKeyForRecord($table, $id);
 
             if ($key) {
                 return $key;

@@ -24,8 +24,8 @@ class EloquentModelEncryptTest extends TestCase
     public function testBasicEngine()
     {
         $original = 'ThisIs My test String';
-		$engine = new EncryptionEngine();
-		$engine->assignSyncronousKey();
+        $engine = new EncryptionEngine();
+        $engine->assignSyncronousKey();
         $encoded = $engine->encrypt($original);
         $decoded = $engine->decrypt($encoded);
         $this->assertSame($original, $decoded);

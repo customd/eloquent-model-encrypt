@@ -2,7 +2,6 @@
 
 namespace CustomD\EloquentModelEncrypt\Abstracts;
 
-use Illuminate\Database\Eloquent\Model;
 use CustomD\EloquentModelEncrypt\Model\TableKeystore;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -10,9 +9,9 @@ abstract class KeyProvider
 {
     abstract public static function getPublicKeysForTable(): array;
 
-    abstract public static function getPrivateKeyForRecord(Model $model): ?string;
+    abstract public static function getPrivateKeyForRecord(string $table, int $recordId): ?string;
 
-    protected static function getKeyFromKeystore($table, $id)
+    protected static function getKeyFromKeystore(string $table, int $id)
     {
         try {
             $rec = TableKeystore::where('table', $table)
