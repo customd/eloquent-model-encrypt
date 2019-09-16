@@ -20,7 +20,7 @@
 	"custom-d/eloquent-async-keys" : "*"
   },
   "require-dev": {
-    "orchestra/testbench": "~3.8.0",
+    "orchestra/testbench": "^3.8.0",
     "phpunit/phpunit": "^7.0"
   },
   "autoload": {

@@ -24,7 +24,7 @@ trait Keystore
             $keys = array_merge($keys, $keyProvider::getPublicKeysForTable($this));
         }
 
-        if (empty($keys)) {
+        if (count($keys) === 0) {
             throw new EncryptException('No Keys found to encypt with');
         }
 
