@@ -25,7 +25,7 @@ class GlobalKeyProvider extends KeyProvider
      */
     public static function getPrivateKeyForRecord(string $table, int $recordId): string
     {
-        $rec = self::getKeyFromKeystore($table, $recordId);
+        $rec = self::getKeyFromKeystore($table, $recordId, 0);
 
         if ($rec === null) {
             return false;
