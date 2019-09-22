@@ -4,6 +4,7 @@ test:
   stage: test
   only:
     - merge_requests
+    - master
   image: roadiz/php73-runner
   variables:
     BACKEND_QA: $CI_PROJECT_DIR/QA
