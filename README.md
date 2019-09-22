@@ -111,7 +111,7 @@ Engines are to extend the `CustomD\EloquentModelEncrypt\Abstracts\Engine` Class 
 
 * **`public function encrypt(string $value): ?string`** - holds the encryption logic - value passed is the unencrypted database field value
 * **`public function decrypt(string $value): ?string`** - holds the decryption logic - value passed is the encrypted database field value
-* **`public function assignSyncronousKey([$syncronousKey = null]): void`** - allows you to set the synchronous key for encrytion - this is called when creating or retrieving a record.
+* **`public function assignSynchronousKey([$synchronousKey = null]): void`** - allows you to set the synchronous key for encrytion - this is called when creating or retrieving a record.
 
 ## Important
 From Laravel's Docs:

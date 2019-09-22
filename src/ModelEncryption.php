@@ -77,13 +77,13 @@ trait ModelEncryption
 
         // We are creating a new record, lets setup a new sync key for the record and encrypt the fields
         static::creating(function ($model) {
-            $model::$encryptionEngine->assignSyncronousKey();
+            $model::$encryptionEngine->assignSynchronousKey();
             self::_mapEncryptedValues($model);
         });
 
         // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         static::updating(function ($model) {
-            //$syncronousKey Get existging one somehow
+            //$synchronousKey Get existging one somehow
             self::_mapEncryptedValues($model);
         });
 
@@ -102,7 +102,7 @@ trait ModelEncryption
         static::retrieved(function ($model) {
             //decrypt current values
             $key = $model->getPrivateKeyForRecord();
-            $model::$encryptionEngine->assignSyncronousKey($key);
+            $model::$encryptionEngine->assignSynchronousKey($key);
         });
     }
 

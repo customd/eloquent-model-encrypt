@@ -43,7 +43,7 @@ trait Encryption
      * Encrypt a value.
      *
      * @param string $value
-     * @param string $syncronousKey
+     * @param string $synchronousKey
      *
      * @return string
      */

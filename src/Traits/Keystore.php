@@ -59,15 +59,15 @@ trait Keystore
     {
         //1 which keystore records::::
         //... 1 get all the public keys for encrypting this record:
-        $syncronousKey = self::$encryptionEngine->getSyncronousKey();
+        $synchronousKey = self::$encryptionEngine->getSynchronousKey();
         $keys = $this->getPublicKeysForTable();
 
         $id = $this->{$this->primaryKey};
         $table = $this->getTable();
 
         foreach ($keys as $keystoreId => $publicKey) {
-            $keystore = new Keys();
-            $key = $keystore->setKeys($publicKey)->encrypt($syncronousKey, true);
+            $keystore = new Keypair($publicKey);
+            $key = $keystore->encrypt($synchronousKey, true);
 
             TableKeystore::create([
                 'table' => $table,

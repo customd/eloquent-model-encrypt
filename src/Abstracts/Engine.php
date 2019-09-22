@@ -22,5 +22,5 @@ abstract class Engine
      */
     abstract public function decrypt(string $value): ?string;
 
-    abstract public function assignSyncronousKey($syncronousKey = null): void;
+    abstract public function assignSynchronousKey($synchronousKey = null): void;
 }

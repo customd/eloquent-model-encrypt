@@ -2,7 +2,6 @@
 
 namespace CustomD\EloquentModelEncrypt\KeyProviders;
 
-use CustomD\EloquentAsyncKeys\Keys;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
 
 /**
@@ -33,8 +32,8 @@ class GlobalKeyProvider extends KeyProvider
 
         $privateKey = \storage_path().'/_certs/private.key';
         $password = config('app.key');
-        $keystore = new Keys();
+        $keystore = new Keypair(null, $privateKey, $password);
 
-        return $keystore->setKeys(null, $privateKey, $password)->decrypt($rec->key, true);
+        return $keystore->decrypt($rec->key, true);
     }
 }

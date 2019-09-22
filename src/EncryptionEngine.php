@@ -11,7 +11,7 @@ class EncryptionEngine extends Engine
 
     protected $keyLength = 16;
 
-    protected $syncronousKey = null;
+    protected $synchronousKey = null;
 
     protected $encryptionEngine;
 
@@ -21,20 +21,20 @@ class EncryptionEngine extends Engine
      * @param [type] $encryptionKey
      * @param string $cipher
      */
-    public function assignSyncronousKey($syncronousKey = null): void
+    public function assignSynchronousKey($synchronousKey = null): void
     {
-        if ($syncronousKey === null) {
-            $syncronousKey = \random_bytes($this->keyLength);
+        if ($synchronousKey === null) {
+            $synchronousKey = \random_bytes($this->keyLength);
         }
 
-        $this->syncronousKey = $syncronousKey;
+        $this->synchronousKey = $synchronousKey;
 
-        $this->encryptionEngine = new Encrypter($syncronousKey, $this->cipher);
+        $this->encryptionEngine = new Encrypter($synchronousKey, $this->cipher);
     }
 
-    public function getSyncronousKey(): string
+    public function getSynchronousKey(): string
     {
-        return $this->syncronousKey;
+        return $this->synchronousKey;
     }
 
     /**

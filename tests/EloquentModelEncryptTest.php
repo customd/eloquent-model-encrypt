@@ -25,7 +25,7 @@ class EloquentModelEncryptTest extends TestCase
     {
         $original = 'ThisIs My test String';
         $engine = new EncryptionEngine();
-        $engine->assignSyncronousKey();
+        $engine->assignSynchronousKey();
         $encoded = $engine->encrypt($original);
         $decoded = $engine->decrypt($encoded);
         $this->assertSame($original, $decoded);
