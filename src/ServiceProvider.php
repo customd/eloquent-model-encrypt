@@ -4,9 +4,9 @@ namespace CustomD\EloquentModelEncrypt;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    protected const CONFIG_PATH = __DIR__.'/../config/eloquent-model-encrypt.php';
+    protected const CONFIG_PATH = __DIR__ . '/../config/eloquent-model-encrypt.php';
 
-    protected const MIGRATIONS_PATH = __DIR__.'/../database/migrations/';
+    protected const MIGRATIONS_PATH = __DIR__ . '/../database/migrations/';
 
     public function boot()
     {

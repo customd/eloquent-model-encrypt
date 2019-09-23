@@ -24,7 +24,7 @@ test:
     - 'composer global require phpcompatibility/php-compatibility --update-no-dev'
     - 'composer --global config process-timeout 2000'
     - 'phpcs --config-set installed_paths ~/.composer/vendor/phpcompatibility/php-compatibility'
-    - 'phpcs --standard=PHPCompatibility,./php_cs.xml --runtime-set testVersion 7.2- --extensions=php  --report=junit --report-file=$BACKEND_QA/junit.standards.xml'
+    - 'phpcs --standard=PHPCompatibility,PSR12 --runtime-set testVersion 7.2- --extensions=php  --ignore=/vendor/,/database/ --report=junit --report-file=$BACKEND_QA/junit.standards.xml ./'
 
   artifacts:
     when: always

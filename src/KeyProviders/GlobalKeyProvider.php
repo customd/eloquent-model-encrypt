@@ -14,7 +14,7 @@ class GlobalKeyProvider extends KeyProvider
      */
     public static function getPublicKeysForTable(): array
     {
-        return [0 => \storage_path().'/_certs/public.key'];
+        return [0 => \storage_path() . '/_certs/public.key'];
     }
 
     /**
@@ -30,7 +30,7 @@ class GlobalKeyProvider extends KeyProvider
             return false;
         }
 
-        $privateKey = \storage_path().'/_certs/private.key';
+        $privateKey = \storage_path() . '/_certs/private.key';
         $password = config('app.key');
         $keystore = new Keypair(null, $privateKey, $password);
 

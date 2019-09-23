@@ -50,7 +50,7 @@ trait Encryption
     protected function encryptAttribute(string $value): ?string
     {
         if ($value) {
-            $value = self::$encryptionHeader.self::$encryptionEngine->encrypt($value);
+            $value = self::$encryptionHeader . self::$encryptionEngine->encrypt($value);
         }
 
         return $value;
