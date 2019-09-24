@@ -11,7 +11,10 @@ use CustomD\EloquentModelEncrypt\KeyProviders\GlobalKeyProvider;
 
 trait ModelEncryption
 {
-    use Extenders, Encryption, Decryption, Keystore;
+    use Extenders;
+    use Encryption;
+    use Decryption;
+    use Keystore;
 
     /**
      * Which Engine are we using to encrypt / decrypt.
@@ -37,16 +40,16 @@ trait ModelEncryption
     public static function bootModelEncryption(): void
     {
         //Initialiase our encryption engine
-        self::_initEncryptionEngine();
+        self::initEncryptionEngine();
 
         //Initialise our observers
-        self::_initEncryptionObservers();
+        self::initEncryptionObservers();
     }
 
     /**
      * Initialialize our encryption engine for this model.
      */
-    protected static function _initEncryptionEngine(): void
+    protected static function initEncryptionEngine(): void
     {
         // Load our config
         $config = config('eloquent-model-encrypt');
@@ -67,32 +70,38 @@ trait ModelEncryption
     /**
      * Setup our observers for this model.
      */
-    protected static function _initEncryptionObservers(): void
+    protected static function initEncryptionObservers(): void
     {
         static::saving(function ($model) {
-            DB::beginTransaction(); //When we start saving - start our transaction
+            //When we start saving - start our transaction
+            DB::beginTransaction();
         });
 
-        static::creating(function ($model) {// We are creating a new record, lets setup a new sync key for the record and encrypt the fields
+        static::creating(function ($model) {
+            // We are creating a new record, lets setup a new sync key for the record and encrypt the fields
             $model::$encryptionEngine->assignSynchronousKey();
-            self::_mapEncryptedValues($model);
+            self::mapEncryptedValues($model);
         });
 
         static::updating(function ($model) {
-            self::_mapEncryptedValues($model); // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
+            // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
+            self::mapEncryptedValues($model);
         });
 
         static::created(function ($model) {
-            $model->storeKeyReferences(); // Record is created, lets store the new keystore records....
+            // Record is created, lets store the new keystore records....
+            $model->storeKeyReferences();
         });
 
         static::saved(function ($model) {
-            DB::commit(); // Everything is complete, commit our transaction!
+            // Everything is complete, commit our transaction!
+            DB::commit();
         });
 
         static::retrieved(function ($model) {
+            //assign the key to allow for decryption
             $key = $model->getPrivateKeyForRecord();
-            $model::$encryptionEngine->assignSynchronousKey($key); //assign the key to allow for decryption
+            $model::$encryptionEngine->assignSynchronousKey($key);
         });
     }
 
