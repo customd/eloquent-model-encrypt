@@ -12,10 +12,10 @@ trait Encryption
      *
      * @param Model $model
      */
-    protected static function _mapEncryptedValues($model): void
+    protected static function mapEncryptedValues($model): void
     {
         foreach ($model->attributes as $field => $value) {
-            $model->_setAttribute($field, $value);
+            $model->setEncryptableAttribute($field, $value);
         }
     }
 
@@ -30,7 +30,7 @@ trait Encryption
      *
      * @return mixed
      */
-    public function _setAttribute($key, $value)
+    protected function setEncryptableAttribute($key, $value)
     {
         if ($this->isEncryptable($key)) {
             $value = $this->encryptAttribute($value);
