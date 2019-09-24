@@ -69,40 +69,30 @@ trait ModelEncryption
      */
     protected static function _initEncryptionObservers(): void
     {
-        //When we start saving - start our transaction
         static::saving(function ($model) {
-            //transactionStart on our $model
-            DB::beginTransaction();
+            DB::beginTransaction(); //When we start saving - start our transaction
         });
 
-        // We are creating a new record, lets setup a new sync key for the record and encrypt the fields
-        static::creating(function ($model) {
+        static::creating(function ($model) {// We are creating a new record, lets setup a new sync key for the record and encrypt the fields
             $model::$encryptionEngine->assignSynchronousKey();
             self::_mapEncryptedValues($model);
         });
 
-        // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         static::updating(function ($model) {
-            //$synchronousKey Get existging one somehow
-            self::_mapEncryptedValues($model);
+            self::_mapEncryptedValues($model); // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         });
 
-        // Record is created, lets store the new keystore records....
         static::created(function ($model) {
-            // create the keystore entries
-            $model->storeKeyReferences();
+            $model->storeKeyReferences(); // Record is created, lets store the new keystore records....
         });
 
-        // Everything is complete, commit our transaction!
         static::saved(function ($model) {
-            //TransactionCommit on our $model
-            DB::commit();
+            DB::commit(); // Everything is complete, commit our transaction!
         });
 
         static::retrieved(function ($model) {
-            //decrypt current values
             $key = $model->getPrivateKeyForRecord();
-            $model::$encryptionEngine->assignSynchronousKey($key);
+            $model::$encryptionEngine->assignSynchronousKey($key); //assign the key to allow for decryption
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
-use CustomD\EloquentAsyncKeys\Keys;
+use CustomD\EloquentAsyncKeys\Keypair;
 use CustomD\EloquentModelEncrypt\Model\TableKeystore;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
