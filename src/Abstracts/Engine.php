@@ -22,5 +22,20 @@ abstract class Engine
      */
     abstract public function decrypt(string $value): ?string;
 
+    /**
+     * assigns a synchronous key.
+     *
+     * @param string|null $synchronousKey
+     */
     abstract public function assignSynchronousKey($synchronousKey = null): void;
+
+    /**
+     * Retrieves the current synchronous key.
+     *
+     * @return string|null
+     */
+    public function getSynchronousKey(): ?string
+    {
+        return $this->synchronousKey;
+    }
 }

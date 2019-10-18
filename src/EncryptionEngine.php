@@ -32,11 +32,6 @@ class EncryptionEngine extends Engine
         $this->encryptionEngine = new Encrypter($synchronousKey, $this->cipher);
     }
 
-    public function getSynchronousKey(): string
-    {
-        return $this->synchronousKey;
-    }
-
     /**
      * Decrypt a value.
      *
@@ -44,7 +39,7 @@ class EncryptionEngine extends Engine
      *
      * @return string
      */
-    public function decrypt(string $cipherText): ?string
+    public function decrypt(?string $cipherText): ?string
     {
         if ($cipherText) {
             $cipherText = $this->encryptionEngine->decrypt($cipherText);
@@ -60,7 +55,7 @@ class EncryptionEngine extends Engine
      *
      * @return string
      */
-    public function encrypt(string $plainText): ?string
+    public function encrypt(?string $plainText): ?string
     {
         if ($plainText) {
             $plainText = $this->encryptionEngine->encrypt($plainText);

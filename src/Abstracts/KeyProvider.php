@@ -17,7 +17,7 @@ abstract class KeyProvider
             $rec = TableKeystore::where('table', $table)
                 ->where('ref', $id)
                 ->where('rsa_keystore_id', $keystoreId)->firstOrFail();
-        } catch (ModelNotFoundException $execption) {
+        } catch (ModelNotFoundException $exception) {
             return;
         }
 

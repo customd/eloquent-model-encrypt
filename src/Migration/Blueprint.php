@@ -75,6 +75,6 @@ class Blueprint extends BaseBlueprint
         // Then we work out the base64 encoded string size after encryption.
         $max_size = ceil($bytes / $block_size) * $block_size;
 
-        return (ceil(($max_size + $ivLen) / 3) * 4) + 75;
+        return (ceil(($max_size + $ivLen) / 3) * 4) + 100;
     }
 }
