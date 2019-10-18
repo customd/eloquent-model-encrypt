@@ -32,7 +32,7 @@ trait Encryption
      */
     protected function setEncryptableAttribute($key, $value)
     {
-        if ($this->isEncryptable($key)) {
+        if ($this->isEncryptable($key) && !$this->isValueEncrypted($value)) {
             $value = $this->encryptAttribute($value);
         }
 

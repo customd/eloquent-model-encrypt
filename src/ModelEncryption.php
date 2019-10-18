@@ -133,11 +133,11 @@ trait ModelEncryption
     /**
      * checks whether the value is currently encrypted or not.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return bool
      */
-    public function isValueEncrypted(string $value): bool
+    public function isValueEncrypted(?string $value): bool
     {
         //if position 0 has the header string we are a match :-)
         return strpos($value, self::$encryptionHeader) === 0;
