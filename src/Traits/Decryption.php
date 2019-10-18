@@ -14,10 +14,20 @@ trait Decryption
      *
      * @return string
      */
-    protected function decryptAttribute(string $value): ?string
+    protected function decryptAttribute(?string $value): ?string
     {
         if ($value && $this->isValueEncrypted($value)) {
-            return self::$encryptionEngine->decrypt($this->stripEncryptionHeaderFromValue($value));
+            try {
+                if (! method_exists(self::$encryptionEngine, 'decrypt')) {
+                    \Log::critical('No encryption engine record available to decrypt the record');
+
+                    throw new EngineNotFoundException('Encryption Engine Not Found');
+                }
+
+                return self::$encryptionEngine->decrypt($this->stripEncryptionHeaderFromValue($value));
+            } catch (\Exception $e) {
+                return $value;
+            }
         }
 
         return $value;

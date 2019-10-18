@@ -85,6 +85,10 @@ trait ModelEncryption
 
         static::updating(function ($model) {
             // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
+            if (! $model::$encryptionEngine->getSynchronousKey()) {
+                $model::$encryptionEngine->assignSynchronousKey();
+                $model->storeKeyReferences();
+            }
             self::mapEncryptedValues($model);
         });
 
@@ -100,8 +104,15 @@ trait ModelEncryption
 
         static::retrieved(function ($model) {
             //assign the key to allow for decryption
-            $key = $model->getPrivateKeyForRecord();
-            $model::$encryptionEngine->assignSynchronousKey($key);
+            try {
+                $key = $model->getPrivateKeyForRecord();
+                $model::$encryptionEngine->assignSynchronousKey($key);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $exception) {
+                \Log::debug('Did not find a key for ' . $model->getTable());
+                // Do nothig for now
+                // could be we have some items that are not already enctypted
+        // (ie encrypted added in after the records where created)
+            }
         });
     }
 

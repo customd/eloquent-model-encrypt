@@ -2,6 +2,7 @@
 
 namespace CustomD\EloquentModelEncrypt\KeyProviders;
 
+use CustomD\EloquentAsyncKeys\Keypair;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
 
 /**

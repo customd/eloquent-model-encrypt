@@ -47,7 +47,7 @@ trait Encryption
      *
      * @return string
      */
-    protected function encryptAttribute(string $value): ?string
+    protected function encryptAttribute(?string $value): ?string
     {
         if ($value) {
             $value = self::$encryptionHeader . self::$encryptionEngine->encrypt($value);
