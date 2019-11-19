@@ -19,7 +19,7 @@ class Blueprint extends BaseBlueprint
      */
     public function encryptedString($column, $length = null)
     {
-        $length = $length ?: Builder::$defaultStringLength;
+        $length = $length ?? Builder::$defaultStringLength;
         $length = $this->calculateEncryptionMaxCharsBase64($length);
 
         if ($length > 500) {

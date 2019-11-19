@@ -16,21 +16,21 @@ trait Decryption
      */
     protected function decryptAttribute(?string $value): ?string
     {
-        if ($value && $this->isValueEncrypted($value)) {
-            try {
-                if (! method_exists(self::$encryptionEngine, 'decrypt')) {
-                    \Log::critical('No encryption engine record available to decrypt the record');
-
-                    throw new EngineNotFoundException('Encryption Engine Not Found');
-                }
-
-                return self::$encryptionEngine->decrypt($this->stripEncryptionHeaderFromValue($value));
-            } catch (\Exception $e) {
-                return $value;
-            }
+        if (! $this->isValueEncrypted($value)) {
+            return $value;
         }
 
-        return $value;
+        try {
+            if (! method_exists($this->getEncryptionEngine(), 'decrypt')) {
+                \Log::critical('No encryption engine method available to decrypt the record');
+
+                throw new EngineNotFoundException('Encryption Engine Not Found');
+            }
+
+            return $this->getEncryptionEngine()->decrypt($this->stripEncryptionHeaderFromValue($value));
+        } catch (\Exception $exception) {
+            return $value;
+        }
     }
 
     /**

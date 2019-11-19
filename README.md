@@ -79,7 +79,7 @@ for decryption will look for the first key available from there to decrypt for t
 Additional key providers can be added by extending the `CustomD\EloquentModelEncrypt\Abstracts\KeyProvider`
 
 You will need to supply 2 methods:
-* **`public static function getPublicKeysForTable(): array`**
+* **`public static function getPublicKeysForTable($record, $extra = []): array`**
 Use this method to return an array of keys from the `table_keystores` table in the format
 ```php
 [

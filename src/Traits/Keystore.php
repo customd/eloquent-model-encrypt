@@ -2,10 +2,11 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
-use CustomD\EloquentAsyncKeys\Keypair;
-use CustomD\EloquentModelEncrypt\Model\TableKeystore;
+use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
+use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use CustomD\EloquentModelEncrypt\Model\Keystore as KeystoreModel;
 
 /**
  * these methods all extend over the Eloquent methods.
@@ -20,8 +21,8 @@ trait Keystore
     protected function getPublicKeysForTable(): array
     {
         $keys = [];
-        foreach (self::$keyProviders as $keyProvider) {
-            $keys = array_merge($keys, $keyProvider::getPublicKeysForTable($this));
+        foreach (self::getKeyProviders() as $keyProvider) {
+            $keys += $keyProvider::getPublicKeysForTable($this);
         }
 
         if (count($keys) === 0) {
@@ -36,12 +37,12 @@ trait Keystore
      *
      * @return string
      */
-    protected function getPrivateKeyForRecord(): string
+    public function getPrivateKeyForRecord(): string
     {
         $id = $this->{$this->primaryKey};
         $table = $this->getTable();
 
-        foreach (self::$keyProviders as $keyProvider) {
+        foreach (self::getKeyProviders() as $keyProvider) {
             $key = $keyProvider::getPrivateKeyForRecord($table, $id);
 
             if ($key) {
@@ -52,29 +53,69 @@ trait Keystore
         throw new DecryptException('No Keys found to decypt with');
     }
 
-    /**
-     * store our encrypted key references.
-     */
-    protected function storeKeyReferences(): void
+    protected function buildCipherData()
     {
-        //1 which keystore records::::
-        //... 1 get all the public keys for encrypting this record:
-        $synchronousKey = self::$encryptionEngine->getSynchronousKey();
+        $synchronousKey = $this->getEncryptionEngine()->getSynchronousKey();
         $keys = $this->getPublicKeysForTable();
 
+        return EloquentAsyncKeys::encryptWithKey($keys, $synchronousKey);
+    }
+
+    /**
+     * Update our key references:.
+     */
+    public function updateKeyReferences()
+    {
         $id = $this->{$this->primaryKey};
         $table = $this->getTable();
 
-        foreach ($keys as $keystoreId => $publicKey) {
-            $keystore = new Keypair($publicKey);
-            $key = $keystore->encrypt($synchronousKey, true);
+        $cipherData = $this->buildCipherData();
 
-            TableKeystore::create([
-                'table' => $table,
-                'ref' => $id,
-                'key' => $key,
-                'rsa_keystore_id' => $keystoreId,
-            ]);
+        $keystore = KeystoreModel::where('table', $table)
+            ->where('ref', $id)
+            ->first();
+
+        $keystore->key = $cipherData['cipherText'];
+        $keystore->save();
+
+        foreach ($cipherData['keys'] as $keystoreId => $key) {
+            $keystoreKey = KeystoreKey::firstOrNew(
+                [
+                    'keystore_id' => $keystore->id,
+                    'rsa_key_id' => $keystoreId,
+                ]
+            );
+
+            $keystoreKey->key = $key;
+            $keystoreKey->save();
         }
+    }
+
+    /**
+     * store our encrypted key references.
+     */
+    public function storeKeyReferences(): void
+    {
+        $id = $this->{$this->primaryKey};
+        $table = $this->getTable();
+        $cipherData = $this->buildCipherData();
+
+        $keystore = KeystoreModel::create([
+            'table' => $table,
+            'ref' => $id,
+            'key' => $cipherData['cipherText'],
+        ]);
+
+        $keystoreKeys = [];
+
+        foreach ($cipherData['keys'] as $keystoreId => $key) {
+            $keystoreKeys[] = [
+                'keystore_id' => $keystore->id,
+                'rsa_key_id' => $keystoreId,
+                'key' => $key,
+            ];
+        }
+
+        KeystoreKey::insert($keystoreKeys);
     }
 }
