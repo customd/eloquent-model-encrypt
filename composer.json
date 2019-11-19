@@ -17,7 +17,7 @@
   "require": {
     "php": ">=7.2",
 	"illuminate/support": "~5.8.0|~6",
-	"custom-d/eloquent-async-keys" : "*"
+	"custom-d/eloquent-async-keys" : "~2.0.0"
   },
   "require-dev": {
     "orchestra/testbench": "^3.8.0",
