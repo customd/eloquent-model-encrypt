@@ -41,7 +41,7 @@ class EncryptionEngine extends Engine
      */
     public function decrypt(?string $cipherText): ?string
     {
-        if ($cipherText) {
+        if ($cipherText && $this->encryptionEngine) {
             $cipherText = $this->encryptionEngine->decrypt($cipherText);
         }
 

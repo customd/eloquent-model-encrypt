@@ -9,13 +9,11 @@ trait Encryption
 {
     /**
      * Map through and encrypt all our values.
-     *
-     * @param Model $model
      */
-    protected static function mapEncryptedValues($model): void
+    public function mapEncryptedValues(): void
     {
-        foreach ($model->attributes as $field => $value) {
-            $model->setEncryptableAttribute($field, $value);
+        foreach ($this->attributes as $field => $value) {
+            $this->setEncryptableAttribute($field, $value);
         }
     }
 
@@ -32,7 +30,7 @@ trait Encryption
      */
     protected function setEncryptableAttribute($key, $value)
     {
-        if ($this->isEncryptable($key) && !$this->isValueEncrypted($value)) {
+        if ($this->isEncryptable($key) && ! $this->isValueEncrypted($value)) {
             $value = $this->encryptAttribute($value);
         }
 
@@ -50,7 +48,7 @@ trait Encryption
     protected function encryptAttribute(?string $value): ?string
     {
         if ($value) {
-            $value = self::$encryptionHeader . self::$encryptionEngine->encrypt($value);
+            $value = self::$encryptionHeader . $this->getEncryptionEngine()->encrypt($value);
         }
 
         return $value;
