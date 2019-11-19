@@ -15,7 +15,7 @@ class GlobalKeyProvider extends KeyProvider
      */
     public static function getPublicKeysForTable($record, $extra = []): array
     {
-        return [0 => \storage_path() . '/_certs/public.key'];
+        return [0 => config('eloquent-model-encrypt.publickey')];
     }
 
     /**
@@ -31,7 +31,7 @@ class GlobalKeyProvider extends KeyProvider
             return null;
         }
 
-        $privateKey = \storage_path() . '/_certs/private.key';
+        $privateKey = config('eloquent-model-encrypt.privatekey');
         $password = config('app.key');
         $keystore = EloquentAsyncKeys::reset()->setPrivateKey($privateKey)->setPassword($password);
         $priv = $keystore->getDecryptedPrivateKey();
