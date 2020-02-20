@@ -38,8 +38,8 @@ class Encryption
         // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         if (! $model->getEncryptionEngine()->getSynchronousKey()) {
             $model->getEncryptionEngine()->assignSynchronousKey();
-            $model->storeKeyReferences();
         }
+        $model->storeKeyReferences();
         $model->mapEncryptedValues();
     }
 
