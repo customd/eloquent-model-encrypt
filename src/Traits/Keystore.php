@@ -63,32 +63,11 @@ trait Keystore
 
     /**
      * Update our key references:.
+     * @deprecated
      */
     public function updateKeyReferences()
     {
-        $id = $this->{$this->primaryKey};
-        $table = $this->getTable();
-
-        $cipherData = $this->buildCipherData();
-
-        $keystore = KeystoreModel::where('table', $table)
-            ->where('ref', $id)
-            ->first();
-
-        $keystore->key = $cipherData['cipherText'];
-        $keystore->save();
-
-        foreach ($cipherData['keys'] as $keystoreId => $key) {
-            $keystoreKey = KeystoreKey::firstOrNew(
-                [
-                    'keystore_id' => $keystore->id,
-                    'rsa_key_id' => $keystoreId,
-                ]
-            );
-
-            $keystoreKey->key = $key;
-            $keystoreKey->save();
-        }
+       $this->storeKeyReferences();
     }
 
     /**
@@ -96,26 +75,33 @@ trait Keystore
      */
     public function storeKeyReferences(): void
     {
-        $id = $this->{$this->primaryKey};
+       $id = $this->{$this->primaryKey};
         $table = $this->getTable();
         $cipherData = $this->buildCipherData();
 
-        $keystore = KeystoreModel::create([
-            'table' => $table,
-            'ref' => $id,
-            'key' => $cipherData['cipherText'],
-        ]);
+        $keystore = KeystoreModel::updateOrCreate(
+            [
+                'table' => $table,
+                'ref' => $id,
+            ],
+            [
 
-        $keystoreKeys = [];
+                'key' => $cipherData['cipherText'],
+            ]
+        );
+
 
         foreach ($cipherData['keys'] as $keystoreId => $key) {
-            $keystoreKeys[] = [
-                'keystore_id' => $keystore->id,
-                'rsa_key_id' => $keystoreId,
-                'key' => $key,
-            ];
-        }
 
-        KeystoreKey::insert($keystoreKeys);
+            KeystoreKey::updateOrCreate(
+                [
+                    'keystore_id' => $keystore->id,
+                    'rsa_key_id' => $keystoreId,
+                ],
+                [
+                    'key' => $key,
+                ]
+            );
+        }
     }
 }
