@@ -20,6 +20,13 @@ trait Decryption
             return $value;
         }
 
+        // This optimises retrieval of keys so that we only try loading
+        // keystores for an entry if we've got a value to decrypt.
+        if (! $this->getEncryptionEngine()->getSynchronousKey()) {
+            $key = $this->getPrivateKeyForRecord();
+            $this->getEncryptionEngine()->assignSynchronousKey($key);
+        }
+
         try {
             if (! method_exists($this->getEncryptionEngine(), 'decrypt')) {
                 \Log::critical('No encryption engine method available to decrypt the record');

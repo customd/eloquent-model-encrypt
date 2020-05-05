@@ -21,7 +21,7 @@ trait Extenders
     {
         $value = parent::getAttribute($key);
 
-        if ($this->isEncryptable($key) && $this->isValueEncrypted($value)) {
+        if ($this->isEncryptable($key)) {
             $value = $this->decryptAttribute($value);
         }
 
