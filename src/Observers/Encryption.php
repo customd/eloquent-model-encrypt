@@ -3,6 +3,7 @@
 namespace CustomD\EloquentModelEncrypt\Observers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Encryption\DecryptException;
 use CustomD\EloquentModelEncrypt\Model\Keystore;
 
 class Encryption
@@ -37,7 +38,12 @@ class Encryption
     {
         // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         if (! $model->getEncryptionEngine()->getSynchronousKey()) {
-            $model->getEncryptionEngine()->assignSynchronousKey();
+            try {
+                $key = $model->getPrivateKeyForRecord();
+                $model->getEncryptionEngine()->assignSynchronousKey($key);
+            } catch(DecryptException $e) {
+                $model->getEncryptionEngine()->assignSynchronousKey();
+            }
         }
         $model->storeKeyReferences();
         $model->mapEncryptedValues();
@@ -61,25 +67,6 @@ class Encryption
     public function saved($model)
     {
         DB::commit();
-    }
-
-    /**
-     * Retrieved event called from the Model.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     */
-    public function retrieved($model)
-    {
-        //assign the key to allow for decryption
-        try {
-            $key = $model->getPrivateKeyForRecord();
-            $model->getEncryptionEngine()->assignSynchronousKey($key);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $exception) {
-            \Log::debug('Did not find a key for ' . $model->getTable());
-            // Do nothig for now
-            // could be we have some items that are not already enctypted
-    // (ie encrypted added in after the records where created)
-        }
     }
 
     /**

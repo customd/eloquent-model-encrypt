@@ -3,6 +3,7 @@
 namespace CustomD\EloquentModelEncrypt\Abstracts;
 
 use CustomD\EloquentModelEncrypt\Model\Keystore;
+use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class KeyProvider
@@ -14,23 +15,35 @@ abstract class KeyProvider
     protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId)
     {
         try {
-            $rec = Keystore::where('table', $table)
-                ->where('ref', $id)
-                ->whereHas('Keystores', static function ($query) use ($keystoreId) {
-                    $query->where('rsa_key_id', $keystoreId);
+            $keystores = Keystore::join('keystore_keys', function ($join) use ($keystoreId){
+                    $join->on('keystore_keys.keystore_id', '=', 'keystores.id')
+                        ->where('keystore_keys.rsa_key_id', '=', $keystoreId);
                 })
-                ->with(
-                    [
-                        'Keystores' => static function ($query) use ($keystoreId) {
-                            $query->where('rsa_key_id', $keystoreId);
-                        },
-                    ]
+                ->where('table', $table)
+                ->where('ref', $id)
+                ->select(
+                    'keystores.*',
+                    'keystore_keys.key as keystore_key',
+                    'keystore_keys.id as keystore_key_id'
                 )
                 ->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             return;
         }
 
-        return $rec;
+        $keystoreKey = new KeystoreKey;
+        $keystoreKey->id = $keystores->keystore_key_id;
+        $keystoreKey->fill([
+            'key' => $keystores->keystore_key,
+            'keystore_id' => $keystores->id,
+            'rsa_key_id' => $keystoreId
+        ]);
+
+        unset($keystores->keystore_key_id);
+        unset($keystores->keystore_key);
+
+        $keystores->Keystores = collect([$keystoreKey]);
+
+        return $keystores;
     }
 }
