@@ -2,6 +2,9 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Illuminate\Contracts\Encryption\DecryptException;
+use CustomD\EloquentModelEncrypt\Exceptions\EngineNotFoundException;
+
 /**
  * these methods all extend over the Eloquent methods.
  */
@@ -16,19 +19,25 @@ trait Decryption
      */
     protected function decryptAttribute(?string $value): ?string
     {
-        if (! $this->isValueEncrypted($value)) {
+        if (!$this->isValueEncrypted($value)) {
             return $value;
         }
 
         // This optimises retrieval of keys so that we only try loading
         // keystores for an entry if we've got a value to decrypt.
-        if (! $this->getEncryptionEngine()->getSynchronousKey()) {
-            $key = $this->getPrivateKeyForRecord();
+        if (!$this->getEncryptionEngine()->getSynchronousKey()) {
+            try {
+                $key = $this->getPrivateKeyForRecord();
+            } catch (DecryptException $e) {
+                \Log::warning('Did not find a key for ' . $this->getTable());
+                $key = false;
+            }
+
             $this->getEncryptionEngine()->assignSynchronousKey($key);
         }
 
         try {
-            if (! method_exists($this->getEncryptionEngine(), 'decrypt')) {
+            if (!method_exists($this->getEncryptionEngine(), 'decrypt')) {
                 \Log::critical('No encryption engine method available to decrypt the record');
 
                 throw new EngineNotFoundException('Encryption Engine Not Found');
@@ -36,7 +45,7 @@ trait Decryption
 
             return $this->getEncryptionEngine()->decrypt($this->stripEncryptionHeaderFromValue($value));
         } catch (\Exception $exception) {
-            return $value;
+            return null;
         }
     }
 
