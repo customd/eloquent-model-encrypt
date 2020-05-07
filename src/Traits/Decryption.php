@@ -28,12 +28,15 @@ trait Decryption
         if (!$this->getEncryptionEngine()->getSynchronousKey()) {
             try {
                 $key = $this->getPrivateKeyForRecord();
+                $this->getEncryptionEngine()->assignSynchronousKey($key);
             } catch (DecryptException $e) {
-                \Log::warning('Did not find a key for ' . $this->getTable());
+                \Log::warning('Did not find a key for ' . $this->getTable(), [
+                    'message' => $e->getMessage(),
+                    'key' => $this->getKey(),
+                    'user' => \Auth::user() ? \Auth::user()->getKey() : null
+                ]);
                 $key = false;
             }
-
-            $this->getEncryptionEngine()->assignSynchronousKey($key);
         }
 
         try {
