@@ -44,9 +44,6 @@ trait ModelEncryption
      */
     public static function bootModelEncryption(): void
     {
-        //Initialiase our encryption engine
-        //self::initEncryptionEngine();
-
         //Initialise our observers
         static::observe(EncryptionObserver::class);
     }
@@ -105,4 +102,14 @@ trait ModelEncryption
         //if position 0 has the header string we are a match :-)
         return strpos($value, self::$encryptionHeader) === 0;
     }
+
+    /**
+     * method to get the table reference for storage in the database column
+     * this allows you to change the way the references are stored ie md5(table name etc)
+     */
+    public function getTableKeystoreReference(): string
+    {
+         return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
+    }
 }
+

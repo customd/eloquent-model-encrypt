@@ -78,7 +78,7 @@ class Encryption
     {
         //only remove if fully trashing
         if (! method_exists($model, 'isForceDeleting') || $model->isForceDeleting()) {
-            $recs = Keystore::where('table', $model->getTable())->where('ref', $model->id);
+            $recs = Keystore::where('table', $model->getTableKeystoreReference())->where('ref', $model->id);
             $recs->delete();
         }
     }

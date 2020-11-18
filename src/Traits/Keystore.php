@@ -39,8 +39,8 @@ trait Keystore
      */
     public function getPrivateKeyForRecord(): string
     {
-        $id = $this->{$this->primaryKey};
-        $table = $this->getTable();
+        $id = $this->getKey();
+        $table = $this->getTableKeystoreReference();
 
         foreach (self::getKeyProviders() as $keyProvider) {
             $key = $keyProvider::getPrivateKeyForRecord($table, $id);
@@ -75,8 +75,8 @@ trait Keystore
      */
     public function storeKeyReferences(): void
     {
-       $id = $this->{$this->primaryKey};
-        $table = $this->getTable();
+       $id = $this->getKey();
+        $table = $this->getTableKeystoreReference();
         $cipherData = $this->buildCipherData();
 
         $keystore = KeystoreModel::updateOrCreate(

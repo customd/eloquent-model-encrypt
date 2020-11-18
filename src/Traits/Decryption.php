@@ -30,7 +30,7 @@ trait Decryption
                 $key = $this->getPrivateKeyForRecord();
                 $this->getEncryptionEngine()->assignSynchronousKey($key);
             } catch (DecryptException $e) {
-                \Log::warning('Did not find a key for ' . $this->getTable(), [
+                \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
                     'message' => $e->getMessage(),
                     'key' => $this->getKey(),
                     'user' => \Auth::user() ? \Auth::user()->getKey() : null
