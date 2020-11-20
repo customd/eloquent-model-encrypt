@@ -114,6 +114,10 @@ Engines are to extend the `CustomD\EloquentModelEncrypt\Abstracts\Engine` Class 
 * **`public function assignSynchronousKey([$synchronousKey = null]): void`** - allows you to set the synchronous key for encrytion - this is called when creating or retrieving a record.
 
 ## Important
+
+If you are writing partial records to encrypted, make sure not to do it without beign able to access the records key, as if you do it will rewrite the key and break the rest of the fields.
+
+
 From Laravel's Docs:
 
 `When issuing a mass update via Eloquent, the saved and updated model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.`

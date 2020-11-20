@@ -37,14 +37,7 @@ class Encryption
     public function updating($model)
     {
         // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
-        if (! $model->getEncryptionEngine()->getSynchronousKey()) {
-            try {
-                $key = $model->getPrivateKeyForRecord();
-                $model->getEncryptionEngine()->assignSynchronousKey($key);
-            } catch(DecryptException $e) {
-                $model->getEncryptionEngine()->assignSynchronousKey();
-            }
-        }
+        $model->assignRecordsSynchronousKey(true);
         $model->storeKeyReferences();
         $model->mapEncryptedValues();
     }
@@ -78,7 +71,7 @@ class Encryption
     {
         //only remove if fully trashing
         if (! method_exists($model, 'isForceDeleting') || $model->isForceDeleting()) {
-            $recs = Keystore::where('table', $model->getTableKeystoreReference())->where('ref', $model->id);
+            $recs = Keystore::where('table', $model->getTableKeystoreReference())->where('ref', $model->getKey());
             $recs->delete();
         }
     }

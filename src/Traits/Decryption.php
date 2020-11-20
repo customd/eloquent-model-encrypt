@@ -23,21 +23,8 @@ trait Decryption
             return $value;
         }
 
-        // This optimises retrieval of keys so that we only try loading
-        // keystores for an entry if we've got a value to decrypt.
-        if (!$this->getEncryptionEngine()->getSynchronousKey()) {
-            try {
-                $key = $this->getPrivateKeyForRecord();
-                $this->getEncryptionEngine()->assignSynchronousKey($key);
-            } catch (DecryptException $e) {
-                \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
-                    'message' => $e->getMessage(),
-                    'key' => $this->getKey(),
-                    'user' => \Auth::user() ? \Auth::user()->getKey() : null
-                ]);
-                $key = false;
-            }
-        }
+        //false does not create a new key
+        $this->assignRecordsSynchronousKey(false);
 
         try {
             if (!method_exists($this->getEncryptionEngine(), 'decrypt')) {
