@@ -7,12 +7,81 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 use CustomD\EloquentModelEncrypt\Model\Keystore as KeystoreModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * these methods all extend over the Eloquent methods.
  */
 trait Keystore
 {
+
+    /**
+     * Holds cached versions of keys
+     */
+    protected static $cachedKeys = [];
+
+
+    public function assignRecordsSynchronousKey(bool $create = false): void
+    {
+        //alrady set in the encryption engine
+        if ($this->getEncryptionEngine()->getSynchronousKey()) {
+            return;
+        }
+
+        $tableKey = $this->getTableKeystoreReference();
+        $id = $this->getKey();
+
+        //grabbing a cached version
+        if ($id && isset(static::$cachedKeys[$tableKey]) && !empty(static::$cachedKeys[$tableKey][$id])) {
+            $this->getEncryptionEngine()->assignSynchronousKey(static::$cachedKeys[$tableKey][$id]);
+            return;
+        }
+
+        //try getting the existing key
+        try {
+            $recordKey = $this->getPrivateKeyForRecord();
+            $this->getEncryptionEngine()->assignSynchronousKey($recordKey);
+        } catch (ModelNotFoundException $e) {
+            if ($create) {
+                $this->getEncryptionEngine()->assignSynchronousKey();
+                return;
+            }
+            throw new DecryptException();
+        } catch (DecryptException $e) {
+
+            if ($create) {
+
+                $encryptedFields = collect($this->encryptable);
+
+                //remove all fields that are empty
+                $fields = $encryptedFields->filter(function ($field) {
+                    return !empty($this->attributes[$field]);
+                })->toArray();
+
+
+
+                $dirty = array_keys($this->getDirty());
+
+                $matchingKeys = array_intersect($fields, $dirty);
+                $hasMissing = array_diff($fields, $matchingKeys);
+
+                //make sure all the fields that are needed to be encrypted are set for this action,
+                //else will break others data.
+                if (empty($hasMissing)) {
+                    $this->getEncryptionEngine()->assignSynchronousKey();
+                    return;
+                }
+                throw new DecryptException("You cannot update an encrpyted record without updating all fields");
+            }
+
+            \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
+                'message' => $e->getMessage(),
+                'key' => $this->getKey(),
+                'user' => \Auth::user() ? \Auth::user()->getKey() : null
+            ]);
+        }
+    }
+
     /**
      * Gets the keys for our current table.
      *
@@ -42,6 +111,9 @@ trait Keystore
         $id = $this->getKey();
         $table = $this->getTableKeystoreReference();
 
+
+        KeystoreModel::where('table', $table)->where('ref', $id)->firstOrFail();
+
         foreach (self::getKeyProviders() as $keyProvider) {
             $key = $keyProvider::getPrivateKeyForRecord($table, $id);
 
@@ -67,7 +139,7 @@ trait Keystore
      */
     public function updateKeyReferences()
     {
-       $this->storeKeyReferences();
+        $this->storeKeyReferences();
     }
 
     /**
@@ -75,7 +147,7 @@ trait Keystore
      */
     public function storeKeyReferences(): void
     {
-       $id = $this->getKey();
+        $id = $this->getKey();
         $table = $this->getTableKeystoreReference();
         $cipherData = $this->buildCipherData();
 
@@ -103,5 +175,7 @@ trait Keystore
                 ]
             );
         }
+
+        static::$cachedKeys[$table][$id] = $this->getEncryptionEngine()->getSynchronousKey();
     }
 }
