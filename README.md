@@ -1,6 +1,14 @@
 # Eloquent Model Encrypt
+[![For Laravel 5][badge_laravel]](https://github.com/customd/eloquent-model-encrypt)
+[![Build Status](https://travis-ci.org/customd/eloquent-model-encrypt.svg?branch=master)](https://travis-ci.org/customd/eloquent-model-encrypt)
+[![Coverage Status](https://coveralls.io/repos/github/customd/eloquent-model-encrypt/badge.svg?branch=master)](https://coveralls.io/github/customd/eloquent-model-encrypt?branch=master)
+[![Packagist](https://img.shields.io/packagist/v/custom-d/eloquent-model-encrypt.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
+[![Packagist](https://poser.pugx.org/custom-d/eloquent-model-encrypt/d/total.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
+[![Packagist](https://img.shields.io/packagist/l/custom-d/eloquent-model-encrypt.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
+[![Github Issues][badge_issues]](https://github.com/customd/eloquent-model-encrypt/issue)
 
-Package description: CHANGE ME
+This package allows for encryption of data using public-private keypairs, it can be extended to a global or per user public private, or even any other combination based on your own keyprovider implementation
+
 
 ## Installation
 
@@ -134,3 +142,8 @@ instead of using the issue tracker.
 
 - [Custom D](https://git.customd.com/composert)
 - [All contributors](https://git.customd.com/composer/eloquent-model-encrypt/-/graphs/master)
+
+
+[badge_laravel]: https://img.shields.io/badge/Laravel-5.8%20to%208-orange.svg?style=flat-square
+[badge_issues]: https://img.shields.io/github/issues/ARCANEDEV/Support.svg?style=flat-square
+
