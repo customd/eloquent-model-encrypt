@@ -1,6 +1,6 @@
 # Eloquent Model Encrypt
 
-Package description: CHANGE ME
+This package allows for encryption of data using public-private keypairs, it can be extended to a global or per user public private, or even any other combination based on your own keyprovider implementation
 
 ## Installation
 
