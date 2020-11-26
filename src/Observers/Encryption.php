@@ -10,10 +10,8 @@ class Encryption
 {
     /**
      * Saving event called from the Model.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function saving($model)
+    public function saving()
     {
         DB::beginTransaction();
     }
@@ -54,10 +52,8 @@ class Encryption
 
     /**
      * Saved event called from the Model.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
      */
-    public function saved($model)
+    public function saved()
     {
         DB::commit();
     }
