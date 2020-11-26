@@ -17,6 +17,7 @@ env:
   - LARAVEL_VERSION=5.8.*
   - LARAVEL_VERSION=6.*
   - LARAVEL_VERSION=7.*
+  - LARAVEL_VERSION=8.*
 
 
 before_install:
