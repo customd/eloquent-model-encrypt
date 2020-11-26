@@ -52,7 +52,7 @@ trait Extenders
         throw new EncryptException('Cannot Mass insert encrypted records, please use create');
     }
 
-    public function update(array $attributes = [], array $options = [])
+    public function update(/** @scrutinizer ignore-unused */array $attributes = [], /** @scrutinizer ignore-unused */array $options = [])
     {
         throw new EncryptException('Cannot Mass update encrypted records, please use model methods');
     }
