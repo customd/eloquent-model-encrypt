@@ -5,6 +5,7 @@ namespace CustomD\EloquentModelEncrypt\Traits;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -102,7 +103,9 @@ trait Keystore
      */
     public function getPrivateKeyForRecord(): string
     {
+        /** @scrutinizer ignore-call */
         $id = $this->getKey();
+        /** @scrutinizer ignore-call */
         $table = $this->getTableKeystoreReference();
 
         $this->getKeystoreModel()::where('table', $table)->where('ref', $id)->firstOrFail();
@@ -144,7 +147,7 @@ trait Keystore
         $table = $this->getTableKeystoreReference();
         $cipherData = $this->buildCipherData();
 
-        $keystore = $this->getKeystoreModel()::updateOrCreate(
+        $keystore = $this->getKeystoreModel()->updateOrCreate(
             [
                 'table' => $table,
                 'ref'   => $id,
@@ -156,7 +159,7 @@ trait Keystore
         );
 
         foreach ($cipherData['keys'] as $keystoreId => $key) {
-            $this->getKeystoreKeyModel()::updateOrCreate(
+            $this->getKeystoreKeyModel()->updateOrCreate(
                 [
                     'keystore_id' => $keystore->id,
                     'rsa_key_id'  => $keystoreId,
@@ -170,13 +173,15 @@ trait Keystore
         static::$cachedKeys[$table][$id] = $this->getEncryptionEngine()->getSynchronousKey();
     }
 
-    public function getKeystoreKeyModel()
+
+    public function getKeystoreKeyModel(): \Illuminate\Database\Eloquent\Model
     {
-        return config('eloquent-model-encrypt.models.keystore_key');
+        return resolve(config('eloquent-model-encrypt.models.keystore_key'));
     }
 
-    public function getKeystoreModel()
+
+    public function getKeystoreModel(): \Illuminate\Database\Eloquent\Model
     {
-        return config('eloquent-model-encrypt.models.keystore');
+        return resolve(config('eloquent-model-encrypt.models.keystore'));
     }
 }
