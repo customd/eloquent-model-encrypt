@@ -97,8 +97,98 @@ if you want to use a file based key, pass the id as 0.
 
 * **`public static function getPrivateKeyForRecord(string $table, int $recordId): string`** - Use this to return the private key to decrypt the record.
 
+Example - to encrypt for only the logged in user:
+```php
+<?php
 
-### Exctending Engines
+namespace App\KeyProviders;
+
+use App\Model\User;
+use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
+
+/**
+ * these methods all extend over the Eloquent methods.
+ */
+class UserKeyProvider extends KeyProvider
+{
+
+    /**
+     * Should return keystore_id => public key for the ones we want!
+     */
+    public static function getPublicKeysForTable($record, $extra = []): array
+    {
+        $user_ids = collect(self::getRecordsUserIds($record, $extra = []))->filter()->unique();
+
+        if ($user_ids->count() === 0) {
+            return [];
+        }
+
+        $users = User::whereIn('id', $user_ids)->get();
+
+        $publicKeys = [];
+
+        foreach ($users as $user) {
+            $publicKeys[$user->rsaKey->id] = $user->rsaKey->public_key;
+        }
+
+        return $publicKeys;
+    }
+
+    protected static function getRecordsUserIds($record, $extra = [])
+    {
+        if (method_exists($record, 'getEncryptionUserIds')) {
+            return $record->getEncryptionUserIds();
+        }
+
+        if (! empty($record->user_id)) {
+            return $record->user_id;
+        }
+
+        if (! empty($extra['user_id'])) {
+            return $extra['user_id'];
+        }
+
+        $user = auth()->user();
+
+        if ($user) {
+            return $user->id;
+        }
+    }
+
+    public static function getPrivateKeyForRecord(string $table, int $recordId): ?string
+    {
+        //Is the current user currently a developer user?
+        $user = \Auth::user();
+
+        if ($user === null) {
+            return false;
+        }
+
+        $rsa_keystore_id = $user->rsaKey->id;
+
+        $rec = self::getKeyFromKeystore($table, $recordId, $rsa_keystore_id);
+
+        if ($rec === null) {
+            return false;
+        }
+
+        try {
+            $pem = $user->getDecryptedPriveateKey(); //your own mapping on how you store the decryptd PVT keyes
+
+            if ($pem === false) {
+                throw new \Exception('User Should not be able to be logged in without a PEM');
+            }
+        } catch (\Exception $exception) {
+            throw new UnauthorizedHttpException('Token', 'User Should not be able to be logged in without a Pvt key');
+        }
+
+        return EloquentAsyncKeys::reset()->decryptWithKey($pem, $rec->key, $rec->Keystores->first()->key);
+    }
+}
+```
+
+
+### Extending Engines
 
 If for some reason you need a specific model to use a different encryption engine this can be done by adding it to the config file
 ```php
