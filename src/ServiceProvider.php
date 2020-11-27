@@ -13,11 +13,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->publishes([
             self::CONFIG_PATH => config_path('eloquent-model-encrypt.php'),
         ], 'config');
-
-        $this->publishes([
-            self::MIGRATIONS_PATH => database_path('migrations')
-        ], 'migrations');
-
+        //set our migratinos directory
         $this->loadMigrationsFrom(self::MIGRATIONS_PATH);
     }
 
