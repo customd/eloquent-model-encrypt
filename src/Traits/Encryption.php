@@ -30,11 +30,13 @@ trait Encryption
      */
     protected function setEncryptableAttribute($key, $value)
     {
+        parent::setAttribute($key, $value);
         if ($this->isEncryptable($key) && ! $this->isValueEncrypted($value)) {
             $value = $this->encryptAttribute($value);
+            $this->attributes[$key] = $value;
         }
 
-        return parent::setAttribute($key, $value);
+        return $this;
     }
 
     /**
