@@ -15,14 +15,6 @@ class RsaKey extends Model
         'version'
     ];
 
-    /**
-     * reference our User Model.
-     */
-    public function user()
-    {
-        return $this->hasOne(config('auth.providers.users.model'), 'rsa_key_id');
-    }
-
     public function keystore()
     {
         return $this->belongsTo(Keystore::class);

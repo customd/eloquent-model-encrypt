@@ -15,20 +15,12 @@ class CreateRsaKeyTable extends Migration
      */
     public function up()
     {
-        $usersModel = '\\' . config('auth.providers.users.model');
-        $tableUsers = (new $usersModel())->getTable();
-
         Schema::create('rsa_keys', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('public_key')->nullable();
             $table->text('private_key')->nullable();
             $table->unsignedInteger('version')->default(1);
             $table->timestamps();
-        });
-
-        Schema::table($tableUsers, function (Blueprint $table) {
-            $table->unsignedBigInteger('rsa_key_id')->nullable();
-            $table->foreign('rsa_key_id')->references('id')->on('rsa_keys')->onDelete('CASCADE')->onUpdate('RESTRICT');
         });
 
         Schema::create('keystores', function (Blueprint $table) {
@@ -55,13 +47,6 @@ class CreateRsaKeyTable extends Migration
      */
     public function down()
     {
-        $usersModel = config('auth.providers.users.model');
-        $tableUsers = (new $usersModel())->getTable();
-
-        Schema::table($tableUsers, function (Blueprint $table) {
-            $table->dropColumn(['rsa_key_id']);
-        });
-
         Schema::dropIfExists('rsa_keys');
         Schema::dropIfExists('keystores');
     }
