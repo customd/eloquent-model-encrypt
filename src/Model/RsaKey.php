@@ -17,6 +17,7 @@ class RsaKey extends Model
 
     /**
      * reference our User Model.
+     * @deprecated 1.6.1
      */
     public function user()
     {
@@ -25,6 +26,6 @@ class RsaKey extends Model
 
     public function keystore()
     {
-        return $this->belongsTo(Keystore::class);
+        return $this->belongsTo(config('eloquent-model-encrypt.models.keystore'));
     }
 }

@@ -2,11 +2,9 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
-use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
-use CustomD\EloquentModelEncrypt\Model\Keystore as KeystoreModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -32,7 +30,7 @@ trait Keystore
         $id = $this->getKey();
 
         //grabbing a cached version
-        if ($id && isset(static::$cachedKeys[$tableKey]) && !empty(static::$cachedKeys[$tableKey][$id])) {
+        if ($id && isset(static::$cachedKeys[$tableKey]) && ! empty(static::$cachedKeys[$tableKey][$id])) {
             $this->getEncryptionEngine()->assignSynchronousKey(static::$cachedKeys[$tableKey][$id]);
             return;
         }
@@ -48,17 +46,13 @@ trait Keystore
             }
             throw new DecryptException();
         } catch (DecryptException $e) {
-
             if ($create) {
-
                 $encryptedFields = collect($this->encryptable);
 
                 //remove all fields that are empty
                 $fields = $encryptedFields->filter(function ($field) {
-                    return !empty($this->attributes[$field]);
+                    return ! empty($this->attributes[$field]);
                 })->toArray();
-
-
 
                 $dirty = array_keys($this->getDirty());
 
@@ -76,8 +70,8 @@ trait Keystore
 
             \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
                 'message' => $e->getMessage(),
-                'key' => $this->getKey(),
-                'user' => \Auth::user() ? \Auth::user()->getKey() : null
+                'key'     => $this->getKey(),
+                'user'    => \Auth::user() ? \Auth::user()->getKey() : null
             ]);
         }
     }
@@ -111,8 +105,7 @@ trait Keystore
         $id = $this->getKey();
         $table = $this->getTableKeystoreReference();
 
-
-        KeystoreModel::where('table', $table)->where('ref', $id)->firstOrFail();
+        $this->getKeystoreModel()::where('table', $table)->where('ref', $id)->firstOrFail();
 
         foreach (self::getKeyProviders() as $keyProvider) {
             $key = $keyProvider::getPrivateKeyForRecord($table, $id);
@@ -151,10 +144,10 @@ trait Keystore
         $table = $this->getTableKeystoreReference();
         $cipherData = $this->buildCipherData();
 
-        $keystore = KeystoreModel::updateOrCreate(
+        $keystore = $this->getKeystoreModel()::updateOrCreate(
             [
                 'table' => $table,
-                'ref' => $id,
+                'ref'   => $id,
             ],
             [
 
@@ -162,13 +155,11 @@ trait Keystore
             ]
         );
 
-
         foreach ($cipherData['keys'] as $keystoreId => $key) {
-
-            KeystoreKey::updateOrCreate(
+            $this->getKeystoreKeyModel()::updateOrCreate(
                 [
                     'keystore_id' => $keystore->id,
-                    'rsa_key_id' => $keystoreId,
+                    'rsa_key_id'  => $keystoreId,
                 ],
                 [
                     'key' => $key,
@@ -177,5 +168,15 @@ trait Keystore
         }
 
         static::$cachedKeys[$table][$id] = $this->getEncryptionEngine()->getSynchronousKey();
+    }
+
+    public function getKeystoreKeyModel()
+    {
+        return config('eloquent-model-encrypt.models.keystore_key');
+    }
+
+    public function getKeystoreModel()
+    {
+        return config('eloquent-model-encrypt.models.keystore');
     }
 }

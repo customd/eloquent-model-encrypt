@@ -16,6 +16,6 @@ class Keystore extends Model
 
     public function keyStores()
     {
-        return $this->hasMany(KeystoreKey::class);
+        return $this->hasMany(config('eloquent-model-encrypt.models.keystore_key')::class);
     }
 }
