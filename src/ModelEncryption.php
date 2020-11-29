@@ -19,7 +19,7 @@ trait ModelEncryption
     /**
      * Which Engine are we using to encrypt / decrypt.
      *
-     * @var CustomD\EloquentModelEncrypt\Abstracts\Engine
+     * @var \CustomD\EloquentModelEncrypt\Abstracts\Engine
      */
     protected $encryptionEngine;
 
@@ -109,7 +109,6 @@ trait ModelEncryption
      */
     public function getTableKeystoreReference(): string
     {
-         return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
+        return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
     }
 }
-
