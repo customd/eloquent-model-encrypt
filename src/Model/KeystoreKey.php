@@ -26,7 +26,7 @@ class KeystoreKey extends Model
 
     public function rsaKey()
     {
-        return $this->belongsTo(config('eloquent-model-encrypt.models.rsa_key')::class, 'rsa_key_id');
+        return $this->belongsTo(config('eloquent-model-encrypt.models.rsa_key'), 'rsa_key_id');
     }
 
     public function keyStore()
