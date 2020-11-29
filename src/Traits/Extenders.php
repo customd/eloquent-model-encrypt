@@ -17,15 +17,15 @@ trait Extenders
      *
      * @return string
      */
-    public function getAttribute($key)
+    public function getAttributeValue($key)
     {
-        $value = parent::getAttribute($key);
+        $value = $this->getAttributeFromArray($key);
 
         if ($this->isEncryptable($key)) {
             $value = $this->decryptAttribute($value);
         }
 
-        return $value;
+        return $this->transformModelValue($key, $value);
     }
 
     /**
