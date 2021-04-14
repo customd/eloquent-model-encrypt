@@ -16,6 +16,11 @@ Install via composer
 composer require custom-d/eloquent-model-encrypt
 ```
 
+### Publish the migration
+```bash
+fin artisan vendor:publish --tag=eloquent-model-encrypt_migration
+```
+
 ### Register Service Provider
 
 **Note! This and next step are optional if you use laravel>=5.5 with package
