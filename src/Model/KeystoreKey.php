@@ -3,6 +3,7 @@
 namespace CustomD\EloquentModelEncrypt\Model;
 
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * CustomD\EloquentModelEncrypt\Model\KeystoreKey
  *
@@ -25,11 +26,11 @@ class KeystoreKey extends Model
 
     public function rsaKey()
     {
-        return $this->belongsTo(RsaKey::class, 'rsa_key_id');
+        return $this->belongsTo(config('eloquent-model-encrypt.models.rsa_key'), 'rsa_key_id');
     }
 
     public function keyStore()
     {
-        return $this->belongsTo(Keystore::class, 'keystore_id');
+        return $this->belongsTo(config('eloquent-model-encrypt.models.keystore'), 'keystore_id');
     }
 }
