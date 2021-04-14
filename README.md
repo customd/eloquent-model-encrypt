@@ -227,6 +227,15 @@ From Laravel's Docs:
 For this reason we have blocked out the batch insert and mass update methods, they will throw an exception. this still does not block teh DB::insert etc from occuring so you can if needbe setup mass insert or update using the base DB class.
 
 
+## Upgrading
+Upgrading from 1.x to 2.x is quick,
+- you will need to now publish the migration file by running:
+```bash
+fin artisan vendor:publish --tag=eloquent-model-encrypt_migration
+```
+- You can now extend the models and set the variables in the config file.
+
+
 ## Security
 
 If you discover any security related issues, please email
