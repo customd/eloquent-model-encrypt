@@ -5,7 +5,6 @@ namespace CustomD\EloquentModelEncrypt\Traits;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
-use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**

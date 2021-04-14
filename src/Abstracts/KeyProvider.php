@@ -12,24 +12,26 @@ abstract class KeyProvider
 
     protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId)
     {
+        $keystoreKey = app(config('eloquent-model-encrypt.models.keystore_key'));
+        $table = $keystoreKey->getTable());
+
         try {
-            $keystores = config('eloquent-model-encrypt.models.keystore')::join('keystore_keys', function ($join) use ($keystoreId) {
-                    $join->on('keystore_keys.keystore_id', '=', 'keystores.id')
-                        ->where('keystore_keys.rsa_key_id', '=', $keystoreId);
+            $keystores = config('eloquent-model-encrypt.models.keystore')::join($table, function ($join) use ($keystoreId) {
+                    $join->on($table->qualifyColumn('keystore_id'), '=', 'keystores.id')
+                        ->where($table->qualifyColumn('rsa_key_id'), '=', $keystoreId);
             })
                 ->where('table', $table)
                 ->where('ref', $id)
                 ->select(
                     'keystores.*',
-                    'keystore_keys.key as keystore_key',
-                    'keystore_keys.id as keystore_key_id'
+                    $table->qualifyColumn('key'). ' as keystore_key',
+                    $table->qualifyColumn('id') . ' as keystore_key_id'
                 )
                 ->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             return;
         }
-
-        $keystoreKey = app(config('eloquent-model-encrypt.models.keystore_key'));
+        
         $keystoreKey->id = $keystores->keystore_key_id;
         $keystoreKey->fill([
             'key'         => $keystores->keystore_key,
