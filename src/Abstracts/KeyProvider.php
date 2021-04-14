@@ -13,7 +13,7 @@ abstract class KeyProvider
     protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId)
     {
         $keystoreKey = app(config('eloquent-model-encrypt.models.keystore_key'));
-        $table = $keystoreKey->getTable());
+        $table = $keystoreKey->getTable();
 
         try {
             $keystores = config('eloquent-model-encrypt.models.keystore')::join($table, function ($join) use ($keystoreId) {
@@ -31,7 +31,7 @@ abstract class KeyProvider
         } catch (ModelNotFoundException $exception) {
             return;
         }
-        
+
         $keystoreKey->id = $keystores->keystore_key_id;
         $keystoreKey->fill([
             'key'         => $keystores->keystore_key,
