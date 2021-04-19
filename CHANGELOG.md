@@ -1,3 +1,10 @@
+# [2.2.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.1.0...v2.2.0) (2021-04-19)
+
+
+### Features
+
+* **command:** Console command to trigger encrypt ([f3981d9](https://git.customd.com/composer/eloquent-model-encrypt/commit/f3981d99d370b6cc214128d0f94f9e2e37b5d3b7))
+
 # [2.1.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.0.2...v2.1.0) (2021-04-19)
 
 
