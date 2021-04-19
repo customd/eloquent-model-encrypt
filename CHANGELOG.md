@@ -1,3 +1,10 @@
+## [2.2.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.0...v2.2.1) (2021-04-19)
+
+
+### Bug Fixes
+
+* Register CI Command ([a28686a](https://git.customd.com/composer/eloquent-model-encrypt/commit/a28686a6e8d0e84200910747ef86746111f611f3))
+
 # [2.2.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.1.0...v2.2.0) (2021-04-19)
 
 
