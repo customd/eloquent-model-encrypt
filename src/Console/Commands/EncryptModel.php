@@ -1,4 +1,3 @@
-
 <?php
 
 namespace CustomD\EloquentModelEncrypt\Console\Commands;

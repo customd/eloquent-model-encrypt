@@ -2,6 +2,8 @@
 
 namespace CustomD\EloquentModelEncrypt;
 
+use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     protected const CONFIG_PATH = __DIR__ . '/../config/eloquent-model-encrypt.php';
@@ -17,6 +19,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
          $this->publishes([
             self::MIGRATIONS_PATH => base_path('database/migrations/'),
         ], 'eloquent-model-encrypt_migration');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands(EncryptModel::class);
+        }
 
     }
 
