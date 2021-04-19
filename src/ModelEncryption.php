@@ -111,4 +111,33 @@ trait ModelEncryption
     {
         return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
     }
+
+    public function forceEncrypt(array $options = [])
+    {
+        $this->mergeAttributesFromClassCasts();
+
+        $query = $this->newModelQuery();
+
+        // If the "saving" event returns false we'll bail out of the save and return
+        // false, indicating that the save failed. This provides a chance for any
+        // listeners to cancel save operations if validations fail or whatever.
+        if (! $this->exists || $this->fireModelEvent('saving') === false) {
+            return false;
+        }
+
+        // we want to keep original timestamps here
+        // so lets store the hasTimestamps varaible with the models current
+        // value and we will reset it after save. 
+        $hasTimestamps = $this->timestamps;
+        $this->timestamps = false;
+        $saved = $this->performUpdate($query);
+            
+        if ($saved) {
+            $this->finishSave($options);
+        }
+
+        $this->timestamps = $hasTimestamps;
+
+        return $saved;
+    }
 }
