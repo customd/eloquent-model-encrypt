@@ -1,3 +1,10 @@
+## [2.2.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.1...v2.2.2) (2021-04-27)
+
+
+### Bug Fixes
+
+* fix keystore fetch method ([616537e](https://git.customd.com/composer/eloquent-model-encrypt/commit/616537e8152c02bde0e398785963e3d9e00f3708))
+
 ## [2.2.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.0...v2.2.1) (2021-04-19)
 
 
