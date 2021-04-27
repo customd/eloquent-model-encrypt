@@ -12,12 +12,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  */
 trait Keystore
 {
-
+    public static $CLEAR_RECORD = 0;
+    public static $CLEAR_TABLE = 1;
+    public static $CLEAR_ALL = 2;
     /**
      * Holds cached versions of keys
      */
     protected static $cachedKeys = [];
-
 
     public function assignRecordsSynchronousKey(bool $create = false): void
     {
@@ -182,5 +183,30 @@ trait Keystore
     public function getKeystoreModel(): \Illuminate\Database\Eloquent\Model
     {
         return resolve(config('eloquent-model-encrypt.models.keystore'));
+    }
+
+    public function clearKeystoreCache(int $level = 0): void
+    {
+        $table = $this->getTableKeystoreReference();
+
+        switch($level)
+        {
+            case self::$CLEAR_RECORD:
+                $id = $this->getKey();
+                if($id){
+                    unset(static::$cachedKeys[$table][$id]);
+                }
+                $this->initEncryptionEngine();
+                break;
+            case self::$CLEAR_TABLE:
+                unset(static::$cachedKeys[$table]);
+                break;
+            case self::$CLEAR_ALL:
+                static::$cachedKeys = [];
+                break;
+            default:
+                throw new EncryptException("Clear level not defined");
+        }
+
     }
 }

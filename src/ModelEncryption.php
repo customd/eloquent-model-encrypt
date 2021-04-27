@@ -127,11 +127,11 @@ trait ModelEncryption
 
         // we want to keep original timestamps here
         // so lets store the hasTimestamps varaible with the models current
-        // value and we will reset it after save. 
+        // value and we will reset it after save.
         $hasTimestamps = $this->timestamps;
         $this->timestamps = false;
         $saved = $this->performUpdate($query);
-            
+
         if ($saved) {
             $this->finishSave($options);
         }

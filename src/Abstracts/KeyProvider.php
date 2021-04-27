@@ -12,26 +12,30 @@ abstract class KeyProvider
 
     protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId)
     {
-        $keystoreKey = app(config('eloquent-model-encrypt.models.keystore_key'));
-        $table = $keystoreKey->getTable();
+        $keystoreModel = resolve(config('eloquent-model-encrypt.models.keystore'));
+        $keystoreKeyModel = resolve(config('eloquent-model-encrypt.models.keystore_key'));
+        $keystoreTable = $keystoreKeyModel->getTable();
 
         try {
-            $keystores = config('eloquent-model-encrypt.models.keystore')::join($table, function ($join) use ($keystoreId) {
-                    $join->on($table->qualifyColumn('keystore_id'), '=', 'keystores.id')
-                        ->where($table->qualifyColumn('rsa_key_id'), '=', $keystoreId);
+            $keystores = $keystoreModel::join($keystoreTable, function ($join) use ($keystoreId, $keystoreKeyModel) {
+                    $join->on($keystoreKeyModel->qualifyColumn('keystore_id'), '=', 'keystores.id')
+                        ->where($keystoreKeyModel->qualifyColumn('rsa_key_id'), '=', $keystoreId);
             })
                 ->where('table', $table)
                 ->where('ref', $id)
                 ->select(
-                    'keystores.*',
-                    $table->qualifyColumn('key'). ' as keystore_key',
-                    $table->qualifyColumn('id') . ' as keystore_key_id'
+                    $keystoreModel->qualifyColumn('*'),
+                    $keystoreKeyModel->qualifyColumn('key'). ' as keystore_key',
+                    $keystoreKeyModel->qualifyColumn('id') . ' as keystore_key_id'
                 )
                 ->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             return;
         }
 
+        //mimic eloquent model for a predictable structure
+        //todo - revisit this for V3
+        $keystoreKey = new $keystoreKeyModel();
         $keystoreKey->id = $keystores->keystore_key_id;
         $keystoreKey->fill([
             'key'         => $keystores->keystore_key,
