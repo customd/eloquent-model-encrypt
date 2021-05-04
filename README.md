@@ -19,6 +19,7 @@
     -   [Models](#models)
     -   [Engines](#engines)
     -   [Artisan](#artisan)
+-   [Suggested Packages](#suggestions)
 
 
 
@@ -204,6 +205,18 @@ php artisan eme:encrypt:model "\App\Models\MyModel"
 ```
 
 This will select all the records from that table and encrypt them.
+
+<a name="suggestions"></a>
+## Suggested Packages
+
+Here are a few packages that extend the usability of the encryption package
+
+### [Hashed Search](https://github.com/customd/hashed-search)
+This pacakge works to allow you to do a Blind Index search on your encrypted data, it works by using a one way hash to encrypt the data and does the same to search it.
+the hash is configurable and can be set to either a double hash (hash1 ^ hashh2) or a iteration_count.
+
+### [User Security Recovery](https://github.com/customd/user-security-recovery)
+This package allows you to setup a secret question / anser or any such pattern to create an encrypted copy of the private key that a user can use to restore should they forget their password.
 
 ## Credits
 
