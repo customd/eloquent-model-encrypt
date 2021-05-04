@@ -211,7 +211,7 @@ This will select all the records from that table and encrypt them.
 
 Here are a few packages that extend the usability of the encryption package
 
-### [User Keystore]('docs/UserKeyExample)
+### [User Keystore](docs/UserKeyExample.md)
 A basic user keystore example implementation
 
 ### [Hashed Search](https://github.com/customd/hashed-search)
