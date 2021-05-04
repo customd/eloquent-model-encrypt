@@ -207,9 +207,12 @@ php artisan eme:encrypt:model "\App\Models\MyModel"
 This will select all the records from that table and encrypt them.
 
 <a name="suggestions"></a>
-## Suggested Packages
+## Suggested Packages / Recipes
 
 Here are a few packages that extend the usability of the encryption package
+
+### [User Keystore]('docs/UserKeyExample)
+A basic user keystore example implementation
 
 ### [Hashed Search](https://github.com/customd/hashed-search)
 This pacakge works to allow you to do a Blind Index search on your encrypted data, it works by using a one way hash to encrypt the data and does the same to search it.
