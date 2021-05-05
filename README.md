@@ -27,13 +27,13 @@ This package allows for encryption of data using public-private keypairs, it can
 
 ## Important
 
-If you are writing partial records to encrypted, make sure not to do it without beign able to access the records key, as if you do it will rewrite the key and break the rest of the fields.
+If you're making partial updates to an existing encrypted record, ensure your user has access to the records key. If you not, the library will create a new key for that record for your partial update, and you won't be able to decrypt other encrypted fields that weren't written in that update.
 
 From Laravel's Docs:
 
 `When issuing a mass update via Eloquent, the saved and updated model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.`
 
-For this reason we have blocked out the batch insert and mass update methods, they will throw an exception. this still does not block teh DB::insert etc from occuring so you can if needbe setup mass insert or update using the base DB class.
+For this reason we have blocked out the batch insert and mass update methods — they will throw an exception. This does not block direct queries, or `DB::insert`, etc, so you can set up mass insert or update using the base DB class if required. Just take care 😅
 
 <a name="installation"></a>
 
