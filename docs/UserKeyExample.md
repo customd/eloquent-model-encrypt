@@ -11,8 +11,11 @@ In `app\KeyProviders` add a new class `UserKeyProvider.php` with the following c
 namespace App\KeyProviders;
 
 use App\Models\User;
-use App\Services\SessionPem;
+use App\Services\SessionKey;
+use Illuminate\Support\Facades\Log;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
+use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserKeyProvider extends KeyProvider
 {
@@ -36,7 +39,7 @@ class UserKeyProvider extends KeyProvider
         return $publicKeys;
     }
 
-        public static function getPrivateKeyForRecord(string $table, int $recordId): ?string
+    public static function getPrivateKeyForRecord(string $table, int $recordId): ?string
     {
 
         $user = auth()->user();
@@ -54,16 +57,16 @@ class UserKeyProvider extends KeyProvider
         }
 
         try {
-            if (! SessionPem::hasPem()) {
+            if (! SessionKey::hasPem()) {
                 throw new \Exception('User Should not be able to be logged in without a PEM');
             }
 
-            $pem = SessionPem::getPem();
+            $pem = SessionKey::getPem();
         } catch (\Exception $exception) {
             // On an error, we need to revoke the token, the session etc. full logout of this user.
             Log::critical($exception->getMessage(), ['user_id' => $user->id]);
             $user->token()->revoke();
-            SessionPem::destroy();
+            SessionKey::destroy();
             throw new UnauthorizedHttpException('Token', 'User Should not be able to be logged in without a PEM');
         }
 
@@ -93,18 +96,19 @@ class UserKeyProvider extends KeyProvider
 
 **A few notes here:**
 - Because multiple users could need access to a record, you can pass one or more public keys back , you can decide how to get your public keys based on the record, for this example you can see we added a getRecordUserIds method that checks for a few options on the current record.
-- Getting our private key you can see a reference to SessionPem, this could be stored in session / or as we have done it using a speciallised redis entrypoint that is linked to the user (as we are using passport and do not have sessions)
+- Getting our private key you can see a reference to SessionKey, this could be stored in session / or as we have done it using a speciallised redis store that is linked to the user (as we are using passport and do not have sessions).
 
 ## 2. Extend the users model
-eitehr in teh model or add a trait to your users model basically as below (advantage is locks down password hashing)
+
+Either in the, model or add a trait to your users model basically as below (one advantage of this example, is that it implements automatic password hashing, similar to Laravel Fortify). You could alternatively implement this in Laravel Fortify's actions, or whatever auth package you're using.
 
 ```php
 <?php
 
-namespace App\Models\Contracts;
+namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
-use App\Services\SessionPem;
+use App\Services\SessionKey;
 use Illuminate\Support\Facades\Hash;
 use App\Actions\User\UpdatePrivateKeyPasswordAction;
 use CustomD\EloquentModelEncrypt\Model\RsaKey;
@@ -113,8 +117,6 @@ use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
 trait UserKeystore
 {
-
-
     public static function bootUserKeystore()
     {
         static::creating(function ($model) {
@@ -131,7 +133,7 @@ trait UserKeystore
                     throw new EncryptException("Password should not be pre-hashed");
                 }
 
-                $privateKey = SessionPem::getPem();
+                $privateKey = SessionKey::getPrivateKey();
 
                 if (! $privateKey) {
                     throw new EncryptException("Current Private Key is not available");
@@ -202,7 +204,7 @@ trait UserKeystore
 }
 ```
 
-As you can see it hooks into the creating event on the user model to add the users keypair and encrypt it with the password, aswell as the updating password (shown below is the action)
+As you can see it hooks into the creating event on the user model to add the users keypair and encrypt it with the password, as well as the updating password (shown below is the action).
 
 ```php
 <?php
@@ -235,9 +237,10 @@ class UpdatePrivateKeyPasswordAction
 }
 ```
 
-Lastly on your login controller (or by extending the logincontroller from teh auth package you are using) add the following method within you can set how you want to store the users decrypted private key for the duration of their session.
+Finally on your login controller (or by extending the login controller from whatever auth package you are using) add the following method where you can set how you want to store the users decrypted private key for the duration of their session.
+
 ```php
- /**
+    /**
      * The user has been authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -246,6 +249,6 @@ Lastly on your login controller (or by extending the logincontroller from teh au
      */
     protected function authenticated(Request $request, $user)
     {
-        SessionPem::set(pem, $user->getDecryptedPrivateKey($request->get('password')));
+        SessionKey::storePrivateKey($user->id, $user->getDecryptedPrivateKey($request->get('password')));
     }
 ```
