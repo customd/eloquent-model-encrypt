@@ -14,5 +14,6 @@ return [
         'keystore'      => \CustomD\EloquentModelEncrypt\Model\Keystore::class,
         'keystore_key'  => \CustomD\EloquentModelEncrypt\Model\KeystoreKey::class,
         'rsa_key'       => \CustomD\EloquentModelEncrypt\Model\RsaKey::class,
-    ]
+    ],
+    'throw_on_missing_key' => env('ELOQUENT_MODEL_THROW_ON_MISSING_KEY', false),
 ];

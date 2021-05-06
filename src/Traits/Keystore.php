@@ -74,6 +74,10 @@ trait Keystore
                 'key'     => $this->getKey(),
                 'user'    => \Auth::user() ? \Auth::user()->getKey() : null
             ]);
+
+            if (config('eloquent-model-encrypt.throw_on_missing_key')) {
+                throw new DecryptException("You cannot decrypt this record without the correct key");
+            }
         }
     }
 
@@ -189,11 +193,10 @@ trait Keystore
     {
         $table = $this->getTableKeystoreReference();
 
-        switch($level)
-        {
+        switch ($level) {
             case self::$CLEAR_RECORD:
                 $id = $this->getKey();
-                if($id){
+                if ($id) {
                     unset(static::$cachedKeys[$table][$id]);
                 }
                 $this->initEncryptionEngine();
@@ -207,6 +210,5 @@ trait Keystore
             default:
                 throw new EncryptException("Clear level not defined");
         }
-
     }
 }

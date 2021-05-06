@@ -14,6 +14,7 @@
 -   [Installation](#installation)
 -   [Upgrade from 1.x](#upgrade)
 -   [Usage](#usage)
+    -   [Config](#config)
     -   [Key Providers](#keyproviders)
     -   [Migrations](#migrations)
     -   [Models](#models)
@@ -92,6 +93,21 @@ php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-mo
 <a name="usage"></a>
 
 ## Usage
+
+<a name="config"></a>
+### Config
+
+The default config contains the following variables:
+
+Variable | Default | Description
+---------|---------|------------
+engines | Array | [See below documentation](#engines).
+tables | [] | Assign different engines for different tables. [See below documentation](#engines).
+publickey | storage/_certs/public.key | Can be either a path, or the key contents itself.
+privatekey | storage/_certs/private.key | Can be either a path, or the key contents itself.
+models | Array | You can extend the models for the different key storage logic.
+throw_on_missing_key | false | Have the engine throw a `DecryptException` when trying to decrypt a record without the appropriate key.
+
 
 <a name="keyproviders"></a>
 
