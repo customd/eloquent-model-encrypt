@@ -1,3 +1,10 @@
+# [2.3.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.2...v2.3.0) (2021-05-06)
+
+
+### Features
+
+* **decryption:** option to throw an exception on failure ([d360f0a](https://git.customd.com/composer/eloquent-model-encrypt/commit/d360f0a12359f25b3be6dc876b79d178b55a8cac))
+
 ## [2.2.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.1...v2.2.2) (2021-04-27)
 
 
