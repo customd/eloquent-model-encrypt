@@ -1,3 +1,10 @@
+## [2.3.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.3.0...v2.3.1) (2021-08-23)
+
+
+### Bug Fixes
+
+* **php8:** dependancy update for php8 ([09e590c](https://git.customd.com/composer/eloquent-model-encrypt/commit/09e590c1f0a78266748975aa27b09b0cecbb1221))
+
 # [2.3.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.2.2...v2.3.0) (2021-05-06)
 
 
