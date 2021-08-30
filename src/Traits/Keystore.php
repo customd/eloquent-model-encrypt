@@ -2,6 +2,7 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
@@ -66,10 +67,13 @@ trait Keystore
                     $this->getEncryptionEngine()->assignSynchronousKey();
                     return;
                 }
-                throw new DecryptException("You cannot update an encrpyted record without updating all fields");
+
+                Log::error("[{$tableKey}][{$id}] Failed to encrypt due to missing fields", $hasMissing);
+
+                throw new DecryptException("You cannot update an encypted record without updating all fields");
             }
 
-            \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
+            Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
                 'message' => $e->getMessage(),
                 'key'     => $this->getKey(),
                 'user'    => \Auth::user() ? \Auth::user()->getKey() : null

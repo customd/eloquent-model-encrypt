@@ -140,4 +140,11 @@ trait ModelEncryption
 
         return $saved;
     }
+
+    public function refillEncryptedValues()
+    {
+        foreach($this->encryptable as $field){
+            $this->attributes[$field] = $this->getAttributeValue($field) ?? $this->attributes[$field];
+        }
+    }
 }
