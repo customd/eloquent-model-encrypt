@@ -15,6 +15,8 @@ class Blueprint extends BaseBlueprint
      * @param  string  $column
      * @param  int|null  $length
      *
+     * @deprecated 2.5.0 will be removed in V3
+     *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
     public function encryptedString($column, $length = null)
@@ -35,6 +37,8 @@ class Blueprint extends BaseBlueprint
      * @param  string  $column
      * @param  int|null  $length
      *
+     * @deprecated 2.5.0 will be removed in V3
+     *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
     public function encryptedDate($name, $length = 25)
@@ -47,6 +51,8 @@ class Blueprint extends BaseBlueprint
      *
      * @param  string  $column
      * @param  int|null  $length
+     *
+     * @deprecated 2.5.0 will be removed in V3
      *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */

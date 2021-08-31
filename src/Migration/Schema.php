@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Illuminate\Database\Schema\Builder
+ *
+ * @deprecated 2.5.0 will be removed in V3
  */
 class Schema extends Facade
 {
