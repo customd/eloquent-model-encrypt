@@ -138,6 +138,15 @@ You will need to implement the logic to determine whether or not it should encry
 
 ### Migrations
 
+**V2.5 and up**
+
+for the encrypted columns in your database simpy add:
+```php
+$table->encrypted('colname');
+```
+
+**v2.4 and down**
+
 For your migrations you can now replace the Illuminate versions of these with the CustomD versions:
 
 ```php
