@@ -1,3 +1,10 @@
+# [2.4.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.3.1...v2.4.0) (2021-09-01)
+
+
+### Features
+
+* Upgrade syntax for migrations ([bc34d33](https://git.customd.com/composer/eloquent-model-encrypt/commit/bc34d3348e4f598cb4545c8b9efbb1c96570860c))
+
 ## [2.3.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.3.0...v2.3.1) (2021-08-23)
 
 
