@@ -1,3 +1,10 @@
+# [2.5.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.4.0...v2.5.0) (2021-09-01)
+
+
+### Features
+
+* fix versioning mismatch ([ef82dcc](https://git.customd.com/composer/eloquent-model-encrypt/commit/ef82dcc4c804fe7ce71121f7239e8e052b15b864))
+
 # [2.4.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.3.1...v2.4.0) (2021-09-01)
 
 2.4.0 and 2.5.0 are the same - 2.4.0 / 2.4.1 where untagged in the release schedule
