@@ -34,7 +34,7 @@ class EncryptModel extends Command
 
         $total = $model->withoutGlobalScopes()->count();
 
-        $this->info("Found $total Records to encrypt");
+        $this->info("Found {$total} records to encrypt");
 
         $skip = 0;
         $chunk = $this->option('chunk');
@@ -44,10 +44,10 @@ class EncryptModel extends Command
             if ($records->isNotEmpty()) {
                 EncryptModelRecords::dispatch($records);
                 $key = $records->last()->getKey();
-                $this->line('<comment>Encrypted [' . $class . '] models up to ID:</comment> ' . $key);
+                $this->line('<comment>Queued [' . $class . '] records for encryption up to ID:</comment> ' . $key);
             }
             $skip += $chunk;
         }
-        $this->info('All [' . $class . '] records have been encrypted.');
+        $this->info('All [' . $class . '] records have been queued.');
     }
 }
