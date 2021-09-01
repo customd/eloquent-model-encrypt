@@ -4,10 +4,7 @@ namespace CustomD\EloquentModelEncrypt;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ColumnDefinition;
-use Illuminate\Database\Schema\Grammars\Grammar;
-use Illuminate\Support\Fluent;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
-use CustomD\EloquentModelEncrypt\Exceptions\UnknownGrammerException;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -43,26 +40,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerMigrationMacros()
     {
 
-        Grammar::macro('typeEncrypted', function (Fluent $column) {
-            $className = (new \ReflectionClass($this))->getShortName();
-
-            // TODO - V3 upgrade to match statment php 8
-            switch ($classname) {
-                case "SQLiteGrammar":
-                case "MySqlGrammar":
-                    return 'blob';
-                case "PostgresGrammar":
-                    return 'bytea';
-                case "SqlServerGrammar":
-                    return 'varbinary(max)';
-                default:
-                    throw new UnknownGrammerException();
-            }
-        });
-
-        Blueprint::macro('encrypted', function ($column): ColumnDefinition {
+        Blueprint::macro('encrypted', function ($column, $len = 255): ColumnDefinition {
             /** @var Blueprint $this */
-            return $this->addColumn('encrypted', $column);
+            return $this->addColumn('text', $column);
         });
     }
 }
