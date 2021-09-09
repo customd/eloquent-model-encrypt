@@ -66,7 +66,7 @@ trait Keystore
                     $this->getEncryptionEngine()->assignSynchronousKey();
                     return;
                 }
-                throw new DecryptException("You cannot update an encrpyted record without updating all fields");
+                throw new DecryptException("You cannot update an encrypted record without updating all fields");
             }
 
             \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
