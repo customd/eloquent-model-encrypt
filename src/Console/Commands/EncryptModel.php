@@ -32,7 +32,7 @@ class EncryptModel extends Command
         $class = $this->argument('model');
         $model = new $class();
 
-        $total = $model->withoutGlobalScopes()->count();
+        $total = $model->withoutGlobalScopes()->whereDoesntHaveKeystore()->count();
 
         $this->info("Found {$total} records to encrypt");
 
@@ -40,7 +40,7 @@ class EncryptModel extends Command
         $chunk = $this->option('chunk');
 
         while ($skip < $total) {
-            $records = $model->newQuery()->withoutGlobalScopes()->skip($skip)->take($chunk)->get();
+            $records = $model->newQuery()->withoutGlobalScopes()->whereDoesntHaveKeystore()->skip($skip)->take($chunk)->get();
             if ($records->isNotEmpty()) {
                 EncryptModelRecords::dispatch($records);
                 $key = $records->last()->getKey();
