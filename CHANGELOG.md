@@ -1,3 +1,10 @@
+# [2.6.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.5.0...v2.6.0) (2021-09-10)
+
+
+### Features
+
+* improve encryption of table to skip existing and prevent race condition([#6](https://git.customd.com/composer/eloquent-model-encrypt/issues/6)) ([e963f22](https://git.customd.com/composer/eloquent-model-encrypt/commit/e963f2298cdce89c1a282d99465d7b80aae8b4d9))
+
 # [2.5.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.4.0...v2.5.0) (2021-09-01)
 
 
