@@ -23,8 +23,12 @@ class EncryptModelRecords implements ShouldQueue
     public function handle()
     {
         $this->records->each(function ($record) {
+
+            //as this is queued - might hit here after being edited by the user (0.00001% chance but hey.)
+            if ($record->recordKeystore === null) {
             //we got here, now lets force save
-            $record->forceEncrypt();
+                $record->forceEncrypt();
+            }
         });
     }
 }

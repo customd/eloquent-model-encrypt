@@ -4,6 +4,7 @@ namespace CustomD\EloquentModelEncrypt\Console\Commands;
 
 use Illuminate\Console\Command;
 use CustomD\EloquentModelEncrypt\Jobs\EncryptModelRecords;
+use Illuminate\Support\Facades\Bus;
 
 class EncryptModel extends Command
 {
@@ -32,22 +33,22 @@ class EncryptModel extends Command
         $class = $this->argument('model');
         $model = new $class();
 
-        $total = $model->withoutGlobalScopes()->count();
+        $total = $model->withoutGlobalScopes()->whereDoesntHaveKeystore()->count();
 
         $this->info("Found {$total} records to encrypt");
 
-        $skip = 0;
+        $last = 0;
         $chunk = $this->option('chunk');
 
-        while ($skip < $total) {
-            $records = $model->newQuery()->withoutGlobalScopes()->skip($skip)->take($chunk)->get();
+        do {
+            $records = $model->newQuery()->withoutGlobalScopes()->whereDoesntHaveKeystore()->where($model->getKeyName(), '>', $last)->take($chunk)->get();
             if ($records->isNotEmpty()) {
                 EncryptModelRecords::dispatch($records);
-                $key = $records->last()->getKey();
-                $this->line('<comment>Queued [' . $class . '] records for encryption up to ID:</comment> ' . $key);
+                $last = $records->last()->getKey();
+                $this->line('<comment>Queued [' . $class . '] records for encryption up to ID:</comment> ' . $last);
             }
-            $skip += $chunk;
-        }
+        } while ($records->isNotEmpty());
+
         $this->info('All [' . $class . '] records have been queued.');
     }
 }

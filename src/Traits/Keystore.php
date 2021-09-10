@@ -6,6 +6,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * these methods all extend over the Eloquent methods.
@@ -187,6 +188,25 @@ trait Keystore
     public function getKeystoreModel(): \Illuminate\Database\Eloquent\Model
     {
         return resolve(config('eloquent-model-encrypt.models.keystore'));
+    }
+
+    public function recordKeystore()
+    {
+        return $this->hasOne(
+            config('eloquent-model-encrypt.models.keystore'),
+            'ref',
+            $this->getKeyName()
+        )->where('table', $this->getTableKeystoreReference());
+    }
+
+    public function scopeWhereHasKeystore(Builder $builder)
+    {
+        $builder->whereHas('recordKeystore');
+    }
+
+    public function scopeWhereDoesntHaveKeystore(Builder $builder)
+    {
+        $builder->whereDoesntHave('recordKeystore');
     }
 
     public function clearKeystoreCache(int $level = 0): void
