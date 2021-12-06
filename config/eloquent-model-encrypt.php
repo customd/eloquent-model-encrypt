@@ -16,4 +16,6 @@ return [
         'rsa_key'       => \CustomD\EloquentModelEncrypt\Model\RsaKey::class,
     ],
     'throw_on_missing_key' => env('ELOQUENT_MODEL_THROW_ON_MISSING_KEY', false),
+    'encrypt_empty_string' => env('ELOQUENT_MODEL_ENCRYPT_EMPTY_STRING', false),
+    'encrypt_null_value' => env('ELOQUENT_MODEL_ENCRYPT_NULL_VALUE', false),
 ];

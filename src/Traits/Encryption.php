@@ -49,10 +49,15 @@ trait Encryption
      */
     protected function encryptAttribute(?string $value): ?string
     {
-        if ($value) {
-            $value = self::$encryptionHeader . $this->getEncryptionEngine()->encrypt($value);
+
+        if ($value === null && config('eloquent-model-encrypt.encrypt_null_value', false) === false) {
+            return $value;
         }
 
-        return $value;
+        if ($value === '' && config('eloquent-model-encrypt.encrypt_empty_string', false) === false) {
+            return $value;
+        }
+
+        return self::$encryptionHeader . $this->getEncryptionEngine()->encrypt($value);
     }
 }
