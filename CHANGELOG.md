@@ -1,3 +1,10 @@
+# [2.7.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.6.0...v2.7.0) (2021-12-06)
+
+
+### Features
+
+* configuration to allow encryption of empty / null values ([15230b3](https://git.customd.com/composer/eloquent-model-encrypt/commit/15230b3ed7dcea3d63e87fd0f73e9898412818ac))
+
 # [2.6.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.5.0...v2.6.0) (2021-09-10)
 
 
