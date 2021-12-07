@@ -3,6 +3,7 @@
 namespace CustomD\EloquentModelEncrypt\Observers;
 
 use Illuminate\Support\Facades\DB;
+use CustomD\EloquentModelEncrypt\Concerns\Encryptable;
 
 class Encryption
 {
@@ -17,9 +18,9 @@ class Encryption
     /**
      * Creating event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \CustomD\EloquentModelEncrypt\Concerns\Encryptable $model
      */
-    public function creating($model)
+    public function creating(Encryptable $model)
     {
         $model->getEncryptionEngine()->assignSynchronousKey();
         $model->mapEncryptedValues();
@@ -28,9 +29,9 @@ class Encryption
     /**
      * Updating event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \CustomD\EloquentModelEncrypt\Concerns\Encryptable $model
      */
-    public function updating($model)
+    public function updating(Encryptable $model)
     {
         // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
         $model->assignRecordsSynchronousKey(true);
@@ -41,9 +42,9 @@ class Encryption
     /**
      * Created event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \CustomD\EloquentModelEncrypt\Concerns\Encryptable $model
      */
-    public function created($model)
+    public function created(Encryptable $model)
     {
         $model->storeKeyReferences();
     }
@@ -59,9 +60,9 @@ class Encryption
     /**
      * Deleted event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \CustomD\EloquentModelEncrypt\Concerns\Encryptable $model
      */
-    public function deleted($model)
+    public function deleted(Encryptable $model)
     {
         //only remove if fully trashing
         if (! method_exists($model, 'isForceDeleting') || $model->isForceDeleting()) {

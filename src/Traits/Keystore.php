@@ -136,14 +136,6 @@ trait Keystore
         return EloquentAsyncKeys::encryptWithKey($keys, $synchronousKey);
     }
 
-    /**
-     * Update our key references:.
-     * @deprecated
-     */
-    public function updateKeyReferences()
-    {
-        $this->storeKeyReferences();
-    }
 
     /**
      * store our encrypted key references.

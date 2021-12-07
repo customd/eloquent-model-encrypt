@@ -4,6 +4,8 @@ namespace CustomD\EloquentModelEncrypt\Abstracts;
 
 abstract class Engine
 {
+    protected ?string $synchronousKey = null;
+
     /**
      * Decrypt a value.
      *
@@ -24,10 +26,8 @@ abstract class Engine
 
     /**
      * assigns a synchronous key.
-     *
-     * @param string|null $synchronousKey
      */
-    abstract public function assignSynchronousKey($synchronousKey = null): void;
+    abstract public function assignSynchronousKey(?string $synchronousKey = null): void;
 
     /**
      * Retrieves the current synchronous key.

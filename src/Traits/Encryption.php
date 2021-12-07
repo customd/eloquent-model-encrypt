@@ -10,9 +10,9 @@ trait Encryption
 
     public function mapEncryptedValues(): void
     {
-        collect($this->encryptable)
-        ->filter(fn($field) => $this->isDirty($field))
-        ->each(fn($field) => $this->setEncryptableAttribute($field));
+        foreach ($this->encryptable as $field) {
+            $this->setEncryptableAttribute($field);
+        }
     }
 
     /**
@@ -21,6 +21,10 @@ trait Encryption
      */
     protected function setEncryptableAttribute(string $field): self
     {
+        if (! isset($this->attributes[$field])) {
+            return $this;
+        }
+
         $value = $this->attributes[$field];
 
         if (! $this->isValueEncrypted($value)) {

@@ -2,6 +2,14 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use CustomD\EloquentModelEncrypt\Abstracts\Engine;
+use CustomD\EloquentModelEncrypt\Traits\Keystore;
+use CustomD\EloquentModelEncrypt\Traits\Extenders;
+use CustomD\EloquentModelEncrypt\Traits\Decryption;
+use CustomD\EloquentModelEncrypt\Traits\Encryption;
+use CustomD\EloquentModelEncrypt\KeyProviders\GlobalKeyProvider;
+use CustomD\EloquentModelEncrypt\Observers\Encryption as EncryptionObserver;
+
 trait HasEncryption
 {
     use Extenders;
@@ -27,7 +35,7 @@ trait HasEncryption
         GlobalKeyProvider::class,
     ];
 
-    protected static function getKeyProviders()
+    protected static function getKeyProviders(): array
     {
         return self::$keyProviders ?? self::$defaultKeyProviders;
     }
@@ -44,7 +52,7 @@ trait HasEncryption
     /**
      * Initialialize our encryption engine for this model.
      */
-    protected function initEncryptionEngine()
+    protected function initEncryptionEngine(): Engine
     {
         // Load our config
         $config = config('eloquent-model-encrypt');
@@ -64,7 +72,7 @@ trait HasEncryption
         return $this->encryptionEngine;
     }
 
-    public function getEncryptionEngine()
+    public function getEncryptionEngine(): Engine
     {
         return $this->encryptionEngine ?? $this->initEncryptionEngine();
     }
@@ -105,7 +113,7 @@ trait HasEncryption
         return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
     }
 
-    public function forceEncrypt(array $options = [])
+    public function forceEncrypt(array $options = []): bool
     {
         $this->mergeAttributesFromClassCasts();
 

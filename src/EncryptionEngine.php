@@ -11,17 +11,9 @@ class EncryptionEngine extends Engine
 
     protected $keyLength = 16;
 
-    protected $synchronousKey = null;
-
     protected $encryptionEngine;
 
-    /**
-     * Undocumented function.
-     *
-     * @param string|null $encryptionKey
-     * @param string $cipher
-     */
-    public function assignSynchronousKey($synchronousKey = null): void
+    public function assignSynchronousKey(?string $synchronousKey = null): void
     {
         if ($synchronousKey === null) {
             $synchronousKey = \random_bytes($this->keyLength);

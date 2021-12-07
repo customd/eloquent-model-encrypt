@@ -10,17 +10,25 @@
 [![Packagist](https://img.shields.io/packagist/l/custom-d/eloquent-model-encrypt.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
 [![Github Issues][badge_issues]](https://github.com/customd/eloquent-model-encrypt/issue)
 
--   [Overview](#overview)
--   [Installation](#installation)
--   [Upgrade from 1.x](#upgrade)
--   [Usage](#usage)
-    -   [Config](#config)
-    -   [Key Providers](#keyproviders)
-    -   [Migrations](#migrations)
-    -   [Models](#models)
-    -   [Engines](#engines)
-    -   [Artisan](#artisan)
--   [Suggested Packages](#suggestions)
+- [Eloquent Model Encrypt](#eloquent-model-encrypt)
+  - [Important](#important)
+  - [Installation](#installation)
+    - [Register Service Provider](#register-service-provider)
+    - [Register Facade](#register-facade)
+  - [Upgrade from V1.x](#upgrade-from-v1x)
+  - [Upgrade from V2.x](#upgrade-from-v2x)
+  - [Usage](#usage)
+    - [Config](#config)
+    - [Key Providers](#key-providers)
+    - [Migrations](#migrations)
+    - [Models](#models)
+    - [Engines](#engines)
+    - [Artisan](#artisan)
+  - [Suggested Packages / Recipes](#suggested-packages--recipes)
+    - [User Keystore](#user-keystore)
+    - [Hashed Search](#hashed-search)
+    - [User Security Recovery](#user-security-recovery)
+  - [Credits](#credits)
 
 
 
@@ -88,6 +96,35 @@ Publish the config & migration
 php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-model-encrypt_migration
 ```
 
+## Upgrade from V2.x
+
+Remove the Customd overwites of these
+
+From
+```php
+use CustomD\EloquentModelEncrypt\Migration\Blueprint;
+use CustomD\EloquentModelEncrypt\Migration\Schema;
+```
+To
+```php
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+```
+then convert the following calls all to
+```php
+$table->encrypted('colname');
+//optinally for larger data (expecting anything above 45,000 chars)
+$table->encrypted('colname', 'mediumText');
+```
+From
+```php
+$table->encryptedString('colname', '154');
+$table->encryptedDate('datecolname');
+$table->encryptedTimestamp('timestampcolname');
+```
+
+Update your models to implement `CustomD\EloquentModelEncrypt\Concerns\Encryptable` and the use statment from `CustomD\EloquentModelEncrypt\ModelEncryption` to `CustomD\EloquentModelEncrypt\Traits\HasEncryption`
+
 ---
 
 <a name="usage"></a>
@@ -138,28 +175,9 @@ You will need to implement the logic to determine whether or not it should encry
 
 ### Migrations
 
-**V2.5 and up**
-
 for the encrypted columns in your database simpy add:
 ```php
 $table->encrypted('colname');
-```
-
-**v2.4 and down**
-
-For your migrations you can now replace the Illuminate versions of these with the CustomD versions:
-
-```php
-use CustomD\EloquentModelEncrypt\Migration\Blueprint;
-use CustomD\EloquentModelEncrypt\Migration\Schema;
-```
-
-you can then define your columns as normal with the extra column types, these will calculate the required size to hold the encrypted string.
-
-```php
-$table->encryptedString('colname', '154');
-$table->encryptedDate('datecolname');
-$table->encryptedTimestamp('timestampcolname');
 ```
 
 <a name="models"></a>
@@ -169,10 +187,11 @@ $table->encryptedTimestamp('timestampcolname');
 To enable encryption on a specific model you will need to add the following middleware and property to define which columns to encrypt
 
 ```php
-use CustomD\EloquentModelEncrypt\ModelEncryption;
+use CustomD\EloquentModelEncrypt\Concerns\Encryptable;
+use CustomD\EloquentModelEncrypt\Traits\HasEncryption;
 
-class YourModel extends Model {
-	use ModelEncryption;
+class YourModel extends Model implements Encryptable {
+	use HasEncryption;
 
 	protected $encryptable = [
         'encrypted_field 1',
