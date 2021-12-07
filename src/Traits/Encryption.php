@@ -20,6 +20,10 @@ trait Encryption
      */
     protected function setEncryptableAttribute(string $field): self
     {
+        if (! isset($this->attributes[$field])) {
+            return $this;
+        }
+
         $value = $this->attributes[$field];
 
         if (! $this->isValueEncrypted($value)) {
