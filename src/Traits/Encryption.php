@@ -7,33 +7,23 @@ namespace CustomD\EloquentModelEncrypt\Traits;
  */
 trait Encryption
 {
-    /**
-     * Map through and encrypt all our values.
-     */
     public function mapEncryptedValues(): void
     {
-        foreach ($this->attributes as $field => $value) {
-            $this->setEncryptableAttribute($field, $value);
+        foreach ($this->encryptable as $field) {
+            $this->setEncryptableAttribute($field);
         }
     }
 
     /**
      * Extend the Eloquent method so properties present in
      * $encrypt are encrypted whenever they are set.
-     *
-     * @param string $key      The attribute key
-     * @param string $value    Attribute value to set
-     *
-     * @see Model::setAttribute
-     *
-     * @return mixed
      */
-    protected function setEncryptableAttribute($key, $value)
+    protected function setEncryptableAttribute(string $field): self
     {
-        parent::setAttribute($key, $value);
-        if ($this->isEncryptable($key) && ! $this->isValueEncrypted($value)) {
-            $value = $this->encryptAttribute($value);
-            $this->attributes[$key] = $value;
+        $value = $this->attributes[$field];
+
+        if (! $this->isValueEncrypted($value)) {
+            $this->attributes[$field] = $this->encryptAttribute($value);
         }
 
         return $this;
