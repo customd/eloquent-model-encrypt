@@ -1,3 +1,10 @@
+## [2.7.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.2...v2.7.3) (2021-12-07)
+
+
+### Bug Fixes
+
+* only map through fields that are to be encrypted ([f9ca288](https://git.customd.com/composer/eloquent-model-encrypt/commit/f9ca2880d260ada1e1d23fa671c9bbf438c6d97c))
+
 ## [2.7.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.1...v2.7.2) (2021-12-07)
 
 
