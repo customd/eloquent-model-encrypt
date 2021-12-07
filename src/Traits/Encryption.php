@@ -9,9 +9,10 @@ trait Encryption
 {
     public function mapEncryptedValues(): void
     {
-        foreach ($this->encryptable as $field) {
-            $this->setEncryptableAttribute($field);
-        }
+        collect($this->attributes)
+        ->keys()
+        ->filter(fn($field) => $this->isEncryptable($field))
+        ->each(fn($field) => $this->setEncryptableAttribute($field));
     }
 
     /**

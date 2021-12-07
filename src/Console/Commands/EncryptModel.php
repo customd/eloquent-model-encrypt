@@ -4,7 +4,6 @@ namespace CustomD\EloquentModelEncrypt\Console\Commands;
 
 use Illuminate\Console\Command;
 use CustomD\EloquentModelEncrypt\Jobs\EncryptModelRecords;
-use Illuminate\Support\Facades\Bus;
 
 class EncryptModel extends Command
 {
@@ -25,8 +24,6 @@ class EncryptModel extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle()
     {
