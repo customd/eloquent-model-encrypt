@@ -16,10 +16,7 @@ class EncryptionEngine extends Engine
     protected $encryptionEngine;
 
     /**
-     * Undocumented function.
-     *
-     * @param string|null $encryptionKey
-     * @param string $cipher
+     * @param string|null $synchronousKey
      */
     public function assignSynchronousKey($synchronousKey = null): void
     {
