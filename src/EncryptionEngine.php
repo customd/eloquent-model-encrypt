@@ -57,10 +57,6 @@ class EncryptionEngine extends Engine
      */
     public function encrypt(?string $plainText): ?string
     {
-        if ($plainText) {
-            $plainText = $this->encryptionEngine->encrypt($plainText);
-        }
-
-        return $plainText;
+        return $this->encryptionEngine->encrypt($plainText);
     }
 }
