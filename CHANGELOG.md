@@ -1,3 +1,10 @@
+## [2.7.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.1...v2.7.2) (2021-12-07)
+
+
+### Bug Fixes
+
+* encryption engine should expect an encryptable value ([f2c6ed8](https://git.customd.com/composer/eloquent-model-encrypt/commit/f2c6ed8596c2a53d1b1c0b43470e01f03d77d564))
+
 ## [2.7.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.0...v2.7.1) (2021-12-07)
 
 
