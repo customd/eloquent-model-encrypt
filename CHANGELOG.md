@@ -1,3 +1,10 @@
+## [2.7.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.0...v2.7.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* issue trying to case already encrypted attribute ([55dfc55](https://git.customd.com/composer/eloquent-model-encrypt/commit/55dfc554112b0379ceedbaeda1064e9eb2a54227))
+
 # [2.7.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.6.0...v2.7.0) (2021-12-06)
 
 
