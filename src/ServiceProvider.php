@@ -40,9 +40,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerMigrationMacros()
     {
 
-        Blueprint::macro('encrypted', function ($column, $len = 255): ColumnDefinition {
+        Blueprint::macro('encrypted', function ($column, $type = 'text'): ColumnDefinition {
             /** @var Blueprint $this */
-            return $this->addColumn('text', $column);
+            if (! in_array($type, ['text','mediumText','string'])) {
+                $type = 'text';
+            }
+            return $this->addColumn($type, $column);
         });
     }
 }

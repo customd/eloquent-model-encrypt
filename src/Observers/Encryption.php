@@ -3,8 +3,6 @@
 namespace CustomD\EloquentModelEncrypt\Observers;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Encryption\DecryptException;
-use CustomD\EloquentModelEncrypt\Model\Keystore;
 
 class Encryption
 {

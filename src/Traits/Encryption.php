@@ -7,11 +7,12 @@ namespace CustomD\EloquentModelEncrypt\Traits;
  */
 trait Encryption
 {
+
     public function mapEncryptedValues(): void
     {
-        foreach ($this->encryptable as $field) {
-            $this->setEncryptableAttribute($field);
-        }
+        collect($this->encryptable)
+        ->filter(fn($field) => $this->isDirty($field))
+        ->each(fn($field) => $this->setEncryptableAttribute($field));
     }
 
     /**

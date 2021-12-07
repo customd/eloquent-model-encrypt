@@ -3,6 +3,7 @@
 namespace CustomD\EloquentModelEncrypt\Abstracts;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 
 abstract class KeyProvider
 {
@@ -10,7 +11,7 @@ abstract class KeyProvider
 
     abstract public static function getPrivateKeyForRecord(string $table, int $recordId): ?string;
 
-    protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId)
+    protected static function getKeyFromKeystore(string $table, int $id, int $keystoreId): ?Collection
     {
         $keystoreModel = resolve(config('eloquent-model-encrypt.models.keystore'));
         $keystoreKeyModel = resolve(config('eloquent-model-encrypt.models.keystore_key'));
@@ -30,7 +31,7 @@ abstract class KeyProvider
                 )
                 ->firstOrFail();
         } catch (ModelNotFoundException $exception) {
-            return;
+            return null;
         }
 
         //mimic eloquent model for a predictable structure

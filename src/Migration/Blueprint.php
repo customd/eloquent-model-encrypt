@@ -15,7 +15,7 @@ class Blueprint extends BaseBlueprint
      * @param  string  $column
      * @param  int|null  $length
      *
-     * @deprecated 2.5.0 will be removed in V3
+     * @deprecated 2.5.0 will be removed in V3, use \Illuminate\Database\Schema\Blueprint::encryptedString($column, $type) instead
      *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
