@@ -2,6 +2,8 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Throwable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Encryption\DecryptException;
 use CustomD\EloquentModelEncrypt\Exceptions\EngineNotFoundException;
 
@@ -19,7 +21,7 @@ trait Decryption
      */
     protected function decryptAttribute(?string $value): ?string
     {
-        if (!$this->isValueEncrypted($value)) {
+        if (! $this->isValueEncrypted($value)) {
             return $value;
         }
 
@@ -27,14 +29,14 @@ trait Decryption
         $this->assignRecordsSynchronousKey(false);
 
         try {
-            if (!method_exists($this->getEncryptionEngine(), 'decrypt')) {
-                \Log::critical('No encryption engine method available to decrypt the record');
+            if (! method_exists($this->getEncryptionEngine(), 'decrypt')) {
+                Log::critical('No encryption engine method available to decrypt the record');
 
                 throw new EngineNotFoundException('Encryption Engine Not Found');
             }
 
             return $this->getEncryptionEngine()->decrypt($this->stripEncryptionHeaderFromValue($value));
-        } catch (\Exception $exception) {
+        } catch (Throwable $exception) {
             return null;
         }
     }

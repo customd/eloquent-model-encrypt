@@ -10,17 +10,25 @@
 [![Packagist](https://img.shields.io/packagist/l/custom-d/eloquent-model-encrypt.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
 [![Github Issues][badge_issues]](https://github.com/customd/eloquent-model-encrypt/issue)
 
--   [Overview](#overview)
--   [Installation](#installation)
--   [Upgrade from 1.x](#upgrade)
--   [Usage](#usage)
-    -   [Config](#config)
-    -   [Key Providers](#keyproviders)
-    -   [Migrations](#migrations)
-    -   [Models](#models)
-    -   [Engines](#engines)
-    -   [Artisan](#artisan)
--   [Suggested Packages](#suggestions)
+- [Eloquent Model Encrypt](#eloquent-model-encrypt)
+  - [Important](#important)
+  - [Installation](#installation)
+    - [Register Service Provider](#register-service-provider)
+    - [Register Facade](#register-facade)
+  - [Upgrade from V1.x](#upgrade-from-v1x)
+  - [upgrade from V2.x](#upgrade-from-v2x)
+  - [Usage](#usage)
+    - [Config](#config)
+    - [Key Providers](#key-providers)
+    - [Migrations](#migrations)
+    - [Models](#models)
+    - [Engines](#engines)
+    - [Artisan](#artisan)
+  - [Suggested Packages / Recipes](#suggested-packages--recipes)
+    - [User Keystore](#user-keystore)
+    - [Hashed Search](#hashed-search)
+    - [User Security Recovery](#user-security-recovery)
+  - [Credits](#credits)
 
 
 
@@ -87,6 +95,12 @@ Publish the config & migration
 ```bash
 php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-model-encrypt_migration
 ```
+
+
+## upgrade from V2.x
+
+We no longer use a custom column type, so you will need to switch out all your migrations calls to
+`encryptedString`, `encryptedDate`, `encryptedTimestamp` to laravel core `encrypted` column type
 
 ---
 

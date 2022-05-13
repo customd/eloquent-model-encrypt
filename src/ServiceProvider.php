@@ -2,8 +2,6 @@
 
 namespace CustomD\EloquentModelEncrypt;
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\ColumnDefinition;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -33,16 +31,5 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             self::CONFIG_PATH,
             'eloquent-model-encrypt'
         );
-
-        $this->registerMigrationMacros();
-    }
-
-    protected function registerMigrationMacros()
-    {
-
-        Blueprint::macro('encrypted', function ($column, $len = 255): ColumnDefinition {
-            /** @var Blueprint $this */
-            return $this->addColumn('text', $column);
-        });
     }
 }

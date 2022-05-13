@@ -4,6 +4,15 @@ namespace CustomD\EloquentModelEncrypt\Abstracts;
 
 abstract class Engine
 {
+
+    protected string $cipher = 'AES-128-CBC';
+
+    protected int $keyLength = 16;
+
+    protected ?string $synchronousKey = null;
+
+    protected $encryptionEngine;
+
     /**
      * Decrypt a value.
      *
@@ -27,7 +36,7 @@ abstract class Engine
      *
      * @param string|null $synchronousKey
      */
-    abstract public function assignSynchronousKey($synchronousKey = null): void;
+    abstract public function assignSynchronousKey(?string $synchronousKey = null): void;
 
     /**
      * Retrieves the current synchronous key.
