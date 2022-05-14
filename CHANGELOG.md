@@ -1,3 +1,16 @@
+# [3.0.0-beta.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.3...v3.0.0-beta.1) (2022-05-14)
+
+
+### Features
+
+* Lara 9 / php 8 ([a06a05a](https://git.customd.com/composer/eloquent-model-encrypt/commit/a06a05a62545e8caabc8a84a5d883aabae3eaaf1))
+* remove migration class extenders - use macro / inbuilt instead ([93a7adc](https://git.customd.com/composer/eloquent-model-encrypt/commit/93a7adc6d17c4e8ace499298a4b250ed6ccd7302))
+
+
+### BREAKING CHANGES
+
+* no loner supporting older version
+
 ## [2.7.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.2...v2.7.3) (2021-12-07)
 
 
