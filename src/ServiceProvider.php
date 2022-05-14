@@ -3,13 +3,14 @@
 namespace CustomD\EloquentModelEncrypt;
 
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ColumnDefinition;
 use Illuminate\Database\Schema\Grammars\Grammar;
-use CustomD\EloquentModelEncrypt\Contracts\PemStore;
+use CustomD\EloquentModelEncrypt\Store\SessionPem;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
 use CustomD\EloquentModelEncrypt\Exceptions\UnknownGrammerException;
-use CustomD\EloquentModelEncrypt\Store\SessionPem;
+use CustomD\EloquentModelEncrypt\Listeners\UserEventSubscriber;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -73,5 +74,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
             return new $pemStore($config);
         });
+
+        Event::subscribe(UserEventSubscriber::class);
     }
 }
