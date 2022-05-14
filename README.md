@@ -100,7 +100,7 @@ php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-mo
 ## upgrade from V2.x
 
 We no longer use a custom column type, so you will need to switch out all your migrations calls to
-`encryptedString`, `encryptedDate`, `encryptedTimestamp` to laravel core `encrypted` column type
+`encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
 
 ---
 

@@ -63,7 +63,8 @@ trait ModelEncryption
         $tables = $config['tables'];
 
         // Which Engine are we loading
-        $engine = isset($tables[self::class]) ? $engines[$tables[self::class]] : $engines['default'];
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Abstracts\Engine> $engine */
+        $engine = $engines[$tables[self::class] ?? 'default'];
 
         // Instansiate our Engine
         $this->encryptionEngine = new $engine();
@@ -73,7 +74,7 @@ trait ModelEncryption
 
     public function getEncryptionEngine()
     {
-        return $this->encryptionEngine ?? $this->initEncryptionEngine();
+        return $this->encryptionEngine ??= $this->initEncryptionEngine();
     }
 
     /**
