@@ -6,8 +6,10 @@ use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ColumnDefinition;
 use Illuminate\Database\Schema\Grammars\Grammar;
+use CustomD\EloquentModelEncrypt\Contracts\PemStore;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
 use CustomD\EloquentModelEncrypt\Exceptions\UnknownGrammerException;
+use CustomD\EloquentModelEncrypt\Store\SessionPem;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -62,6 +64,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         Blueprint::macro('encrypted', function ($column): ColumnDefinition {
             /** @var Blueprint $this */
             return $this->addColumn('encrypted', $column);
+        });
+
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore> $pemStore */
+        $this->app->bind('cd-pem-store', function ($app) {
+            $config = config('eloquent-model-encrypt.pem');
+            $pemStore = config('eloquent-model-encrypt.pem.class', SessionPem::class);
+
+            return new $pemStore($config);
         });
     }
 }
