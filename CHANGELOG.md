@@ -1,3 +1,10 @@
+# [3.0.0-beta.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-05-14)
+
+
+### Bug Fixes
+
+* needs grammer for column type ([80ca723](https://git.customd.com/composer/eloquent-model-encrypt/commit/80ca7232e2aedd760b1012ae60a096bd724523a4))
+
 # [3.0.0-beta.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.3...v3.0.0-beta.1) (2022-05-14)
 
 
