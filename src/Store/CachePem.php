@@ -4,8 +4,8 @@ namespace CustomD\EloquentModelEncrypt\Store;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Cache\Repository;
 use CustomD\EloquentModelEncrypt\Contracts\PemStore;
-use Illuminate\Cache\Repository;
 
 class CachePem implements PemStore
 {
@@ -24,7 +24,7 @@ class CachePem implements PemStore
     public function loadFromKey(?string $sessionKey = null): ?string
     {
         if ($sessionKey === null) {
-            return;
+            return null;
         }
 
         $this->sessionKey = $sessionKey;
@@ -41,13 +41,16 @@ class CachePem implements PemStore
         $user = $request->user();
 
         if (! $user) {
-            return;
+            return null;
         }
 
         $sessionKey = $user->id . '::' . $user->salt;
 
         if ($this->store->has($sessionKey)) {
-            $this->storePem($sessionKey, decrypt($this->store->get($sessionKey)));
+            $this->storePem(
+                privateKey: decrypt($this->store->get($sessionKey)),
+                sessionKey: $sessionKey,
+            );
         }
 
         return $this->sessionPem;
@@ -68,7 +71,7 @@ class CachePem implements PemStore
         return ! empty($this->sessionPem);
     }
 
-    public function storePem(?string $sessionKey = null, string $privateKey, ?int $hours = null): void
+    public function storePem(string $privateKey, ?string $sessionKey = null, ?int $hours = null): void
     {
         $lifetime = $hours ?? (config('session.lifetime') / 60);
         $this->store->put($sessionKey, encrypt($privateKey), now()->addHours($lifetime));
@@ -81,7 +84,11 @@ class CachePem implements PemStore
         /** @var User $user */
         $sessionKey = $user->id . '::' . $user->salt;
        // Log::debug("Storing User Session with key:" .  $sessionKey);
-        $this->storePem($sessionKey, $privateKey, $hours);
+        $this->storePem(
+            privateKey: $privateKey,
+            sessionKey: $sessionKey,
+            hours: $hours,
+        );
     }
 
     public function destroy(): void

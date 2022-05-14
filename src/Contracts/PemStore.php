@@ -10,6 +10,6 @@ interface PemStore
     public function setPem(string $sessionPem): void;
     public function getPem(): ?string;
     public function hasPem(): bool;
-    public function storePem(?string $sessionKey = null, string $privateKey, ?int $hours = null): void;
+    public function storePem(string $privateKey, ?string $sessionKey = null, ?int $hours = null): void;
     public function destroy(): void;
 }

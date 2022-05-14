@@ -1,6 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$rsaKey\\.$#"
+			count: 4
+			path: src/KeyProviders/UserKeyProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:getDecryptedPrivateKey\\(\\)\\.$#"
+			count: 1
+			path: src/Listeners/UserEventSubscriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of static method CustomD\\\\EloquentModelEncrypt\\\\Store\\\\SessionPem\\:\\:storeUserPem\\(\\) expects Illuminate\\\\Foundation\\\\Auth\\\\User, Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable given\\.$#"
+			count: 1
+			path: src/Listeners/UserEventSubscriber.php
+
+		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:assignRecordsSynchronousKey\\(\\)\\.$#"
 			count: 1
 			path: src/Observers/Encryption.php
@@ -29,3 +44,8 @@ parameters:
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:storeKeyReferences\\(\\)\\.$#"
 			count: 2
 			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$salt\\.$#"
+			count: 2
+			path: src/Store/CachePem.php

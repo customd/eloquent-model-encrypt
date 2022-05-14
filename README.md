@@ -102,6 +102,8 @@ php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-mo
 We no longer use a custom column type, so you will need to switch out all your migrations calls to
 `encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
 
+ Added PemStore Contract that can now automatically be used to store the PEM in session / cache etc.  -- your own intergrations should try map to this.
+
 ---
 
 <a name="usage"></a>

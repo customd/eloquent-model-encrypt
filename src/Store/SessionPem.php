@@ -48,7 +48,7 @@ class SessionPem implements PemStore
         return $this->sessionPem !== null;
     }
 
-    public function storePem(?string $sessionKey = null, string $privateKey, ?int $hours = null): void
+    public function storePem(string $privateKey, ?string $sessionKey = null, ?int $hours = null): void
     {
         Session::put($this->sessionKey, encrypt($privateKey));
         $this->sessionPem = $privateKey;
