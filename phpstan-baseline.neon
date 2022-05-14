@@ -1,0 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:assignRecordsSynchronousKey\\(\\)\\.$#"
+			count: 1
+			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getEncryptionEngine\\(\\)\\.$#"
+			count: 1
+			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getKeystoreModel\\(\\)\\.$#"
+			count: 1
+			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getTableKeystoreReference\\(\\)\\.$#"
+			count: 1
+			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:mapEncryptedValues\\(\\)\\.$#"
+			count: 2
+			path: src/Observers/Encryption.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:storeKeyReferences\\(\\)\\.$#"
+			count: 2
+			path: src/Observers/Encryption.php
