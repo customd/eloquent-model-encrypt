@@ -9,7 +9,7 @@ test:php:8-0:
     - composer install
     - php vendor/bin/phpunit --colors --exclude-group=special
   rules:
-    - if: $PHP_PRIMARY_VERSION === '8.0'
+    - if: $PHP_PRIMARY_VERSION == '8.0'
       when: always
-    - if: $TEST_PHP_8_0 == '1'
+    - if: $TEST_PHP_8_0 == 'true'
       when: always
