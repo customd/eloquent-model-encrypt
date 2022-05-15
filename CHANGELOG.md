@@ -1,3 +1,10 @@
+# [3.0.0-beta.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-05-15)
+
+
+### Bug Fixes
+
+* minor updates for stability ([d158590](https://git.customd.com/composer/eloquent-model-encrypt/commit/d158590a82b522c78959ed296b0315c1d4fc30c2))
+
 # [3.0.0-beta.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-05-15)
 
 
