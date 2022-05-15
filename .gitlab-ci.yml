@@ -1,8 +1,3 @@
 include:
   - project: "custom-d/ci-templates"
     file: "php-packages.gitlab-ci.yml"
-
-variables:
-  PHP_IMAGE: "tiagosampaio/php"
-  PHP_PRIMARY_VERSION: "8.1"
-  TEST_PHP_8_0: $PHP_PRIMARY_VERSION === '8.0'
