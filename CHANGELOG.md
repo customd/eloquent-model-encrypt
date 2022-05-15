@@ -1,3 +1,18 @@
+# [3.0.0-beta.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-05-15)
+
+
+### Bug Fixes
+
+* correcting order of params ([cb040ef](https://git.customd.com/composer/eloquent-model-encrypt/commit/cb040efc1cf715830d7aeaeb5613747d47f57cca))
+* for better backward compat - make new functionality opt-in ([01f3166](https://git.customd.com/composer/eloquent-model-encrypt/commit/01f3166c1a132a22e874cfdd6caaf359cb9b55d5))
+
+
+### Features
+
+* stubs for keyproviders ([eb8ac99](https://git.customd.com/composer/eloquent-model-encrypt/commit/eb8ac993e2b92450c8997cbb9dde52f80c64a731))
+* user key provider - session / cache ([ed79f18](https://git.customd.com/composer/eloquent-model-encrypt/commit/ed79f18409e09f436f989ec87003759b558a48a7))
+* user subscribers to set pem ([33917ed](https://git.customd.com/composer/eloquent-model-encrypt/commit/33917ed3d7c5a79cc1d9cfb9b86283f6e052b972))
+
 # [3.0.0-beta.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-05-14)
 
 
