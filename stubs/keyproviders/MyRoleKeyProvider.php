@@ -1,23 +1,47 @@
 <?php
 
-namespace App\KeyProviders;
+namespace App\Models\KeyProviders\Keystore;
 
-use CustomD\EloquentModelEncrypt\KeyProviders\RoleKeyProvider;
+use Illuminate\Database\Eloquent\Model;
+use App\KeyProviders\DeveloperUserKeyProvider;
+use CustomD\EloquentModelEncrypt\Model\RsaKey;
+use CustomD\EloquentModelEncrypt\ModelEncryption;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use CustomD\EloquentModelEncrypt\Contracts\Encryptable;
 
-class MyRoleKeyProvider extends RoleKeyProvider
+class DeveloperRole extends Model implements Encryptable
 {
+    use ModelEncryption;
 
     /**
-     * what role are we working with
-     *
-     * @var string $role
+     * @inheritDoc
      */
-    protected static $role = 'Developer';
+    protected $table = 'keystore_role_developer';
 
     /**
-     * What Model stores the keys
-     *
-     * @var class-string $model
+     * @inheritDoc
      */
-    protected static $model = \App\Models\DeveloperKey::class;
+    protected static $keyProviders = [
+        DeveloperUserKeyProvider::class,
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    protected $fillable = [
+        'rsa_key_id',
+        'key',
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    protected $encryptable = [
+        'key',
+    ];
+
+    public function rsaKey(): BelongsTo
+    {
+        return $this->belongsTo(RsaKey::class, 'rsa_key_id');
+    }
 }

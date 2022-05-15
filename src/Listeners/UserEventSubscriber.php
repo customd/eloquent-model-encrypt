@@ -54,17 +54,17 @@ class UserEventSubscriber
     {
         $events->listen(
             Attempting::class,
-            'App\Listeners\UserEventSubscriber@handleAuthenticationAttempt'
+            [static::class, 'handleAuthenticationAttempt']
         );
 
         $events->listen(
             Login::class,
-            'App\Listeners\UserEventSubscriber@handleUserLogin'
+            [static::class, 'handleUserLogin']
         );
 
         $events->listen(
             Logout::class,
-            'App\Listeners\UserEventSubscriber@handleUserLogout'
+            [static::class, 'handleUserLogout']
         );
     }
 }
