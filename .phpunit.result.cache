@@ -1,1 +1,1 @@
-{"version":1,"defects":{"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testExample":4},"times":{"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testBasicEngine":0.792,"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testExample":0.033}}
+{"version":1,"defects":{"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testExample":4},"times":{"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testBasicEngine":0.405,"CustomD\\EloquentModelEncrypt\\Tests\\EloquentModelEncryptTest::testExample":0.044}}

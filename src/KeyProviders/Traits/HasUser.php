@@ -2,7 +2,6 @@
 
 namespace CustomD\EloquentModelEncrypt\KeyProviders\Traits;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 use CustomD\EloquentModelEncrypt\Facades\PemStore;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;

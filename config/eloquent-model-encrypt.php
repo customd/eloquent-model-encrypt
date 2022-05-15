@@ -28,7 +28,7 @@ return [
      * listener - Listen to login events automatically and set user pem
      */
     'pem' => [
-        'class' => null, // \CustomD\EloquentModelEncrypt\Store\SessionPem::class, // null to disable
+        'class' => \CustomD\EloquentModelEncrypt\Store\SessionPem::class,
         'cache' => null, // set to a specific cache if using a different cache from normal
         'session' => '_cdpem_', //what key should be used in your session?
     ],

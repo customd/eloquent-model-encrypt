@@ -67,8 +67,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             return $this->addColumn('encrypted', $column);
         });
 
-        /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore>|null $pemStore */
-        $pemStore = config('eloquent-model-encrypt.pem');
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore> $pemStore */
+        $pemStore = config('eloquent-model-encrypt.pem.class', SessionPem::class);
 
         if ($pemStore) {
             $this->app->bind('cd-pem-store', fn ($app) => new $pemStore(config('eloquent-model-encrypt.pem')));

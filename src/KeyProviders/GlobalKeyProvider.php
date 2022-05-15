@@ -2,6 +2,7 @@
 
 namespace CustomD\EloquentModelEncrypt\KeyProviders;
 
+use Illuminate\Database\Eloquent\Model;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
@@ -13,7 +14,7 @@ class GlobalKeyProvider extends KeyProvider
     /**
      * Should return keystore_id => public key for the ones we want!
      */
-    public static function getPublicKeysForTable($record, $extra = []): array
+    public static function getPublicKeysForTable(Model $record, $extra = []): array
     {
         return [0 => config('eloquent-model-encrypt.publickey')];
     }

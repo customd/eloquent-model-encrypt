@@ -4,7 +4,6 @@ namespace CustomD\EloquentModelEncrypt\KeyProviders;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
-use App\KeyProviders\Contracts\GetPrivateKeyByUser;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
 use CustomD\EloquentModelEncrypt\KeyProviders\Traits\HasUser;
 
@@ -18,7 +17,7 @@ class UserKeyProvider extends KeyProvider
      * @param \Illuminate\Database\Eloquent\Model $record
      * @param array $extra
      */
-    public static function getPublicKeysForTable($record, $extra = []): array
+    public static function getPublicKeysForTable(Model $record, $extra = []): array
     {
         $user_ids = collect(self::getRecordsUserIds($record, $extra))->filter()->unique();
 
