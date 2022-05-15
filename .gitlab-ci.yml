@@ -1,3 +1,15 @@
 include:
   - project: "custom-d/ci-templates"
     file: "php-packages.gitlab-ci.yml"
+
+test:php:8-0:
+  image: $PHP_IMAGE:8.0
+  script:
+    - php -v
+    - composer install
+    - php vendor/bin/phpunit --colors --exclude-group=special
+  rules:
+    - if: $PHP_PRIMARY_VERSION === '8.0'
+      when: always
+    - if: $TEST_PHP_8_0 == '1'
+      when: always
