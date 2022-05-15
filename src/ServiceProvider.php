@@ -67,14 +67,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             return $this->addColumn('encrypted', $column);
         });
 
-        $this->app->bind('cd-pem-store', function ($app) {
-            $config = config('eloquent-model-encrypt.pem');
-            /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore> $pemStore */
-            $pemStore = config('eloquent-model-encrypt.pem.class', SessionPem::class);
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore>|null $pemStore */
+        $pemStore = config('eloquent-model-encrypt.pem');
 
-            return new $pemStore($config);
-        });
+        if ($pemStore) {
+            $this->app->bind('cd-pem-store', fn ($app) => new $pemStore(config('eloquent-model-encrypt.pem')));
+        }
 
-        Event::subscribe(UserEventSubscriber::class);
+        if (config('eloquent-model-encrypt.listener')) {
+            Event::subscribe(UserEventSubscriber::class);
+        }
     }
 }
