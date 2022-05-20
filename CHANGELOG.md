@@ -1,3 +1,10 @@
+# [3.0.0-beta.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-05-20)
+
+
+### Features
+
+* added middleware to. init PEM store ([f09f660](https://git.customd.com/composer/eloquent-model-encrypt/commit/f09f66017d83dd8056e2e1d90287bd05033a48f7))
+
 # [3.0.0-beta.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-05-15)
 
 
