@@ -147,6 +147,8 @@ By default we have Session which will store in the users session and Cache which
 These tie in to the provided listener or can be accessed via the PemStore Facade.
 
 
+`CustomD\EloquentModelEncrypt\Middleware\InitPemStore` middleware works with the aboe contract
+
 <a name="migrations"></a>
 
 ### Migrations
