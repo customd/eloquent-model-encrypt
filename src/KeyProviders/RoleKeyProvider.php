@@ -98,6 +98,24 @@ abstract class RoleKeyProvider extends KeyProvider
         }
     }
 
+    public function removeUserKey(User $user): void
+    {
+        $groupKey = static::getRoleModel()::first();
+
+        if ($groupKey?->getPrivateKeyForRecord() === null) {
+            return;
+        }
+
+        $keystore = Keystore::where('ref', $groupKey->getKey())->where('table', $groupKey->getTable())->first();
+        if ($keystore === null) {
+            return;
+        }
+
+        KeystoreKey::where('keystore_id', $keystore->id)
+        ->where('rsa_key_id', $user->rsa_key_id)
+        ->delete();
+    }
+
     public static function addUserKey(User $user): void
     {
         $groupKey = static::getRoleModel()::firstOrFail();
