@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Collection;
 use CustomD\EloquentModelEncrypt\Facades\PemStore;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use CustomD\EloquentModelEncrypt\Contracts\Encryptable;
 use CustomD\EloquentModelEncrypt\Exceptions\PemFailureException;
+use CustomD\EloquentModelEncrypt\KeyProviders\Traits\ProviderHasUser;
 
 /**
  * these methods all extend over the Eloquent methods.
  */
 abstract class RoleUserKeyProvider extends KeyProvider
 {
+    use ProviderHasUser;
 
     public static function getRole(): string
     {
@@ -24,8 +27,7 @@ abstract class RoleUserKeyProvider extends KeyProvider
 
     public static function getUsersWithRoles(): Collection
     {
-        /** @var \Illuminate\Foundation\Auth\User $userClass */
-        $userClass = resolve(config('auth.providers.users.model'));
+        $userClass = resolve(static::getUserModel());
         $filterByRole = static::getRole();
         return $userClass->whereHas(
             'roles',
@@ -33,36 +35,24 @@ abstract class RoleUserKeyProvider extends KeyProvider
         )->get();
     }
 
-    public static function getPublicKeysForTable(Model $record, $extra = []): array
+    public static function getPublicKeysForTable(Model&Encryptable $record, array $extra = []): array
     {
 
-        //get all users keys for the current User
-        $users = static::getUsersWithRoles();
-
-        $publicKeys = [];
-
-        foreach ($users as $user) {
-            if ($user->rsaKey === null) {
-                Log::critical("User does not have a keypair", [
-                    'user'   => $user->toArray(),
-                    'record' => $record->toArray()
-                ]);
-            } else {
-                $publicKeys[$user->rsaKey->id] = $user->rsaKey->public_key;
-            }
-        }
-
-        return $publicKeys;
+        return static::mapUserKeys(
+            static::getUsersWithRoles()
+        );
     }
 
     public static function getPrivateKeyForRecord(string $table, int $recordId): ?string
     {
         $user = auth()->user();
 
+        // @phpstan-ignore-next-line hasRole is a method injected by Role Provider
         if ($user === null || ! $user->hasRole(static::getRole())) {
             return null;
         }
 
+        // @phpstan-ignore-next-line - rsaKey->id is from the user model with the trait applied
         $rsa_keystore_id = $user->rsaKey->id;
 
         $rec = self::getKeyFromKeystore($table, $recordId, $rsa_keystore_id);

@@ -2,12 +2,13 @@
 
 namespace CustomD\EloquentModelEncrypt\Abstracts;
 
+use CustomD\EloquentModelEncrypt\Contracts\Encryptable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class KeyProvider
 {
-    abstract public static function getPublicKeysForTable(Model $record, $extra = []): array;
+    abstract public static function getPublicKeysForTable(Model&Encryptable $record, array $extra = []): array;
 
     abstract public static function getPrivateKeyForRecord(string $table, int $recordId): ?string;
 

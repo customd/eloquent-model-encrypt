@@ -1,16 +1,10 @@
 <?php
 namespace CustomD\EloquentModelEncrypt\Listeners;
 
-use App\Services\SessionPem;
-use App\Events\UserTransferEvent;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Attempting;
-use Illuminate\Auth\Events\PasswordReset;
-use App\Helpers\Encryption as EncryptionHelper;
 use CustomD\EloquentModelEncrypt\Facades\PemStore;
-use CustomD\WebhookRegistry\Facades\WebhookRegistry;
 
 class UserEventSubscriber
 {
@@ -34,7 +28,7 @@ class UserEventSubscriber
         if (self::$attempt === null) {
             return;
         }
-
+        // @phpstan-ignore-next-line
         $pem = $event->user->getDecryptedPrivateKey(self::$attempt->credentials['password']);
 
         PemStore::storeUserPem($event->user, $pem, config('session.lifetime') / 60);

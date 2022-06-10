@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Session;
 use CustomD\EloquentModelEncrypt\Contracts\PemStore;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class SessionPem implements PemStore
 {
@@ -54,7 +55,7 @@ class SessionPem implements PemStore
         $this->sessionPem = $privateKey;
     }
 
-    public function storeUserPem(User $user, string $privateKey, ?int $hours = null): void
+    public function storeUserPem(Authenticatable $user, string $privateKey, ?int $hours = null): void
     {
         $this->storePem(privateKey: $privateKey);
     }

@@ -2,11 +2,13 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * these methods all extend over the Eloquent methods.
@@ -70,10 +72,10 @@ trait Keystore
                 throw new DecryptException("You cannot update an encrypted record without updating all fields");
             }
 
-            \Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
+            Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
                 'message' => $e->getMessage(),
                 'key'     => $this->getKey(),
-                'user'    => \Auth::user() ? \Auth::user()->getKey() : null
+                'user'    => auth()->user() ? auth()->user()->getKey() : null
             ]);
 
             if (config('eloquent-model-encrypt.throw_on_missing_key')) {
@@ -179,13 +181,13 @@ trait Keystore
     }
 
 
-    public function getKeystoreKeyModel(): \Illuminate\Database\Eloquent\Model
+    public function getKeystoreKeyModel(): Model
     {
         return resolve(config('eloquent-model-encrypt.models.keystore_key'));
     }
 
 
-    public function getKeystoreModel(): \Illuminate\Database\Eloquent\Model
+    public function getKeystoreModel(): Model
     {
         return resolve(config('eloquent-model-encrypt.models.keystore'));
     }

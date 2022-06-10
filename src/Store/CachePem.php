@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Cache\Repository;
 use CustomD\EloquentModelEncrypt\Contracts\PemStore;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class CachePem implements PemStore
 {
@@ -44,6 +45,7 @@ class CachePem implements PemStore
             return null;
         }
 
+        // @phpstan-ignore-next-line -- user salt will be on the user table due to migration
         $sessionKey = $user->id . '::' . $user->salt;
 
         if ($this->store->has($sessionKey)) {
@@ -79,11 +81,12 @@ class CachePem implements PemStore
         $this->sessionKey = $sessionKey;
     }
 
-    public function storeUserPem(User $user, string $privateKey, ?int $hours = null): void
+    public function storeUserPem(Authenticatable $user, string $privateKey, ?int $hours = null): void
     {
         /** @var User $user */
+        // @phpstan-ignore-next-line -- user salt will be on the user table due to migration
         $sessionKey = $user->id . '::' . $user->salt;
-       // Log::debug("Storing User Session with key:" .  $sessionKey);
+
         $this->storePem(
             privateKey: $privateKey,
             sessionKey: $sessionKey,

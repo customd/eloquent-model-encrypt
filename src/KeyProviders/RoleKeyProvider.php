@@ -9,6 +9,7 @@ use CustomD\EloquentModelEncrypt\Model\RsaKey;
 use CustomD\EloquentModelEncrypt\Model\Keystore;
 use CustomD\EloquentModelEncrypt\Model\KeystoreKey;
 use CustomD\EloquentModelEncrypt\Abstracts\KeyProvider;
+use CustomD\EloquentModelEncrypt\Contracts\Encryptable;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
 /**
@@ -17,7 +18,7 @@ use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 abstract class RoleKeyProvider extends KeyProvider
 {
 
-    public static function getRoleModel(): Model
+    public static function getRoleModel(): Model&Encryptable
     {
         throw_unless(isset(static::$model), 'Please set your model for this role');
         return resolve(static::$model);
@@ -29,15 +30,16 @@ abstract class RoleKeyProvider extends KeyProvider
         return static::$role;
     }
 
-    public static function getPublicKeysForTable(Model $record, $extra = []): array
+    public static function getPublicKeysForTable(Model&Encryptable $record, array $extra = []): array
     {
-        //get all users keys from role Develoepr
+        /** @var Model|Encryptable|null $key */
         $key = static::getRoleModel()::first();
 
         if (! $key) {
             return [];
         }
 
+         // @phpstan-ignore-next-line - keystore dataa
         return [$key->rsa_key_id => $key->rsaKey->public_key];
     }
 
@@ -45,24 +47,25 @@ abstract class RoleKeyProvider extends KeyProvider
     {
         $user = auth()->user();
 
+        // @phpstan-ignore-next-line - hasRole comes from user model
         if ($user === null || ! $user->hasRole(static::getRole())) {
             return null;
         }
 
+        /** @var Model|Encryptable|null $roleStore */
         $roleStore = static::getRoleModel()::first();
 
         if (! $roleStore) {
             return null;
         }
 
-        $roleSecrets = json_decode($roleStore->key, true);
-
-        $encryptedKey = $roleStore->rsaKey->private_key;
+        $roleSecrets = json_decode($roleStore->key, true); //@phpstan-ignore-line -- keystore based model
+        $encryptedKey = $roleStore->rsaKey->private_key; //@phpstan-ignore-line -- keystore based model
 
         $roleKeystore = EloquentAsyncKeys::setKeys(null, $encryptedKey, $roleSecrets['password'], $roleSecrets['salt']);
         $privateKey = $roleKeystore->getDecryptedPrivateKey();
 
-        $rsa_keystore_id = $roleStore->rsaKey->id;
+        $rsa_keystore_id = $roleStore->rsaKey->id; //@phpstan-ignore-line -- keystore based model
         $rec = self::getKeyFromKeystore($table, $recordId, $rsa_keystore_id);
 
         return EloquentAsyncKeys::reset()->decryptWithKey($privateKey, $rec->key, $rec->Keystores->first()->key);
@@ -100,6 +103,7 @@ abstract class RoleKeyProvider extends KeyProvider
 
     public function removeUserKey(User $user): void
     {
+         /** @var Model|Encryptable|null $groupKey */
         $groupKey = static::getRoleModel()::first();
 
         if ($groupKey?->getPrivateKeyForRecord() === null) {
@@ -112,14 +116,16 @@ abstract class RoleKeyProvider extends KeyProvider
         }
 
         KeystoreKey::where('keystore_id', $keystore->id)
-        ->where('rsa_key_id', $user->rsa_key_id)
+        ->where('rsa_key_id', $user->rsa_key_id) // @phpstan-ignore-line -- rsa_key_id is mapped to the user model by a trait
         ->delete();
     }
 
     public static function addUserKey(User $user): void
     {
+        /** @var Model&Encryptable $groupKey */
         $groupKey = static::getRoleModel()::firstOrFail();
 
+        // @phpstan-ignore-next-line
         if ($groupKey->getPrivateKeyForRecord() === null) {
             throw new RuntimeException("Failed to Assign role to user");
         }
@@ -129,7 +135,7 @@ abstract class RoleKeyProvider extends KeyProvider
         //exists only true if user saved at least once and therefore has a unique id.
         if ($user->exists) {
             KeystoreKey::where('keystore_id', $keystore->id)
-            ->where('rsa_key_id', $user->rsa_key_id)
+            ->where('rsa_key_id', $user->rsa_key_id) // @phpstan-ignore-line -- rsa_key_id is mapped to the user model by a trait
             ->delete();
 
             $groupKey->forceEncrypt();

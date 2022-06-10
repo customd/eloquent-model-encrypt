@@ -17,7 +17,7 @@
   "require": {
     "php": "^8.1",
     "illuminate/support": "^9.0",
-    "custom-d/eloquent-async-keys": "^3.0"
+    "custom-d/eloquent-async-keys": "^4.0.0"
   },
   "require-dev": {
     "nunomaduro/larastan": "^2.0",

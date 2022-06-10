@@ -26,7 +26,7 @@ trait Encryption
 
         $value = $this->attributes[$field];
 
-        if (! $this->isValueEncrypted($value)) {
+        if ($this->isPlaintext($value)) {
             $this->attributes[$field] = $this->encryptAttribute($value);
         }
 

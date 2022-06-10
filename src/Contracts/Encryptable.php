@@ -1,19 +1,31 @@
 <?php
 namespace CustomD\EloquentModelEncrypt\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+
 interface Encryptable
 {
-    /**
-     * @var array<mixed, mixed> $options
-     */
     public function forceEncrypt(array $options = []);
 
     public function getEncryptionEngine();
 
     public function isEncryptable(string $key): bool;
 
-    public function isValueEncrypted(?string $value): bool;
+    public function isCyphertext(?string $value): bool;
+
+    public function isPlaintext(?string $value): bool;
 
     public function getTableKeystoreReference(): string;
 
+    public function mapEncryptedValues(): void;
+
+    public function assignRecordsSynchronousKey(bool $create = false): void;
+
+    public function storeKeyReferences(): void;
+
+    public function getKeystoreKeyModel(): Model;
+
+    public function getKeystoreModel(): Model;
+
+    public function getPrivateKeyForRecord(): string;
 }

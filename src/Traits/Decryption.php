@@ -21,7 +21,7 @@ trait Decryption
      */
     protected function decryptAttribute(?string $value): ?string
     {
-        if (! $this->isValueEncrypted($value)) {
+        if ($this->isPlaintext($value)) {
             return $value;
         }
 

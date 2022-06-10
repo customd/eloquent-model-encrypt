@@ -91,17 +91,15 @@ trait ModelEncryption
         return in_array($key, $this->encryptable);
     }
 
-    /**
-     * checks whether the value is currently encrypted or not.
-     *
-     * @param string|null $value
-     *
-     * @return bool
-     */
-    public function isValueEncrypted(?string $value): bool
+
+    public function isCyphertext(?string $value): bool
     {
-        //if position 0 has the header string we are a match :-)
         return strpos($value, self::$encryptionHeader) === 0;
+    }
+
+    public function isPlaintext(?string $value): bool
+    {
+        return ! $this->isCyphertext($value);
     }
 
     /**

@@ -15,6 +15,9 @@
   - [Installation](#installation)
     - [Register Service Provider](#register-service-provider)
   - [upgrade from V2.x](#upgrade-from-v2x)
+    - [Major Changes](#major-changes)
+  - [- Fixed missing typeCasting on the `KeyProvider::getPublicKeysForTable` abstract you will need to update your implementations](#--fixed-missing-typecasting-on-the-keyprovidergetpublickeysfortable-abstract-you-will-need-to-update-your-implementations)
+    - [Minor Changs](#minor-changs)
   - [Usage](#usage)
     - [Config](#config)
     - [Key Providers](#key-providers)
@@ -80,12 +83,17 @@ CustomD\EloquentModelEncrypt\ServiceProvider::class,
 <a name="upgrade"></a>
 ## upgrade from V2.x
 
-We no longer use a custom column type, so you will need to switch out all your migrations calls to
-`encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
-
- Added PemStore Contract that can now automatically be used to store the PEM in session / cache etc.  -- your own intergrations should try map to this.
-
+### Major Changes
+- We no longer use a custom column type, so you will need to switch out all your migrations calls to `encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
+- Interface required for Encryptable Models `CustomD\EloquentModelEncrypt\Contracts\Encryptable`
+- PemStore Facade for your session based PEM Storage -- you will need to upgrade your mappings to use this. `CustomD\EloquentModelEncrypt\Contracts\PemStore`
+- `CustomD\EloquentModelEncrypt\Middleware\InitPemStore` middleware added works with the above contract
+- Fixed missing typeCasting on the `KeyProvider::getPublicKeysForTable` abstract you will need to update your implementations
 ---
+
+### Minor Changs
+- `::isValueEncrypted` has been removed and replaced with `::isCyphertext` and `::isPlaintext`
+
 
 <a name="usage"></a>
 

@@ -3,8 +3,6 @@
 namespace CustomD\EloquentModelEncrypt\Observers;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Encryption\DecryptException;
-use CustomD\EloquentModelEncrypt\Model\Keystore;
 
 class Encryption
 {
@@ -19,7 +17,7 @@ class Encryption
     /**
      * Creating event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model&\CustomD\EloquentModelEncrypt\Contracts\Encryptable $model
      */
     public function creating($model)
     {
@@ -30,7 +28,7 @@ class Encryption
     /**
      * Updating event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model&\CustomD\EloquentModelEncrypt\Contracts\Encryptable $model
      */
     public function updating($model)
     {
@@ -43,7 +41,7 @@ class Encryption
     /**
      * Created event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model&\CustomD\EloquentModelEncrypt\Contracts\Encryptable $model
      */
     public function created($model)
     {
@@ -61,7 +59,7 @@ class Encryption
     /**
      * Deleted event called from the Model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model&\CustomD\EloquentModelEncrypt\Contracts\Encryptable $model
      */
     public function deleted($model)
     {
