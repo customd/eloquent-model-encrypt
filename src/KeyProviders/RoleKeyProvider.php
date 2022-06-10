@@ -101,7 +101,7 @@ abstract class RoleKeyProvider extends KeyProvider
         }
     }
 
-    public function removeUserKey(User $user): void
+    public static function removeUserKey(User $user): void
     {
          /** @var Model|Encryptable|null $groupKey */
         $groupKey = static::getRoleModel()::first();
