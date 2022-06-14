@@ -5,6 +5,7 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Attempting;
 use CustomD\EloquentModelEncrypt\Facades\PemStore;
+use Illuminate\Auth\Events\Failed;
 
 class UserEventSubscriber
 {
@@ -17,7 +18,7 @@ class UserEventSubscriber
      */
     public function handleAuthenticationAttempt(Attempting $attempt): void
     {
-        self::$attempt = $attempt;
+        static::$attempt = $attempt;
     }
 
     /**
@@ -25,18 +26,25 @@ class UserEventSubscriber
      */
     public function handleUserLogin(Login $event): void
     {
-        if (self::$attempt === null) {
+        if (static::$attempt === null) {
             return;
         }
         // @phpstan-ignore-next-line
         $pem = $event->user->getDecryptedPrivateKey(self::$attempt->credentials['password']);
 
         PemStore::storeUserPem($event->user, $pem, config('session.lifetime') / 60);
+
+        static::$attempt = null;
     }
 
     public function handleUserLogout(): void
     {
         PemStore::destroy();
+    }
+
+    public function handleUserAttemptFailed(): void
+    {
+        static::$attempt = null;
     }
 
     /**
@@ -59,6 +67,11 @@ class UserEventSubscriber
         $events->listen(
             Logout::class,
             [static::class, 'handleUserLogout']
+        );
+
+        $events->listen(
+            Failed::class,
+            [static::class, 'handleUserAttemptFailed']
         );
     }
 }
