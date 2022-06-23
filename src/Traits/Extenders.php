@@ -2,6 +2,9 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Contracts\Encryption\EncryptException;
 
 /**
