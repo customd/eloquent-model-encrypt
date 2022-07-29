@@ -7,10 +7,10 @@ interface UserKeystoreContract
 {
     public function hashPassword(string $cleartextPassword): string;
 
-    public function rsaKey(): BelongsTo
+    public function rsaKey(): BelongsTo;
 
-    public function addKeyPair(string $password, bool $force = false): static
+    public function addKeyPair(string $password, bool $force = false): static;
 
-    public function getDecryptedPrivateKey(string $password): ?string
+    public function getDecryptedPrivateKey(string $password): ?string;
 
 }
