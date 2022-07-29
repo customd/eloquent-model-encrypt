@@ -86,6 +86,7 @@ CustomD\EloquentModelEncrypt\ServiceProvider::class,
 ### Major Changes
 - We no longer use a custom column type, so you will need to switch out all your migrations calls to `encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
 - Interface required for Encryptable Models `CustomD\EloquentModelEncrypt\Contracts\Encryptable`
+- Interface required for User Model - `CustomD\EloquentModelEncrypt\Contracts\UserKeystoreContract`
 - PemStore Facade for your session based PEM Storage -- you will need to upgrade your mappings to use this. `CustomD\EloquentModelEncrypt\Contracts\PemStore`
 - `CustomD\EloquentModelEncrypt\Middleware\InitPemStore` middleware added works with the above contract
 - Fixed missing typeCasting on the `KeyProvider::getPublicKeysForTable` abstract you will need to update your implementations

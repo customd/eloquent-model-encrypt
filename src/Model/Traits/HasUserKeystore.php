@@ -65,7 +65,7 @@ trait HasUserKeystore
     /**
      * Creates the users RsaKeypair
      */
-    public function addKeyPair(string $password, bool $force = false): self
+    public function addKeyPair(string $password, bool $force = false): static
     {
         if ($this->rsa_key_id && ! $force) {
             throw new EncryptException("Cannot add Keypair as one already exists (or set the force option)");
