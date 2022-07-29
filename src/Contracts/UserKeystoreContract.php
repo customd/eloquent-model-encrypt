@@ -2,6 +2,7 @@
 namespace CustomD\EloquentModelEncrypt\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 interface UserKeystoreContract
 {
