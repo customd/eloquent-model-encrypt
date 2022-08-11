@@ -1,3 +1,16 @@
+# [3.0.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.3...v3.0.0) (2022-08-11)
+
+
+### Features
+
+* Release 3 ([3f80042](https://git.customd.com/composer/eloquent-model-encrypt/commit/3f80042fe13d952dd736696106e185f3ee7297c8))
+
+
+### BREAKING CHANGES
+
+* Dropped support for php8 and other code
+improvements, see changelog and upgrade notice
+
 # [3.0.0-beta.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-05-20)
 
 
