@@ -2,5 +2,4 @@ include:
   - project: "custom-d/ci-templates"
     file: "php-packages.gitlab-ci.yml"
 
-variables:
-  TEST_PHP_8_0: "1"
+
