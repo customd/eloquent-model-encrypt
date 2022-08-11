@@ -4,6 +4,15 @@ namespace CustomD\EloquentModelEncrypt\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * CustomD\EloquentModelEncrypt\Model\Keystore
+ *
+ * @property integer $id
+ * @property string $table
+ * @property integer $ref
+ * @property string $key
+ * @property-read \CustomD\EloquentModelEncrypt\Model\Keystores[] $keystore
+ */
 class Keystore extends Model
 {
     protected $fillable = [

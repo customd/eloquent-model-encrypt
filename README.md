@@ -10,17 +10,27 @@
 [![Packagist](https://img.shields.io/packagist/l/custom-d/eloquent-model-encrypt.svg)](https://packagist.org/packages/custom-d/eloquent-model-encrypt)
 [![Github Issues][badge_issues]](https://github.com/customd/eloquent-model-encrypt/issue)
 
--   [Overview](#overview)
--   [Installation](#installation)
--   [Upgrade from 1.x](#upgrade)
--   [Usage](#usage)
-    -   [Config](#config)
-    -   [Key Providers](#keyproviders)
-    -   [Migrations](#migrations)
-    -   [Models](#models)
-    -   [Engines](#engines)
-    -   [Artisan](#artisan)
--   [Suggested Packages](#suggestions)
+- [Eloquent Model Encrypt](#eloquent-model-encrypt)
+  - [Important](#important)
+  - [Installation](#installation)
+    - [Register Service Provider](#register-service-provider)
+  - [upgrade from V2.x](#upgrade-from-v2x)
+    - [Major Changes](#major-changes)
+  - [- Fixed missing typeCasting on the `KeyProvider::getPublicKeysForTable` abstract you will need to update your implementations](#--fixed-missing-typecasting-on-the-keyprovidergetpublickeysfortable-abstract-you-will-need-to-update-your-implementations)
+    - [Minor Changs](#minor-changs)
+  - [Usage](#usage)
+    - [Config](#config)
+    - [Key Providers](#key-providers)
+    - [Migrations](#migrations)
+    - [Models](#models)
+      - [User Model](#user-model)
+      - [Encrypteble models](#encrypteble-models)
+    - [Engines](#engines)
+    - [Artisan](#artisan)
+  - [Suggested Packages / Recipes](#suggested-packages--recipes)
+    - [Hashed Search](#hashed-search)
+    - [User Security Recovery](#user-security-recovery)
+  - [Credits](#credits)
 
 
 
@@ -67,28 +77,24 @@ Add service provider to `config/app.php` in `providers` section
 CustomD\EloquentModelEncrypt\ServiceProvider::class,
 ```
 
-### Register Facade
-
-Register package facade in `config/app.php` in `aliases` section
-
-```php
-CustomD\EloquentModelEncrypt\Facades\EloquentModelEncrypt::class,
-```
 
 ---
 
 <a name="upgrade"></a>
+## upgrade from V2.x
 
-## Upgrade from V1.x
-
-In version 1 the migration was automatically run, in version 2 you need to publish the migration manually and trigger it to run when you want it to.
-Publish the config & migration
-
-```bash
-php artisan vendor:publish --tag=eloquent-model-encrypt_config --tag=eloquent-model-encrypt_migration
-```
-
+### Major Changes
+- We no longer use a custom column type, so you will need to switch out all your migrations calls to `encryptedString`, `encryptedDate`, `encryptedTimestamp` to a single `encrypted` column type
+- Interface required for Encryptable Models `CustomD\EloquentModelEncrypt\Contracts\Encryptable`
+- Interface required for User Model - `CustomD\EloquentModelEncrypt\Contracts\UserKeystoreContract`
+- PemStore Facade for your session based PEM Storage -- you will need to upgrade your mappings to use this. `CustomD\EloquentModelEncrypt\Contracts\PemStore`
+- `CustomD\EloquentModelEncrypt\Middleware\InitPemStore` middleware added works with the above contract
+- Fixed missing typeCasting on the `KeyProvider::getPublicKeysForTable` abstract you will need to update your implementations
 ---
+
+### Minor Changs
+- `::isValueEncrypted` has been removed and replaced with `::isCyphertext` and `::isPlaintext`
+
 
 <a name="usage"></a>
 
@@ -107,6 +113,8 @@ publickey | storage/_certs/public.key | Can be either a path, or the key content
 privatekey | storage/_certs/private.key | Can be either a path, or the key contents itself.
 models | Array | You can extend the models for the different key storage logic.
 throw_on_missing_key | false | Have the engine throw a `DecryptException` when trying to decrypt a record without the appropriate key.
+pem | [] | holds the class for the PEM store (Cache, Session or Custom class with its settings)
+listener | bool | switch on to enable auto-listener for login / logout events along with the PEM above.
 
 
 <a name="keyproviders"></a>
@@ -134,44 +142,47 @@ class MyKeyProvider extends KeyProvider {
 
 You will need to implement the logic to determine whether or not it should encrypt or decrypt based on the rules in the above methods.
 
+By default we have:
+* **GlobalKeyProvider** - this uses the public/private key specified in the config above.
+* **UserKeyProvider** - this is a User Based key provider - will assign to the current user (or via call to Model::getUserKeyProviderIds)
+* **RoleKeyProvider & RoleUserKeyProvider** -- this pair allows you to assign keys to a role. -- Example to come.
+
+You will also need to configure your store for the current users decrypted PEM, as the PEM can only be decrypted with the users password, the best time to store this is during the login process.
+
+From V3 we offer a base version that reads either your application cache or session vars (Default):
+You can create your own which should implement the `CustomD\EloquentModelEncrypt\Contracts\PemStore` contract and add this to the pem.class section of the config:
+
+By default we have Session which will store in the users session and Cache which stores in the application cache.
+These tie in to the provided listener or can be accessed via the PemStore Facade.
+
+
+`CustomD\EloquentModelEncrypt\Middleware\InitPemStore` middleware works with the aboe contract
+
 <a name="migrations"></a>
 
 ### Migrations
-
-**V2.5 and up**
 
 for the encrypted columns in your database simpy add:
 ```php
 $table->encrypted('colname');
 ```
 
-**v2.4 and down**
-
-For your migrations you can now replace the Illuminate versions of these with the CustomD versions:
-
-```php
-use CustomD\EloquentModelEncrypt\Migration\Blueprint;
-use CustomD\EloquentModelEncrypt\Migration\Schema;
-```
-
-you can then define your columns as normal with the extra column types, these will calculate the required size to hold the encrypted string.
-
-```php
-$table->encryptedString('colname', '154');
-$table->encryptedDate('datecolname');
-$table->encryptedTimestamp('timestampcolname');
-```
-
-<a name="models"></a>
-
 ### Models
 
+#### User Model
+
+Your user model should add the
+`CustomD\EloquentModelEncrypt\Model\Traits\HasUserKeystore` trait, additionally passwords should be added to the model unencrypted to allow the keystore to make use of them, it will then hash the password.
+
+#### Encrypteble models
 To enable encryption on a specific model you will need to add the following middleware and property to define which columns to encrypt
 
 ```php
 use CustomD\EloquentModelEncrypt\ModelEncryption;
+use CustomD\EloquentModelEncrypt\Contracts\Encryptable;
 
-class YourModel extends Model {
+class YourModel extends Model implements Encryptable
+{
 	use ModelEncryption;
 
 	protected $encryptable = [
@@ -235,9 +246,6 @@ This will select all the records from that table and encrypt them.
 ## Suggested Packages / Recipes
 
 Here are a few packages that extend the usability of the encryption package
-
-### [User Keystore](docs/UserKeyExample.md)
-A basic user keystore example implementation
 
 ### [Hashed Search](https://github.com/customd/hashed-search)
 This pacakge works to allow you to do a Blind Index search on your encrypted data, it works by using a one way hash to encrypt the data and does the same to search it.

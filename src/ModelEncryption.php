@@ -63,7 +63,8 @@ trait ModelEncryption
         $tables = $config['tables'];
 
         // Which Engine are we loading
-        $engine = isset($tables[self::class]) ? $engines[$tables[self::class]] : $engines['default'];
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Abstracts\Engine> $engine */
+        $engine = $engines[$tables[self::class] ?? 'default'];
 
         // Instansiate our Engine
         $this->encryptionEngine = new $engine();
@@ -73,7 +74,7 @@ trait ModelEncryption
 
     public function getEncryptionEngine()
     {
-        return $this->encryptionEngine ?? $this->initEncryptionEngine();
+        return $this->encryptionEngine ??= $this->initEncryptionEngine();
     }
 
     /**
@@ -90,17 +91,15 @@ trait ModelEncryption
         return in_array($key, $this->encryptable);
     }
 
-    /**
-     * checks whether the value is currently encrypted or not.
-     *
-     * @param string|null $value
-     *
-     * @return bool
-     */
-    public function isValueEncrypted(?string $value): bool
+
+    public function isCyphertext(?string $value): bool
     {
-        //if position 0 has the header string we are a match :-)
         return strpos($value, self::$encryptionHeader) === 0;
+    }
+
+    public function isPlaintext(?string $value): bool
+    {
+        return ! $this->isCyphertext($value);
     }
 
     /**
@@ -112,32 +111,31 @@ trait ModelEncryption
         return method_exists($this, 'getTableKeystoreName') ? $this->getTableKeystoreName() : $this->getTable();
     }
 
-    public function forceEncrypt(array $options = [])
+    public function forceEncrypt(): void
     {
-        $this->mergeAttributesFromClassCasts();
 
-        $query = $this->newModelQuery();
-
-        // If the "saving" event returns false we'll bail out of the save and return
-        // false, indicating that the save failed. This provides a chance for any
-        // listeners to cancel save operations if validations fail or whatever.
-        if (! $this->exists || $this->fireModelEvent('saving') === false) {
-            return false;
+        if (!$this->exists) {
+            throw new EncryptException("ForceEncrypt can only be called on existing models");
         }
 
-        // we want to keep original timestamps here
-        // so lets store the hasTimestamps varaible with the models current
-        // value and we will reset it after save.
+        DB::beginTransaction();
         $hasTimestamps = $this->timestamps;
         $this->timestamps = false;
-        $saved = $this->performUpdate($query);
 
-        if ($saved) {
-            $this->finishSave($options);
+        try {
+            $this->assignRecordsSynchronousKey(true);
+            $this->storeKeyReferences();
+            $this->mapEncryptedValues();
+
+            $data = $this->attributes;
+
+            DB::table($this->getTable())->where($this->getKeyName(), $this->getKey())->update($data);
+            DB::commit();
+            $this->timestamps = $hasTimestamps;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->timestamps = $hasTimestamps;
+            throw $e;
         }
-
-        $this->timestamps = $hasTimestamps;
-
-        return $saved;
     }
 }

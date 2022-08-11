@@ -1,0 +1,10 @@
+<?php
+
+namespace CustomD\EloquentAsyncKeys\Facades;
+
+abstract class Facade {}
+
+/**
+ * @mixin \CustomD\EloquentAsyncKeys\Keypair
+ */
+class EloquentAsyncKeys extends Facade {}

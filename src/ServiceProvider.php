@@ -2,9 +2,15 @@
 
 namespace CustomD\EloquentModelEncrypt;
 
+use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ColumnDefinition;
+use Illuminate\Database\Schema\Grammars\Grammar;
+use CustomD\EloquentModelEncrypt\Store\SessionPem;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
+use CustomD\EloquentModelEncrypt\Exceptions\UnknownGrammerException;
+use CustomD\EloquentModelEncrypt\Listeners\UserEventSubscriber;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -34,15 +40,42 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             'eloquent-model-encrypt'
         );
 
-        $this->registerMigrationMacros();
-    }
+        Grammar::macro('typeEncrypted', function (Fluent $column) {
+            $className = (new \ReflectionClass($this))->getShortName();
 
-    protected function registerMigrationMacros()
-    {
+            if ($className === "MySqlGrammar") {
+                return 'blob';
+            }
 
-        Blueprint::macro('encrypted', function ($column, $len = 255): ColumnDefinition {
-            /** @var Blueprint $this */
-            return $this->addColumn('text', $column);
+            if ($className === "PostgresGrammar") {
+                return 'bytea';
+            }
+
+            if ($className === "SQLiteGrammar") {
+                return 'blob';
+            }
+
+            if ($className === "SqlServerGrammar") {
+                return 'varbinary(max)';
+            }
+
+            throw new UnknownGrammerException();
         });
+
+        Blueprint::macro('encrypted', function ($column): ColumnDefinition {
+            /** @var Blueprint $this */
+            return $this->addColumn('encrypted', $column);
+        });
+
+        /** @var class-string<\CustomD\EloquentModelEncrypt\Contracts\PemStore> $pemStore */
+        $pemStore = config('eloquent-model-encrypt.pem.class', SessionPem::class);
+
+        if ($pemStore) {
+            $this->app->bind('cd-pem-store', fn ($app) => new $pemStore(config('eloquent-model-encrypt.pem')));
+        }
+
+        if (config('eloquent-model-encrypt.listener')) {
+            Event::subscribe(UserEventSubscriber::class);
+        }
     }
 }

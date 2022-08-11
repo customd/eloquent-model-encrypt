@@ -7,18 +7,12 @@ use CustomD\EloquentModelEncrypt\Abstracts\Engine;
 
 class EncryptionEngine extends Engine
 {
-    protected $cipher = 'AES-128-CBC';
-
-    protected $keyLength = 16;
-
-    protected $synchronousKey = null;
-
-    protected $encryptionEngine;
+    protected string $cipher = 'AES-128-CBC';
 
     /**
      * @param string|null $synchronousKey
      */
-    public function assignSynchronousKey($synchronousKey = null): void
+    public function assignSynchronousKey(?string $synchronousKey = null): void
     {
         if ($synchronousKey === null) {
             $synchronousKey = \random_bytes($this->keyLength);

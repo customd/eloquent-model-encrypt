@@ -25,7 +25,7 @@ class EncryptModel extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $class = $this->argument('model');
         $model = new $class();

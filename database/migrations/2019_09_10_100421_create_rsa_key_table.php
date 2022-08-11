@@ -28,6 +28,7 @@ class CreateRsaKeyTable extends Migration
 
         Schema::table($tableUsers, function (Blueprint $table) {
             $table->unsignedBigInteger('rsa_key_id')->nullable();
+            $table->string('salt')->nullable();
             $table->foreign('rsa_key_id')->references('id')->on('rsa_keys')->onDelete('CASCADE')->onUpdate('RESTRICT');
         });
 

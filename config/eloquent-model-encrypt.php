@@ -18,4 +18,20 @@ return [
     'throw_on_missing_key' => env('ELOQUENT_MODEL_THROW_ON_MISSING_KEY', false),
     'encrypt_empty_string' => env('ELOQUENT_MODEL_ENCRYPT_EMPTY_STRING', false),
     'encrypt_null_value' => env('ELOQUENT_MODEL_ENCRYPT_NULL_VALUE', false),
+
+    /**
+     * Added in V3 - defaulting off and making opt-in
+     * pem - Manage storage and retrieval of your Private Encrypted Key automatically or manually
+     *  -- class options SessionPem || CachePem
+     *  -- cache - optional - if setting to a specific cache instance -- only if using CachePem
+     *  -- session - optional - use a specific key for the session key for your users. (Watch session regenerate as can loose it due to that)
+     * listener - Listen to login events automatically and set user pem
+     */
+    'pem' => [
+        'class' => \CustomD\EloquentModelEncrypt\Store\SessionPem::class,
+        'cache' => null, // set to a specific cache if using a different cache from normal
+        'session' => '_cdpem_', //what key should be used in your session?
+    ],
+    'listener' => false,
+
 ];
