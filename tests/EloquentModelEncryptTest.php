@@ -14,13 +14,6 @@ class EloquentModelEncryptTest extends TestCase
         return [ServiceProvider::class];
     }
 
-    protected function getPackageAliases($app)
-    {
-        return [
-            'eloquent-model-encrypt' => EloquentModelEncrypt::class,
-        ];
-    }
-
     public function testBasicEngine()
     {
         $original = 'ThisIs My test String';

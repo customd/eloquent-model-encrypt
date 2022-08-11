@@ -13,17 +13,13 @@ class EncryptModelRecords implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public Collection $records;
-
-    public function __construct(Collection $records)
+    public function __construct(public Collection $records)
     {
-        $this->records = $records;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->records->each(function ($record) {
-
             //as this is queued - might hit here after being edited by the user (0.00001% chance but hey.)
             if ($record->recordKeystore === null) {
             //we got here, now lets force save

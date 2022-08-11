@@ -1,3 +1,52 @@
+# [3.0.0-beta.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-05-20)
+
+
+### Features
+
+* added middleware to. init PEM store ([f09f660](https://git.customd.com/composer/eloquent-model-encrypt/commit/f09f66017d83dd8056e2e1d90287bd05033a48f7))
+
+# [3.0.0-beta.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-05-15)
+
+
+### Bug Fixes
+
+* minor updates for stability ([d158590](https://git.customd.com/composer/eloquent-model-encrypt/commit/d158590a82b522c78959ed296b0315c1d4fc30c2))
+
+# [3.0.0-beta.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-05-15)
+
+
+### Bug Fixes
+
+* correcting order of params ([cb040ef](https://git.customd.com/composer/eloquent-model-encrypt/commit/cb040efc1cf715830d7aeaeb5613747d47f57cca))
+* for better backward compat - make new functionality opt-in ([01f3166](https://git.customd.com/composer/eloquent-model-encrypt/commit/01f3166c1a132a22e874cfdd6caaf359cb9b55d5))
+
+
+### Features
+
+* stubs for keyproviders ([eb8ac99](https://git.customd.com/composer/eloquent-model-encrypt/commit/eb8ac993e2b92450c8997cbb9dde52f80c64a731))
+* user key provider - session / cache ([ed79f18](https://git.customd.com/composer/eloquent-model-encrypt/commit/ed79f18409e09f436f989ec87003759b558a48a7))
+* user subscribers to set pem ([33917ed](https://git.customd.com/composer/eloquent-model-encrypt/commit/33917ed3d7c5a79cc1d9cfb9b86283f6e052b972))
+
+# [3.0.0-beta.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-05-14)
+
+
+### Bug Fixes
+
+* needs grammer for column type ([80ca723](https://git.customd.com/composer/eloquent-model-encrypt/commit/80ca7232e2aedd760b1012ae60a096bd724523a4))
+
+# [3.0.0-beta.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.3...v3.0.0-beta.1) (2022-05-14)
+
+
+### Features
+
+* Lara 9 / php 8 ([a06a05a](https://git.customd.com/composer/eloquent-model-encrypt/commit/a06a05a62545e8caabc8a84a5d883aabae3eaaf1))
+* remove migration class extenders - use macro / inbuilt instead ([93a7adc](https://git.customd.com/composer/eloquent-model-encrypt/commit/93a7adc6d17c4e8ace499298a4b250ed6ccd7302))
+
+
+### BREAKING CHANGES
+
+* no loner supporting older version
+
 ## [2.7.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.2...v2.7.3) (2021-12-07)
 
 

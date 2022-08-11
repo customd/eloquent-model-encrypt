@@ -1,5 +1,6 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
+    - ./phpstan-baseline.neon
 
 parameters:
 
@@ -16,3 +17,6 @@ parameters:
       #  - ./*/*/FileToBeExcluded.php
 
     checkMissingIterableValueType: false
+
+    stubFiles:
+        - stubs/larastan/Facades.stub
