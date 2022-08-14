@@ -1,3 +1,10 @@
+## [3.0.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0...v3.0.1) (2022-08-14)
+
+
+### Bug Fixes
+
+* fixed encryptable contract definistion ([eb90a17](https://git.customd.com/composer/eloquent-model-encrypt/commit/eb90a176293d90c9ebb87b189003536d831b298d))
+
 # [3.0.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v2.7.3...v3.0.0) (2022-08-11)
 
 
