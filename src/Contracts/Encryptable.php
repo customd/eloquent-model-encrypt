@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface Encryptable
 {
-    public function forceEncrypt(array $options = []);
+    public function forceEncrypt(): void;
 
     public function getEncryptionEngine();
 
