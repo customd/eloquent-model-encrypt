@@ -94,6 +94,10 @@ trait ModelEncryption
 
     public function isCyphertext(?string $value): bool
     {
+        if(is_null($value)){
+            return false;
+        }
+
         return strpos($value, self::$encryptionHeader) === 0;
     }
 
