@@ -1,3 +1,10 @@
+## [3.0.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.1...v3.0.2) (2022-08-14)
+
+
+### Bug Fixes
+
+* strpos null depraction message ([f30a61c](https://git.customd.com/composer/eloquent-model-encrypt/commit/f30a61c35af89d86b4cca1845520cc4c82a913ec))
+
 ## [3.0.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.0...v3.0.1) (2022-08-14)
 
 
