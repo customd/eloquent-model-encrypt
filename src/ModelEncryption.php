@@ -8,6 +8,7 @@ use CustomD\EloquentModelEncrypt\Traits\Decryption;
 use CustomD\EloquentModelEncrypt\Traits\Encryption;
 use CustomD\EloquentModelEncrypt\KeyProviders\GlobalKeyProvider;
 use CustomD\EloquentModelEncrypt\Observers\Encryption as EncryptionObserver;
+use Illuminate\Support\Facades\DB;
 
 trait ModelEncryption
 {
