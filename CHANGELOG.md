@@ -1,3 +1,10 @@
+## [3.0.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.2...v3.0.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* missing import DB ([5987b84](https://git.customd.com/composer/eloquent-model-encrypt/commit/5987b84c711228b5d61a71a8e470e8db7af2b0ca))
+
 ## [3.0.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.1...v3.0.2) (2022-08-14)
 
 
