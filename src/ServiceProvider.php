@@ -11,6 +11,7 @@ use CustomD\EloquentModelEncrypt\Store\SessionPem;
 use CustomD\EloquentModelEncrypt\Console\Commands\EncryptModel;
 use CustomD\EloquentModelEncrypt\Exceptions\UnknownGrammerException;
 use CustomD\EloquentModelEncrypt\Listeners\UserEventSubscriber;
+use CustomD\EloquentModelEncrypt\Listeners\SetPemFromTokenAuthListener;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -76,6 +77,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (config('eloquent-model-encrypt.listener')) {
             Event::subscribe(UserEventSubscriber::class);
+        }
+        if(config('eloquent-model-encrypt.pem_token_listener')){
+            Event::subscribe(SetPemFromTokenAuthListener::class);
         }
     }
 }

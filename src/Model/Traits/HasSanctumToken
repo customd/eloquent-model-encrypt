@@ -1,0 +1,42 @@
+<?php
+namespace CustomD\EloquentModelEncrypt\Model\Traits;
+
+use Laravel\Sanctum\NewAccessToken;
+use CustomD\EloquentModelEncrypt\Model\PemToken;
+use Illuminate\Encryption\Encrypter;
+use CustomD\EloquentModelEncrypt\Facades\PemStore;
+use RuntimeException;
+
+trait HasSanctumToken
+{
+    public function createPemToken(string $pem, string $name = "guestSupportToken", array $abilities = ['*']): NewAccessToken
+    {
+        $token = $this->createToken($name, $abilities);
+        $clear = $token->plainTextToken;
+
+        $key = str(base64_encode($clear))->limit(16, '');
+
+        $cr = new Encrypter($key);
+
+        (new PemToken())->forceFill([
+            'token_id'  => $token->accessToken->id,
+            'token_pem' => $cr->encrypt($pem)
+        ])->save();
+
+        return $token;
+    }
+
+    public function loadPemToken(?string $bearerToken = null): void
+    {
+        $token = $this->currentAccessToken();
+        $clear = $bearerToken ?? request()->bearerToken();
+        if ($token === null || $clear === null) {
+            throw new RuntimeException("Failed to load Token");
+        }
+        $key = str(base64_encode($clear))->limit(16, '');
+        $cr = new Encrypter($key);
+        $pemStore = PemToken::where('token_id', $token->id)->firstOr(fn() =>  throw new RuntimeException("Failed to load Token"));
+        $pem = $cr->decrypt($pemStore->token_pem);
+        PemStore::setPem($pem);
+    }
+}

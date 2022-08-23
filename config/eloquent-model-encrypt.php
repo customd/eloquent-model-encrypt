@@ -32,6 +32,7 @@ return [
         'cache' => null, // set to a specific cache if using a different cache from normal
         'session' => '_cdpem_', //what key should be used in your session?
     ],
-    'listener' => false,
+    'listener' => env('ELOQUENT_MODEL_LOGIN_LISTENER', false),
+    'pem_token_listener' => env('ELOQUENT_MODEL_TOKEN_LISTENER', false),
 
 ];

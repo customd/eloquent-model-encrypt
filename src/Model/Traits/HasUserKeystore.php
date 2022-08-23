@@ -105,4 +105,5 @@ trait HasUserKeystore
     {
         return \strlen($password) === 60 && preg_match('/^\$2y\$/', $password);
     }
+
 }
