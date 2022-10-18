@@ -1,3 +1,10 @@
+## [3.0.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.3...v3.0.4) (2022-10-18)
+
+
+### Bug Fixes
+
+* restore encryption on non-default connection ([1fdb3e3](https://git.customd.com/composer/eloquent-model-encrypt/commit/1fdb3e346685cfabf646bb88e09149cf1b7ddc65))
+
 ## [3.0.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.2...v3.0.3) (2022-08-15)
 
 
