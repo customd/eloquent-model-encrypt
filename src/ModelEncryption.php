@@ -134,7 +134,7 @@ trait ModelEncryption
 
             $data = $this->attributes;
 
-            DB::table($this->getTable())->where($this->getKeyName(), $this->getKey())->update($data);
+            DB::connection($this->getConnectionName())->table($this->getTable())->where($this->getKeyName(), $this->getKey())->update($data);
             DB::commit();
             $this->timestamps = $hasTimestamps;
         } catch (\Exception $e) {
