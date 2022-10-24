@@ -1,3 +1,10 @@
+## [3.0.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.4...v3.0.5) (2022-10-24)
+
+
+### Bug Fixes
+
+* **DB:** transaction across different connections ([b30d37c](https://git.customd.com/composer/eloquent-model-encrypt/commit/b30d37cc0acd278e11ff90dec5edb9772bf3cc13))
+
 ## [3.0.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.3...v3.0.4) (2022-10-18)
 
 
