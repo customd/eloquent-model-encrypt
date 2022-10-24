@@ -124,6 +124,9 @@ trait ModelEncryption
         }
 
         DB::beginTransaction();
+        if($this->getConnectionName() !== DB::getDefaultConnection()){
+            DB::connection($this->getConnectionName())->beginTransaction();
+        }
         $hasTimestamps = $this->timestamps;
         $this->timestamps = false;
 
@@ -135,9 +138,60 @@ trait ModelEncryption
             $data = $this->attributes;
 
             DB::connection($this->getConnectionName())->table($this->getTable())->where($this->getKeyName(), $this->getKey())->update($data);
+
+            if($this->getConnectionName() !== DB::getDefaultConnection()){
+                DB::connection($this->getConnectionName())->commit();
+            }
+
             DB::commit();
             $this->timestamps = $hasTimestamps;
         } catch (\Exception $e) {
+            if($this->getConnectionName() !== DB::getDefaultConnection()){
+                DB::connection($this->getConnectionName())->rollback();
+            }
+            DB::rollBack();
+            $this->timestamps = $hasTimestamps;
+            throw $e;
+        }
+    }
+
+    //keeping for some debugging temporarily
+    public function forceEncrypt_test(): void
+    {
+        if (!$this->exists) {
+            throw new EncryptException("ForceEncrypt can only be called on existing models");
+        }
+
+        DB::beginTransaction();
+        if($this->getConnectionName() !== DB::getDefaultConnection()){
+            DB::connection($this->getConnectionName())->beginTransaction();
+        }
+
+        $hasTimestamps = $this->timestamps;
+        $this->timestamps = false;
+
+        try {
+            $this->assignRecordsSynchronousKey(true);
+            $this->storeKeyReferences();
+            $this->mapEncryptedValues();
+
+            $data = $this->attributes;
+
+            $this->forceFill($data);
+            $query = $this->newModelQuery();
+            $this->setKeysForSaveQuery($query)->update($data);
+
+
+            if($this->getConnectionName() !== DB::getDefaultConnection()){
+                DB::connection($this->getConnectionName())->commit();
+            }
+
+            DB::commit();
+            $this->timestamps = $hasTimestamps;
+        } catch (\Exception $e) {
+            if($this->getConnectionName() !== DB::getDefaultConnection()){
+                DB::connection($this->getConnectionName())->rollback();
+            }
             DB::rollBack();
             $this->timestamps = $hasTimestamps;
             throw $e;
