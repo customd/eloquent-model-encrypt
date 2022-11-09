@@ -1,3 +1,10 @@
+# [3.1.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.5...v3.1.0) (2022-11-09)
+
+
+### Features
+
+* allows role key to be assigned to multiple roles ([e513ff8](https://git.customd.com/composer/eloquent-model-encrypt/commit/e513ff8bd95e9d4679d6a479be61d7564594229d))
+
 ## [3.0.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.4...v3.0.5) (2022-10-24)
 
 
