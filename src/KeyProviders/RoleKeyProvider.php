@@ -24,7 +24,7 @@ abstract class RoleKeyProvider extends KeyProvider
         return resolve(static::$model);
     }
 
-    public static function getRole(): string
+    public static function getRole(): string|array
     {
         throw_unless(isset(static::$role), 'Please set your role');
         return static::$role;

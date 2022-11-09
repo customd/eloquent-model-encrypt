@@ -18,7 +18,7 @@ abstract class RoleUserKeyProvider extends KeyProvider
 {
     use ProviderHasUser;
 
-    public static function getRole(): string
+    public static function getRole(): string|array
     {
         throw_unless(isset(static::$role), 'Please set your role');
         return static::$role;
