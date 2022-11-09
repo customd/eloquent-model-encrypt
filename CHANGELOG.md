@@ -1,3 +1,10 @@
+## [3.1.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.0...v3.1.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* fixes type for getRole when not string ([854655c](https://git.customd.com/composer/eloquent-model-encrypt/commit/854655c69b3de23eac67959d702fa6b89ad74659))
+
 # [3.1.0](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.0.5...v3.1.0) (2022-11-09)
 
 
