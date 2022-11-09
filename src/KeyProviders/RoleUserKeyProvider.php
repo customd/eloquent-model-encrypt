@@ -48,7 +48,7 @@ abstract class RoleUserKeyProvider extends KeyProvider
         $user = auth()->user();
 
         // @phpstan-ignore-next-line hasRole is a method injected by Role Provider
-        if ($user === null || ! $user->hasRole(static::getRole())) {
+        if ($user === null || ! $user->hasAnyRole(static::getRole())) {
             return null;
         }
 

@@ -48,7 +48,7 @@ abstract class RoleKeyProvider extends KeyProvider
         $user = auth()->user();
 
         // @phpstan-ignore-next-line - hasRole comes from user model
-        if ($user === null || ! $user->hasRole(static::getRole())) {
+        if ($user === null || ! $user->hasAnyRole(static::getRole())) {
             return null;
         }
 
