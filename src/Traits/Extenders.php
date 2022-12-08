@@ -108,6 +108,19 @@ trait Extenders
 
         foreach ($this->getAttributes() as $key => $value) {
             if (! $this->encryptedIsEquivalent($key)) {
+                $dirty[$key] = $value;
+            }
+        }
+
+        return $dirty;
+    }
+
+    public function getDirtyAsPlainText(): array
+    {
+        $dirty = [];
+
+        foreach ($this->getAttributes() as $key => $value) {
+            if (! $this->encryptedIsEquivalent($key)) {
                 $dirty[$key] = $this->isEncryptable($key) ? $this->decryptAttribute($value) : $value;
             }
         }
