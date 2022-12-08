@@ -1,3 +1,10 @@
+## [3.1.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.1...v3.1.2) (2022-12-08)
+
+
+### Bug Fixes
+
+* bug where dirty was returning plain text instead of cypher text ([509accf](https://git.customd.com/composer/eloquent-model-encrypt/commit/509accf5ebd80586c9b8cc98d72391b0038e7e56))
+
 ## [3.1.1](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.0...v3.1.1) (2022-11-09)
 
 
