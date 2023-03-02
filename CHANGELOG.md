@@ -1,3 +1,10 @@
+## [3.1.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.2...v3.1.3) (2023-03-02)
+
+
+### Bug Fixes
+
+* laravel 10 ([e48fae1](https://git.customd.com/composer/eloquent-model-encrypt/commit/e48fae19ebda5c8da42dfabcad0a7b6226565d0e))
+
 ## [3.1.2](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.1...v3.1.2) (2022-12-08)
 
 
