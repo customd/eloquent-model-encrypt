@@ -7,3 +7,8 @@ variables:
   PHP_IMAGE: "chialab/php-dev"
   TEST_PHP_8_2: "true"
   TEST_PHP_8_1: "true"
+
+test:codecoverage:
+  variables: 
+    XDEBUG_MODE: "coverage"
+    
