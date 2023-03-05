@@ -1,3 +1,10 @@
+## [3.1.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.3...v3.1.4) (2023-03-05)
+
+
+### Bug Fixes
+
+* Keystore id should be forcefilled ([770da6f](https://git.customd.com/composer/eloquent-model-encrypt/commit/770da6f11fc54a00a109b1393f5e73f8d9fd68bc))
+
 ## [3.1.3](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.2...v3.1.3) (2023-03-02)
 
 
