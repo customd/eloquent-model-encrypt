@@ -85,7 +85,7 @@ trait HasUserKeystore
             'private_key' => $rsa->getPrivateKey(),
         ]);
 
-        $this->rsa_key_id = $keystore->id;
+        $this->forceFill(['rsa_key_id' => $keystore->id]);
 
         return $this;
     }
