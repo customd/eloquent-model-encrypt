@@ -1,3 +1,10 @@
+## [3.1.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.4...v3.1.5) (2023-03-23)
+
+
+### Bug Fixes
+
+* sentry wants a key based user object not an int ([ddc9d16](https://git.customd.com/composer/eloquent-model-encrypt/commit/ddc9d16f530d7559ddf45b53b2c178f89cbbbce5))
+
 ## [3.1.4](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.3...v3.1.4) (2023-03-05)
 
 
