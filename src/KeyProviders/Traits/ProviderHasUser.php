@@ -71,7 +71,7 @@ trait ProviderHasUser
     protected static function logCriticalError(User $user): bool
     {
         Log::critical("User does not have a keypair", [
-            'user'        => $user->id,
+            'user'        => ['id' => $user->id],
             'keyProvider' => get_called_class()
         ]);
         return false;
