@@ -1,3 +1,10 @@
+## [3.1.6](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.5...v3.1.6) (2023-03-23)
+
+
+### Bug Fixes
+
+* criitial error hanlder needs use rid key ([d56fd36](https://git.customd.com/composer/eloquent-model-encrypt/commit/d56fd36f4c894102d52bcd78131dd7e2885dc92f))
+
 ## [3.1.5](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.4...v3.1.5) (2023-03-23)
 
 
