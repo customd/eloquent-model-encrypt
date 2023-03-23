@@ -75,7 +75,7 @@ trait Keystore
             Log::warning('Did not find a key for ' . $this->getTableKeystoreReference(), [
                 'message' => $e->getMessage(),
                 'key'     => $this->getKey(),
-                'user'    => auth()->user() ? auth()->user()->getKey() : null
+                'user'    => ['id' => auth()->user() ? auth()->user()->getKey() : null]
             ]);
 
             if (config('eloquent-model-encrypt.throw_on_missing_key')) {
