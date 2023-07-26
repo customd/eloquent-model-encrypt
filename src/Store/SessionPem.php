@@ -65,4 +65,13 @@ class SessionPem implements PemStore
         Session::forget($this->sessionKey);
         $this->sessionPem = null;
     }
+
+    public function extend(?int $hours = null): void
+    {
+        if ($this->sessionPem === null) {
+            //nothing to extend here
+            return;
+        }
+        $this->storePem(privateKey: $this->sessionPem);
+      }
 }

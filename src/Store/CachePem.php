@@ -104,4 +104,14 @@ class CachePem implements PemStore
         $this->sessionPem = null;
         $this->sessionKey = null;
     }
+
+    public function extend(?int $hours = null): void
+    {
+        if ($this->sessionPem === null || $this->sessionKey === null) {
+            //nothing to extend here
+            return;
+        }
+        $lifetime = $hours ?? (config('session.lifetime') / 60);
+        $this->store->put($this->sessionKey, encrypt($this->sessionPem), now()->addHours($lifetime));
+      }
 }
