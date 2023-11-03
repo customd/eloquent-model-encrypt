@@ -32,10 +32,12 @@ class Encryption
      */
     public function updating($model)
     {
-        // Editing a record, lets get the sync key for this record and encrypt the fields that are set.
-        $model->assignRecordsSynchronousKey(true);
-        $model->storeKeyReferences();
-        $model->mapEncryptedValues();
+        if ($model->isUpdatingEncryptedFields()) {
+            // Let's assign a sync key for this record (if necessary), and encrypt the fields that are set.
+            $model->assignRecordsSynchronousKey(true);
+            $model->storeKeyReferences();
+            $model->mapEncryptedValues();
+        }
     }
 
     /**
