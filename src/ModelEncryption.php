@@ -107,7 +107,8 @@ trait ModelEncryption
         return ! $this->isCyphertext($value);
     }
 
-    public function isUpdatingEncryptedFields(): bool {
+    public function isUpdatingEncryptedFields(): bool 
+    {
         return collect($this->encryptable)
             ->filter(function ($field) {
                 return $this->isDirty($field);
