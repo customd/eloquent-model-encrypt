@@ -107,6 +107,15 @@ trait ModelEncryption
         return ! $this->isCyphertext($value);
     }
 
+    public function isUpdatingEncryptedFields(): bool 
+    {
+        return collect($this->encryptable)
+            ->filter(function ($field) {
+                return $this->isDirty($field);
+            })
+            ->isNotEmpty();
+    }
+
     /**
      * method to get the table reference for storage in the database column
      * this allows you to change the way the references are stored ie md5(table name etc)

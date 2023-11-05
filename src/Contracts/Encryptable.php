@@ -28,4 +28,6 @@ interface Encryptable
     public function getKeystoreModel(): Model;
 
     public function getPrivateKeyForRecord(): string;
+
+    public function isUpdatingEncryptedFields(): bool;
 }
