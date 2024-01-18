@@ -14,7 +14,7 @@ abstract class Engine
     protected $encryptionEngine;
 
     /**
-     * Decrypt a value.
+     * Encrypt a value.
      *
      * @param string $value
      *
@@ -23,7 +23,7 @@ abstract class Engine
     abstract public function encrypt(string $value): ?string;
 
     /**
-     * Encrypt a value.
+     * Decrypt a value.
      *
      * @param string $value
      *
