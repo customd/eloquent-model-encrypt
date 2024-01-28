@@ -14,8 +14,8 @@ use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
 /**
  * these methods all extend over the Eloquent methods.
- * @property static Model&Encryptable $model encryptable model
- * @property static string|array $role encryptable model role(s)
+ * @property string|array $role
+ * @property Model&Encryptable $model
  */
 abstract class RoleKeyProvider extends KeyProvider
 {
