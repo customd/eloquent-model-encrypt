@@ -13,6 +13,7 @@ use CustomD\EloquentModelEncrypt\KeyProviders\Traits\ProviderHasUser;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @property string|array $role
  */
 abstract class RoleUserKeyProvider extends KeyProvider
 {
@@ -20,8 +21,8 @@ abstract class RoleUserKeyProvider extends KeyProvider
 
     public static function getRole(): string|array
     {
-        throw_unless(isset(static::$role), 'Please set your role'); 
-        return static::$role; 
+        throw_unless(isset(static::$role), 'Please set your role');
+        return static::$role;
     }
 
 
