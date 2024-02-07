@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined static property static\\(CustomD\\\\EloquentModelEncrypt\\\\KeyProviders\\\\RoleKeyProvider\\)\\:\\:\\$model\\.$#"
+			count: 1
+			path: src/KeyProviders/RoleKeyProvider.php
+
+		-
+			message: "#^Access to an undefined static property static\\(CustomD\\\\EloquentModelEncrypt\\\\KeyProviders\\\\RoleKeyProvider\\)\\:\\:\\$role\\.$#"
+			count: 1
+			path: src/KeyProviders/RoleKeyProvider.php
+
+		-
+			message: "#^Access to an undefined static property static\\(CustomD\\\\EloquentModelEncrypt\\\\KeyProviders\\\\RoleUserKeyProvider\\)\\:\\:\\$role\\.$#"
+			count: 1
+			path: src/KeyProviders/RoleUserKeyProvider.php

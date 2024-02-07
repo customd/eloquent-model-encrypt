@@ -14,20 +14,22 @@ use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @property string|array $role
+ * @property Model&Encryptable $model
  */
 abstract class RoleKeyProvider extends KeyProvider
 {
 
     public static function getRoleModel(): Model&Encryptable
     {
-        throw_unless(isset(static::$model), 'Please set your model for this role'); 
-        return resolve(static::$model); 
+        throw_unless(isset(static::$model), 'Please set your model for this role');
+        return resolve(static::$model);
     }
 
     public static function getRole(): string|array
     {
-        throw_unless(isset(static::$role), 'Please set your role'); 
-        return static::$role; 
+        throw_unless(isset(static::$role), 'Please set your role');
+        return static::$role;
     }
 
     public static function getPublicKeysForTable(Model&Encryptable $record, array $extra = []): array
