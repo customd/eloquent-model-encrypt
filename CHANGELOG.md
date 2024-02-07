@@ -1,3 +1,11 @@
+## [3.1.7](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.6...v3.1.7) (2024-02-07)
+
+
+### Bug Fixes
+
+* allow extending of session ([69aeead](https://git.customd.com/composer/eloquent-model-encrypt/commit/69aeead1fa7c9b3801b21b683a74fbe4e8ed9618))
+* Checks whether there are any encrypted fields changing in an update, and bypasses encryption if not. ([96e777a](https://git.customd.com/composer/eloquent-model-encrypt/commit/96e777a7a8b4a92e77803de1a7d174689587b5f4))
+
 ## [3.1.6](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.5...v3.1.6) (2023-03-23)
 
 
