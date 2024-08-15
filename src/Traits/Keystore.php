@@ -2,12 +2,15 @@
 
 namespace CustomD\EloquentModelEncrypt\Traits;
 
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\EncryptException;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
+use CustomD\EloquentModelEncrypt\EncryptionEngine;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -15,13 +18,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  */
 trait Keystore
 {
-    public static $CLEAR_RECORD = 0;
-    public static $CLEAR_TABLE = 1;
-    public static $CLEAR_ALL = 2;
-    /**
-     * Holds cached versions of keys
-     */
-    protected static $cachedKeys = [];
 
     public function assignRecordsSynchronousKey(bool $create = false): void
     {
@@ -34,8 +30,8 @@ trait Keystore
         $id = $this->getKey();
 
         //grabbing a cached version
-        if ($id && isset(static::$cachedKeys[$tableKey]) && ! empty(static::$cachedKeys[$tableKey][$id])) {
-            $this->getEncryptionEngine()->assignSynchronousKey(static::$cachedKeys[$tableKey][$id]);
+        if ($id && $key = EncryptionEngine::getCachedKey($tableKey, $id)) {
+            $this->getEncryptionEngine()->assignSynchronousKey($key);
             return;
         }
 
@@ -177,7 +173,7 @@ trait Keystore
             );
         }
 
-        static::$cachedKeys[$table][$id] = $this->getEncryptionEngine()->getSynchronousKey();
+        EncryptionEngine::setCachedKey($table, $id, $this->getEncryptionEngine()->getSynchronousKey());
     }
 
 
@@ -215,22 +211,8 @@ trait Keystore
     {
         $table = $this->getTableKeystoreReference();
 
-        switch ($level) {
-            case self::$CLEAR_RECORD:
-                $id = $this->getKey();
-                if ($id) {
-                    unset(static::$cachedKeys[$table][$id]);
-                }
-                $this->initEncryptionEngine();
-                break;
-            case self::$CLEAR_TABLE:
-                unset(static::$cachedKeys[$table]);
-                break;
-            case self::$CLEAR_ALL:
-                static::$cachedKeys = [];
-                break;
-            default:
-                throw new EncryptException("Clear level not defined");
-        }
+        EncryptionEngine::clearCachedKey($level, $table, $this->getKey());
+
+      
     }
 }
