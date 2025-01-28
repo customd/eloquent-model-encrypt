@@ -38,7 +38,7 @@
     ]
   },
   "scripts": {
-    "phpunit": "phpunit",
+    "test": "phpunit",
     "phpstan": "phpstan analyse"
   },
   "extra": {
