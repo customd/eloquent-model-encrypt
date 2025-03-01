@@ -17,4 +17,4 @@ parameters:
       #  - ./*/*/FileToBeExcluded.php
 
     stubFiles:
-        - stubs/larastan/Facades.stub
+       # - stubs/larastan/Facades.stub
