@@ -10,6 +10,9 @@ use CustomD\EloquentModelEncrypt\KeyProviders\GlobalKeyProvider;
 use CustomD\EloquentModelEncrypt\Observers\Encryption as EncryptionObserver;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait ModelEncryption
 {
     use Extenders;
@@ -95,7 +98,7 @@ trait ModelEncryption
 
     public function isCyphertext(?string $value): bool
     {
-        if(is_null($value)){
+        if (is_null($value)) {
             return false;
         }
 
@@ -107,7 +110,7 @@ trait ModelEncryption
         return ! $this->isCyphertext($value);
     }
 
-    public function isUpdatingEncryptedFields(): bool 
+    public function isUpdatingEncryptedFields(): bool
     {
         return collect($this->encryptable)
             ->filter(function ($field) {
@@ -128,12 +131,12 @@ trait ModelEncryption
     public function forceEncrypt(): void
     {
 
-        if (!$this->exists) {
+        if (! $this->exists) {
             throw new EncryptException("ForceEncrypt can only be called on existing models");
         }
 
         DB::beginTransaction();
-        if($this->getConnectionName() !== DB::getDefaultConnection()){
+        if ($this->getConnectionName() !== DB::getDefaultConnection()) {
             DB::connection($this->getConnectionName())->beginTransaction();
         }
         $hasTimestamps = $this->timestamps;
@@ -148,14 +151,14 @@ trait ModelEncryption
 
             DB::connection($this->getConnectionName())->table($this->getTable())->where($this->getKeyName(), $this->getKey())->update($data);
 
-            if($this->getConnectionName() !== DB::getDefaultConnection()){
+            if ($this->getConnectionName() !== DB::getDefaultConnection()) {
                 DB::connection($this->getConnectionName())->commit();
             }
 
             DB::commit();
             $this->timestamps = $hasTimestamps;
         } catch (\Exception $e) {
-            if($this->getConnectionName() !== DB::getDefaultConnection()){
+            if ($this->getConnectionName() !== DB::getDefaultConnection()) {
                 DB::connection($this->getConnectionName())->rollback();
             }
             DB::rollBack();
@@ -167,12 +170,12 @@ trait ModelEncryption
     //keeping for some debugging temporarily
     public function forceEncrypt_test(): void
     {
-        if (!$this->exists) {
+        if (! $this->exists) {
             throw new EncryptException("ForceEncrypt can only be called on existing models");
         }
 
         DB::beginTransaction();
-        if($this->getConnectionName() !== DB::getDefaultConnection()){
+        if ($this->getConnectionName() !== DB::getDefaultConnection()) {
             DB::connection($this->getConnectionName())->beginTransaction();
         }
 
@@ -190,15 +193,14 @@ trait ModelEncryption
             $query = $this->newModelQuery();
             $this->setKeysForSaveQuery($query)->update($data);
 
-
-            if($this->getConnectionName() !== DB::getDefaultConnection()){
+            if ($this->getConnectionName() !== DB::getDefaultConnection()) {
                 DB::connection($this->getConnectionName())->commit();
             }
 
             DB::commit();
             $this->timestamps = $hasTimestamps;
         } catch (\Exception $e) {
-            if($this->getConnectionName() !== DB::getDefaultConnection()){
+            if ($this->getConnectionName() !== DB::getDefaultConnection()) {
                 DB::connection($this->getConnectionName())->rollback();
             }
             DB::rollBack();

@@ -18,7 +18,7 @@ trait ProviderHasUser
         return match (true) {
             ! empty($extra['UserKeyProviderIds']) => (array) $extra['UserKeyProviderIds'],
             method_exists($record, 'getUserKeyProviderIds') => (array) $record->getUserKeyProviderIds(),
-            default => (array) ($record->getAttribute('user_id') ?? auth()->user()?->id ?? [])
+            default => (array) ($record->getAttribute('user_id') ?? auth()->user()?->id ?? []) //@phpstan-ignore nullsafe.neverNull
         };
     }
 

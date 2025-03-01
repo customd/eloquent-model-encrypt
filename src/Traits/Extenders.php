@@ -9,6 +9,7 @@ use Illuminate\Contracts\Encryption\EncryptException;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @phpstan-ignore trait.unused
  */
 trait Extenders
 {

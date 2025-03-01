@@ -4,6 +4,7 @@ namespace CustomD\EloquentModelEncrypt\Traits;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @phpstan-ignore trait.unused
  */
 trait Encryption
 {

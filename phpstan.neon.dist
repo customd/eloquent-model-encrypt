@@ -16,7 +16,5 @@ parameters:
     excludePaths:
       #  - ./*/*/FileToBeExcluded.php
 
-    checkMissingIterableValueType: false
-
     stubFiles:
         - stubs/larastan/Facades.stub

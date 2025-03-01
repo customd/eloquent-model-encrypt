@@ -10,6 +10,9 @@ use Illuminate\Contracts\Encryption\EncryptException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use CustomD\EloquentAsyncKeys\Facades\EloquentAsyncKeys;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait HasUserKeystore
 {
     public static function bootHasUserKeystore(): void

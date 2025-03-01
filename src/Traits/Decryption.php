@@ -9,6 +9,7 @@ use CustomD\EloquentModelEncrypt\Exceptions\EngineNotFoundException;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @phpstan-ignore trait.unused
  */
 trait Decryption
 {

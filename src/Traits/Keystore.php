@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * these methods all extend over the Eloquent methods.
+ * @phpstan-ignore trait.unused
  */
 trait Keystore
 {

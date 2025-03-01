@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $table
  * @property integer $ref
  * @property string $key
- * @property-read \CustomD\EloquentModelEncrypt\Model\Keystores[] $keystore
+ * @property-read \CustomD\EloquentModelEncrypt\Model\Keystore[] $keystore
  */
 class Keystore extends Model
 {
