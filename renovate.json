@@ -3,5 +3,6 @@
   "extends": [
     "config:recommended",
     "local>custom-d/devops-platform/ci-templates/renovate"
-  ]
+  ],
+  "assignees" : ["craig.smith"]
 }
