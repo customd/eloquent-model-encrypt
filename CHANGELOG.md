@@ -1,3 +1,10 @@
+## [3.1.9](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.8...v3.1.9) (2025-05-08)
+
+
+### Bug Fixes
+
+* **deps:** add renovate.json ([2398ca3](https://git.customd.com/composer/eloquent-model-encrypt/commit/2398ca31ca82dfc4dd7acbb28fc793f7b20ade33))
+
 ## [3.1.8](https://git.customd.com/composer/eloquent-model-encrypt/compare/v3.1.7...v3.1.8) (2025-03-01)
 
 
