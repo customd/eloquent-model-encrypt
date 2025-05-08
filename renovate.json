@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "local>custom-d/devops-platform/ci-templates/renovate"
+  ],
+  "assignees" : ["craig.smith"]
+}
